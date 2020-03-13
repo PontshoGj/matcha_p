@@ -3,14 +3,12 @@ require('dotenv').config()
 const express = require('express');
 const jwt = require('jsonwebtoken')
 
-const api = require('./control/users')
 const server = express();
-let port = process.env.PORT || 5000;
+let port = process.env.PORT || 5002;
 
 server.use(express.json())
-server.use('/api', api)
 
-server.post('/api/*', authenticateToken, (next) => {
+server.post('/chart/*', authenticateToken, (next) => {
     console.log("user is authenticated")
     next()
 })
@@ -28,5 +26,4 @@ function authenticateToken(req, res, next) {
     })
   }
 
-
-server.listen(port, () => {console.log(`Server running on Port ${port}`)})
+server.listen(port, () => {console.log(`Running on Port ${port}`)})

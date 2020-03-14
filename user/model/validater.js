@@ -60,30 +60,34 @@ class Validater extends db {
     checkreg = async () => {
         let err = [];
         let result = true;
-        let users = []
+        // let users = []
         if (!(result = this.checkfirst())){
             err.push({firstname: "first incorrect"});
             // users.push({firstname});
         }
         if (!(result = this.checklast())){
             err.push({lastname: "last name incorrect"});
-            users.push(this.lastname);
+            // users.push(this.lastname);
         }
         if (!(result = await this.checkemail())){
             err.push({email: "email already exist"});
-            users.push(this.email);
+            // users.push(this.email);
         }
         if (!(result = await this.checkusername())){
             err.push({username: "username already exist"});
-            users.push(this.username)
+            // users.push(this.username)
         }
         if (!(result = this.checkpassword())){
             err.push({password: "password incorrect"});
-            users.push(this.password)
+            // users.push(this.password)
         }
         if (result){
             let users = {
-                firstname
+                firstname: `${this.firstname}`,
+                lastname: `${this.lastname}`,
+                username: `${this.username}`,
+                password: `${this.password}`,
+                email: `${this.email}`
             }
             console.log(users)
             if (!(result = await this.insertuser(users))){

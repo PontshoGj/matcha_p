@@ -9,14 +9,14 @@ class dbConnection{
 
     insertuser = (user) => {
         try{
-            console.log(user)
+            //connecting to the mongodb cloud database
             this.client.connect((err, db) => {
-                if (err) throw err
+                if (err) throw err //checking for err in connecting to the database
                 
-                const dbdo = db.db("Us");
+                const dbdo = db.db("Us"); //selecting the dtabase to use
 
-                dbdo.collection("users").insertOne(user, (err, res) => {
-                    if (err) throw err
+                dbdo.collection("users").insertOne(user, (err, res) => { //selecting the collection/table inside the dtabase i want to use
+                    if (err) throw err //checking for err in inserting data to the database
 
                     console.log("User inserted");
                 });
@@ -25,7 +25,7 @@ class dbConnection{
             console.log(err);
             return 0;
         }finally {
-            db.close();
+            this.client.close(); //closing the connection to the database
         }
         return 1;
     }

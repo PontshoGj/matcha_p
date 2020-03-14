@@ -1,8 +1,9 @@
-
+const db = require('./dbConnection')
 //class that validates the user input during registration
-class Validater {
+class Validater extends db {
 
     constructor (firstname, lastname,username, password, email){
+        super();
         this.firstname = firstname
         this.lastname = lastname
         this.username = username
@@ -58,24 +59,39 @@ class Validater {
     //checking if the required fields are correct before storing then to the database
     checkreg = async () => {
         let err = [];
-        let result = true
+        let result = true;
+        let users = []
         if (!(result = this.checkfirst())){
             err.push({firstname: "first incorrect"});
+            // users.push({firstname});
         }
         if (!(result = this.checklast())){
             err.push({lastname: "last name incorrect"});
+            users.push(this.lastname);
         }
         if (!(result = await this.checkemail())){
-            err.push({email: "email already exist"})
+            err.push({email: "email already exist"});
+            users.push(this.email);
         }
         if (!(result = await this.checkusername())){
-            err.push({username: "username already exist"})
+            err.push({username: "username already exist"});
+            users.push(this.username)
         }
         if (!(result = this.checkpassword())){
             err.push({password: "password incorrect"});
+            users.push(this.password)
+        }
+        if (result){
+            let users = {
+                firstname
+            }
+            console.log(users)
+            if (!(result = await this.insertuser(users))){
+                err.push("user insertion faild");
+            }
         }
         return {result, err};
     }
 }
 
-module.exports = Validater
+module.exports = Validater;

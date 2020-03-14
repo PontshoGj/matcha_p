@@ -5,4 +5,4 @@ module.exports = router;
 
 router.post('/', (req, res) => {
     res.json({result: "register"})
-})
+}) 

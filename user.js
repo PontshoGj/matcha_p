@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 const express = require('express');
 const jwt = require('jsonwebtoken')
 
@@ -14,4 +12,4 @@ server.use('/save', save)
 
 
 
-server.listen(port, () => {console.log(`Running on Port ${port}`)})
+server.listen(port, () => {console.log(`User Running on Port ${port}`)})

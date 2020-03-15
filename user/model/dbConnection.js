@@ -29,6 +29,33 @@ class dbConnection{
         }
         return 1;
     }
+
+    checkemails = async (email) => {
+        let a;
+        try{
+            this.client.connect(async (err, db) => {
+                if (err) throw err
+                
+                const dbdo = db.db("Us");
+
+                dbdo.collection("users").findOne({email: email}, (err, res) => {
+                    if (err) throw err
+                    a = res
+                    if (res === null)
+                        a = 0
+                    console.log(res)
+                });
+            });
+            console.log(a)
+
+        }catch (e) {
+            console.log(err);
+            return 0;
+        }finally {
+            this.client.close();
+        }   
+        return 1;
+    }
 }
 
 module.exports = dbConnection;

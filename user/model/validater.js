@@ -50,7 +50,12 @@ class Validater extends db {
         {
             if (patt.test(this.email))
             {
-                return 1;
+                if ((await this.checkemails(this.email) === null)){
+                    console.log("email dont match")
+                    return 1;
+                }else{
+                    return 0
+                }
             }
         }else
             return 0;
@@ -66,7 +71,8 @@ class Validater extends db {
         if (!(result = this.checklast())){
             err.push({lastname: "last name incorrect"});
         }
-        if (!(result = await this.checkemail())){
+        if ((result = this.checkemail())){
+            console.log("email ")
             err.push({email: "email already exist"});
         }
         if (!(result = await this.checkusername())){
@@ -75,7 +81,8 @@ class Validater extends db {
         if (!(result = this.checkpassword())){
             err.push({password: "password incorrect"});
         }
-        if (result){
+        console.log(err)
+        if (result && err === '[]'){
             let users = {
                 firstname: `${this.firstname}`,
                 lastname: `${this.lastname}`,

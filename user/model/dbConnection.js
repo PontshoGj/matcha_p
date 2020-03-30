@@ -3,58 +3,98 @@ const {MongoClient} = require('mongodb');
 
 class dbConnection{
  
+    // let client;
     constructor (){
-        this.client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useUnifiedTopology: true});
+        // this.db.db('Us')
     }
-
-    insertuser = (user) => {
+    
+    insertuser = async (user) => {
         try{
             //connecting to the mongodb cloud database
-            this.client.connect((err, db) => {
+            
+            let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+            await client.connect(async (err, db) => {
                 if (err) throw err //checking for err in connecting to the database
                 
-                const dbdo = db.db("Us"); //selecting the dtabase to use
-
-                dbdo.collection("users").insertOne(user, (err, res) => { //selecting the collection/table inside the dtabase i want to use
+                const dbdo = db.db("Us").collection("users"); //selecting the dtabase to use
+                await dbdo.insertOne(user, (err, res) => { //selecting the collection/table inside the dtabase i want to use
                     if (err) throw err //checking for err in inserting data to the database
-
                     console.log("User inserted");
-                });
-            });
+                })
+                // db.close()
+            })
+            return 1
         }catch (e) {
-            console.log(err);
+            console.log(e);
             return 0;
         }finally {
-            this.client.close(); //closing the connection to the database
+            // client.close(); //closing the connection to the database
         }
-        return 1;
     }
 
     checkemails = async (email) => {
-        let a;
         try{
-            this.client.connect(async (err, db) => {
-                if (err) throw err
-                
-                const dbdo = db.db("Us");
+            let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
 
-                dbdo.collection("users").findOne({email: email}, (err, res) => {
-                    if (err) throw err
-                    a = res
-                    if (res === null)
-                        a = 0
-                    console.log(res)
-                });
-            });
-            console.log(a)
-
+            let db = await client.connect()
+            
+            const dbdo = db.db("Us").collection("users");
+            
+            let ret = await dbdo.findOne({email: email})
+            db.close()
+            if (ret === null)
+                return 1
         }catch (e) {
-            console.log(err);
+            console.log(e);
             return 0;
         }finally {
-            this.client.close();
+            // client.close();
         }   
-        return 1;
+        return 0;
+    }
+
+    checkusernames = async (username) => {
+        try{
+            let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+
+            let db = await client.connect()
+            
+            const dbdo = db.db("Us").collection("users");
+            // dbdo = this.db
+            
+            let ret = await dbdo.findOne({username: username})
+            db.close()
+            if (ret === null)
+                return 1
+        }catch (e) {
+            console.log(e);
+            return 0;
+        }finally {
+            // client.close();
+        }   
+        return 0;
+    }
+
+    addmoredetails = async (user) => {
+        try{
+            let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+
+            let db = await client.connect()
+            
+            const dbdo = db.db("Us").collection("users");
+            // dbdo = this.db
+            console.log()
+            // let ret = await dbdo.update({"username" : user[username]}, {$push: {user}})
+            db.close()
+            if (ret === null)
+                return 1
+        }catch (e) {
+            console.log(e);
+            return 0;
+        }finally {
+            // client.close();
+        }   
+        return 0;
     }
 }
 

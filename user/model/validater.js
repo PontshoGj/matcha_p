@@ -28,7 +28,13 @@ class Validater extends db {
     checkusername = async () => {
         if (this.username === '' || this.username === null)
             return 0;
-        return 1;
+        else{
+            if (!(await this.checkusernames(this.username) === 0)){
+                console.log("user does not exist");
+                return 1;
+            }
+        }
+        return 0;
     }
 
     //checking if the password meets the requirement and its not empty
@@ -50,7 +56,7 @@ class Validater extends db {
         {
             if (patt.test(this.email))
             {
-                if ((await this.checkemails(this.email) === null)){
+                if (!(await this.checkemails(this.email) === 0)){
                     console.log("email dont match")
                     return 1;
                 }else{
@@ -65,24 +71,23 @@ class Validater extends db {
     checkreg = async () => {
         let err = [];
         let result = true;
-        if (!(result = this.checkfirst())){
+        if (result && !(result = this.checkfirst())){
             err.push({firstname: "first incorrect"});
         }
-        if (!(result = this.checklast())){
+        if (result && !(result = this.checklast())){
             err.push({lastname: "last name incorrect"});
         }
-        if ((result = this.checkemail())){
-            console.log("email ")
+        if (!(result = await this.checkemail())){
             err.push({email: "email already exist"});
         }
         if (!(result = await this.checkusername())){
             err.push({username: "username already exist"});
         }
-        if (!(result = this.checkpassword())){
+        if (result && !(result = this.checkpassword())){
             err.push({password: "password incorrect"});
         }
         console.log(err)
-        if (result && err === '[]'){
+        if (result && err == ''){
             let users = {
                 firstname: `${this.firstname}`,
                 lastname: `${this.lastname}`,
@@ -91,7 +96,7 @@ class Validater extends db {
                 email: `${this.email}`
             }
             if (!(result = await this.insertuser(users))){
-                err.push("user insertion faild");
+                err.push({insert :"user insertion faild"});
             }
         }
         return {result, err};

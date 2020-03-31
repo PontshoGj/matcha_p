@@ -49,7 +49,7 @@ class ValidateUpdate extends db {
                 race: `${this.race}`,
                 interest: `${this.interest}`,
                 boi: `${this.boi}`,
-                username: `${this.username}`
+                username: `${this.username}`,
             }
             if (!(result = await this.addmoredetails(users))){
                 err.push({insert: "insertion faild"})

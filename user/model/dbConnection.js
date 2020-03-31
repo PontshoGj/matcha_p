@@ -3,9 +3,7 @@ const {MongoClient} = require('mongodb');
 
 class dbConnection{
  
-    // let client;
     constructor (){
-        // this.db.db('Us')
     }
     
     async insertuser (user) {
@@ -27,8 +25,6 @@ class dbConnection{
         }catch (e) {
             console.log(e);
             return 0;
-        }finally {
-            // client.close(); //closing the connection to the database
         }
     }
 
@@ -47,8 +43,6 @@ class dbConnection{
         }catch (e) {
             console.log(e);
             return 0;
-        }finally {
-            // client.close();
         }   
         return 0;
     }
@@ -69,8 +63,30 @@ class dbConnection{
         }catch (e) {
             console.log(e);
             return 0;
-        }finally {
-            // client.close();
+        }   
+        return 0;
+    }
+
+    async updateFirstInput (username) {
+        try{
+            let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+
+            let db = await client.connect()
+            
+            const dbdo = db.db("Us").collection("users");
+            const query = { "username": username };
+            const update = {
+                "$set": {'firstinput': 1} 
+            };
+            const options = { "upsert": false };
+            let ret = await dbdo.updateOne(query, update, options)
+            // console.log(ret)
+            db.close()
+            if (ret.result.n === 1)
+                return 1
+        }catch (e) {
+            console.log(e);
+            return 0;
         }   
         return 0;
     }
@@ -82,27 +98,26 @@ class dbConnection{
             let db = await client.connect()
             
             const dbdo = db.db("Us").collection("users");
-            // console.log(user)
             const query = { "username": user.username };
             const update = {
             "$set": {
                 "age": `${user.age}`,
                 "race": `${user.race}`,
                 "interest": `${user.interest}`,
-                "username": `${user.boi}`
+                "boi": `${user.boi}`
             }
             };
             const options = { "upsert": false };
             let ret = await dbdo.updateOne(query, update, options)
-            console.log(ret.result.n)
+            // console.log(ret.result.n)
             db.close()
-            if (ret.result.n === 1)
-                return 1
+            if (ret.result.n === 1){
+                if (await this.updateFirstInput(user.username))
+                    return 1
+            }
         }catch (e) {
             console.log(e);
             return 0;
-        }finally {
-            // client.close();
         }   
         return 0;
     }

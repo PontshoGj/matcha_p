@@ -94,7 +94,8 @@ class Validater extends db {
                 lastname: `${this.lastname}`,
                 username: `${this.username}`,
                 password: `${this.password}`,
-                email: `${this.email}`
+                email: `${this.email}`,
+                firstinput: 0
             }
             if (!(result = await this.insertuser(users))){
                 err.push({insert :"user insertion faild"});

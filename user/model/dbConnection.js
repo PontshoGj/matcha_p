@@ -8,7 +8,7 @@ class dbConnection{
         // this.db.db('Us')
     }
     
-    insertuser = async (user) => {
+    async insertuser (user) {
         try{
             //connecting to the mongodb cloud database
             
@@ -32,7 +32,7 @@ class dbConnection{
         }
     }
 
-    checkemails = async (email) => {
+    async checkemails (email) {
         try{
             let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -53,7 +53,7 @@ class dbConnection{
         return 0;
     }
 
-    checkusernames = async (username) => {
+    async checkusernames (username) {
         try{
             let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -75,18 +75,28 @@ class dbConnection{
         return 0;
     }
 
-    addmoredetails = async (user) => {
+    async addmoredetails (user) {
         try{
             let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
 
             let db = await client.connect()
             
             const dbdo = db.db("Us").collection("users");
-            // dbdo = this.db
-            console.log()
-            // let ret = await dbdo.update({"username" : user[username]}, {$push: {user}})
+            // console.log(user)
+            const query = { "username": user.username };
+            const update = {
+            "$set": {
+                "age": `${user.age}`,
+                "race": `${user.race}`,
+                "interest": `${user.interest}`,
+                "username": `${user.boi}`
+            }
+            };
+            const options = { "upsert": false };
+            let ret = await dbdo.updateOne(query, update, options)
+            console.log(ret.result.n)
             db.close()
-            if (ret === null)
+            if (ret.result.n === 1)
                 return 1
         }catch (e) {
             console.log(e);

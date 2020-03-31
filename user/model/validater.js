@@ -12,20 +12,21 @@ class Validater extends db {
     }
     
     //check if the first name is not empty
-    checkfirst = () => {
+    checkfirst () {
         if (this.firstname === '' || this.firstname === null)
             return 0;
         return 1;
     }
+    
     //check if the last name is not empty
-    checklast = () => {
+    checklast () {
         if (this.lastname === '' || this.lastname === null)
             return 0;
         return 1;
     }
 
     //checking if the username is empty and does not match any username on the database
-    checkusername = async () => {
+    async checkusername () {
         if (this.username === '' || this.username === null)
             return 0;
         else{
@@ -38,7 +39,7 @@ class Validater extends db {
     }
 
     //checking if the password meets the requirement and its not empty
-    checkpassword = () => {
+    checkpassword () {
         let patt = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
         if (this.password.length > 7)
         {
@@ -50,7 +51,7 @@ class Validater extends db {
     }
 
     //checking if the input is an email and that it does not match any on the database
-    checkemail = async () => {
+    async checkemail () {
         let patt = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/;
         if (this.email !== '' || this.email !== null)
         {
@@ -68,7 +69,7 @@ class Validater extends db {
     }
 
     //checking if the required fields are correct before storing then to the database
-    checkreg = async () => {
+    async checkreg () {
         let err = [];
         let result = true;
         if (result && !(result = this.checkfirst())){
@@ -86,7 +87,7 @@ class Validater extends db {
         if (result && !(result = this.checkpassword())){
             err.push({password: "password incorrect"});
         }
-        console.log(err)
+        // console.log(err)
         if (result && err == ''){
             let users = {
                 firstname: `${this.firstname}`,

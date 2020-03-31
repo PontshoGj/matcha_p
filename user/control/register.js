@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const validater = require('../model/validater')
+const validater = require('../model/validater');
 module.exports = router;
 
 router.post('/', async (req, res) => {

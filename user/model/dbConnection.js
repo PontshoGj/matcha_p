@@ -202,6 +202,32 @@ class dbConnection{
         }   
         return 0;
     }
+
+    async updateUsername (user) {
+        try{
+            let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+
+            let db = await client.connect()
+            
+            const dbdo = db.db("Us").collection("users");
+            const query = { "username": user.username };
+            const update = {
+                "$set": {
+                    "username": `${user.username}`   
+                } 
+            };
+            const options = { "upsert": false };
+            let ret = await dbdo.updateOne(query, update, options)
+            // console.log(ret)
+            db.close()
+            if (ret.result.n === 1)
+                return 1
+        }catch (e) {
+            console.log(e);
+            return 0;
+        }   
+        return 0;
+    }
 }
 
 module.exports = dbConnection;

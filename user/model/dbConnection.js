@@ -121,6 +121,87 @@ class dbConnection{
         }   
         return 0;
     }
+
+    async updateProfile (user) {
+        try{
+            let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+
+            let db = await client.connect()
+            
+            const dbdo = db.db("Us").collection("users");
+            const query = { "username": user.username };
+            const update = {
+                "$set": {
+                    "age": `${user.age}`,
+                    "boi": `${user.boi}`,
+                    "gender": `${user.gender}`,
+                    "interest": `${user.interest}`   
+                } 
+            };
+            const options = { "upsert": false };
+            let ret = await dbdo.updateOne(query, update, options)
+            // console.log(ret)
+            db.close()
+            if (ret.result.n === 1)
+                return 1
+        }catch (e) {
+            console.log(e);
+            return 0;
+        }   
+        return 0;
+    }
+    
+    async updateEmail (user) {
+        try{
+            let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+
+            let db = await client.connect()
+            
+            const dbdo = db.db("Us").collection("users");
+            const query = { "username": user.username };
+            const update = {
+                "$set": {
+                    "email": `${user.email}` 
+                } 
+            };
+            const options = { "upsert": false };
+            let ret = await dbdo.updateOne(query, update, options)
+            // console.log(ret)
+            db.close()
+            if (ret.result.n === 1)
+                return 1
+        }catch (e) {
+            console.log(e);
+            return 0;
+        }   
+        return 0;
+    }
+
+    async updatePassword (user) {
+        try{
+            let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+
+            let db = await client.connect()
+            
+            const dbdo = db.db("Us").collection("users");
+            const query = { "username": user.username };
+            const update = {
+                "$set": {
+                    "password": `${user.password}`   
+                } 
+            };
+            const options = { "upsert": false };
+            let ret = await dbdo.updateOne(query, update, options)
+            // console.log(ret)
+            db.close()
+            if (ret.result.n === 1)
+                return 1
+        }catch (e) {
+            console.log(e);
+            return 0;
+        }   
+        return 0;
+    }
 }
 
 module.exports = dbConnection;

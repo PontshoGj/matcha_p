@@ -1,5 +1,6 @@
 const db = require('./dbConnection')
 const validater = require('./InputValidator')
+
 class ProfileUpdate extends db, validater {
 
     constructor (){

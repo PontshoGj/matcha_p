@@ -13,5 +13,7 @@ router.post('/', async (req, res) => {
                                         req.body.email
                             );
     //returning the results of the registration process
+    console.log("users")
+
     res.json((await new_registration.checkreg()))
 }) 

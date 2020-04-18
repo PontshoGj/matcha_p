@@ -7,14 +7,6 @@ class ProfileUpdate extends db, validater {
         super();
     }
 
-    getInfo () {
-
-    }
-
-    getEmail () {
-
-    }
-
     async updateInfo (user) {
         let result = true;
         let err = [];

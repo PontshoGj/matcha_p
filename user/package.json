@@ -16,6 +16,7 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "extends-classes": "^1.0.5",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.4",
     "nodemon": "^1.1.2"

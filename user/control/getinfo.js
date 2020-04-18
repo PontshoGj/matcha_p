@@ -1,16 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-const getEmail = require('../model/getEmail');
+const getInfo = require('../model/getInfo')
 
 module.exports = router;
 
-
 router.post('/', async (req, res) => {
     //validating and registaring to the dtabase
-    let email = new getEmail()
-    let result = await email.getEmail(req.body.username);
-    (result !== 0) ?
-        res.json({result: 1, email: result}) :
+    let user = new getInfo()
+    let userinfo = await user.getUserInfo(req.body.username);
+    (userinfo !== 0) ?
+        res.json({result: 1, userinfo}) :
         res.json({result: 0 ,username: "username does not exist"})
 }) 

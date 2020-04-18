@@ -7,7 +7,7 @@ const updateinfo = require('./control/update')
 const updateemail = require('./control/updateemail')
 const updateusername = require('./control/updateusername')
 const updatepassword = require('./control/updatepassword')
-const getuser = require('./control/getuser');
+const getuser = require('./control/getinfo');
 const getemail = require('./control/getemail');
 const checkuser = require('./control/checkuser')
 
@@ -22,8 +22,8 @@ server.use('/updateinfo', updateinfo);
 server.use('/updateemail', updateemail);
 server.use('/updatesuername', updateusername);
 server.use('/updatepassword', updatepassword);
-server.use('./getuserinfo', getuser);
-server.use('./getemail', getemail);
+server.use('/getuserinfo', getuser);
+server.use('/getemail', getemail);
 server.use('/checkuser', checkuser);
 
 

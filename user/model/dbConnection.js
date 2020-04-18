@@ -151,7 +151,38 @@ class dbConnection{
         return 0;
     }
     
-    async updateEmail (user) {
+    async Profile (user) {
+        try{
+            let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+
+            let db = await client.connect()
+            
+            const dbdo = db.db("Us").collection("users");
+            const query = { "username": user.username };
+            const update = {
+                "$set": {
+                    "firstname": `${user.firstname}`,
+                    "lastname": `${user.lastname}`,
+                    "age": `${user.age}`,
+                    "boi": `${user.boi}`,
+                    "gender": `${user.gender}`,
+                    "interest": `${user.interest}`   
+                } 
+            };
+            const options = { "upsert": false };
+            let ret = await dbdo.updateOne(query, update, options)
+            // console.log(ret)
+            db.close()
+            if (ret.result.n === 1)
+                return 1
+        }catch (e) {
+            console.log(e);
+            return 0;
+        }   
+        return 0;
+    }
+
+    async UpdateEmail (user) {
         try{
             let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -166,7 +197,6 @@ class dbConnection{
             };
             const options = { "upsert": false };
             let ret = await dbdo.updateOne(query, update, options)
-            // console.log(ret)
             db.close()
             if (ret.result.n === 1)
                 return 1
@@ -227,6 +257,71 @@ class dbConnection{
             return 0;
         }   
         return 0;
+    }
+
+    async getemail (username) {
+        try{
+            let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+
+            let db = await client.connect()
+            
+            const dbdo = db.db("Us").collection("users");
+            
+            let ret = await dbdo.findOne({username: username})
+            db.close()
+            if (!(ret === null))
+                return(ret.email);
+        }catch (e) {
+            console.log(e);
+            return 0;
+        }   
+        return 0;
+    }
+
+    async getInfo(username) {
+        try{
+            let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+
+            let db = await client.connect()
+            
+            const dbdo = db.db("Us").collection("users");
+            
+            let ret = await dbdo.findOne({username: username})
+            db.close()
+            if (!(ret === null))
+                return({
+                    "firstname": ret.firstname,
+                    "lastname": ret.lastname,
+                    'email': ret.email,
+                    "age": ret.age,
+                    "boi": ret.boi,
+                    "interest": ret.interest
+                });
+        }catch (e) {
+            console.log(e);
+            return 0;
+        }   
+        return 0;
+    }
+
+    async checkUserLogin(username, password) {
+        try{
+            let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+
+            let db = await client.connect()
+            
+            const dbdo = db.db("Us").collection("users");
+            
+            let ret = await dbdo.findOne({username: username, password: password})
+            db.close()
+
+            if (ret === null)
+                return 0
+        }catch (e) {
+            console.log(e);
+            return 0;
+        }   
+        return 1;
     }
 }
 

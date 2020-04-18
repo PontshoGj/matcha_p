@@ -72,6 +72,7 @@ class Validater extends db {
     async checkreg () {
         let err = [];
         let result = true;
+        console.log("checking user input")
         if (result && !(result = this.checkfirst())){
             err.push({firstname: "first incorrect"});
         }

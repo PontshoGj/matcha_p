@@ -33,16 +33,6 @@ class ProfileUpdate extends db, validater {
         return {result, err}
     }
 
-    async updateEmail (user) {
-
-        if (await this.checkemails(user.email)){
-            if (await this.updateEmail(user)){
-                return {result: 1, err: ''};
-            }
-        }
-        return {result: 0, err: 'email exist'};
-    }
-
     async updatePassword (user) {
         if (await this.updatePassword(user))
             return 1;

@@ -3,7 +3,7 @@ const fileServer = express()
 const port = process.env.PORT || 5004
 const multer = require('multer')
 const fs = require('fs')
-
+const uploadfile = require('./model/UploadImage')
 
 //----------------upload--------------------------------------//
 const storage = multer.diskStorage({
@@ -35,18 +35,24 @@ const upload = multer({ storage: storage,
     fileFilter: fileFilter
 })
 
-fileServer.post('/uploadImage', upload.single('pic'), (req, res, next) =>{
+fileServer.post('/uploadImage', upload.single('pic'), async (req, res, next) =>{
         
     if (req.file.length === 0){
         console.log('invalid image')
         res.json({result: false, message: 'invalid image'})
     }else{
         res.json({result: true, message: `${req.file.length}  image uploaded successufly`})
-        // let image = {
-        //     user_id: `${req.body.id}`,
-        //     img: fs.readFileSync(`uploads/${req.file[0].filename}`)
-        // }
-        // uploadimage(image, res)
+        
+        let user_id =  req.body.id
+        let img = `uploads/${req.file.filename}`
+        let resul = new uploadfile(user_id, img)
+        let up = await resul.Uploadimage()
+        // uploadimage(image)
+        if (up){
+            console.log('image data saved to database')
+        }else{
+            console.log('image data not saved to database')
+        }
     }
 });
 

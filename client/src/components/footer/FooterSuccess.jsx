@@ -5,11 +5,16 @@ export default class FooterSuccess extends Component {
         return (
             <div
                 style={{
-                    display: 'flex',
-                    marginTop: '100rem'
+                    display: 'reletive',
+                    // marginTop: '5vh',
+                    position: 'bottom',
+                    borderTop: 'solid',
+                    paddingTop: '2vh'
+                    // position: "fixed"
                 }}
             >
-                <hr />
+                {/* <hr /> */}
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit corporis totam omnis, id iste quisquam soluta eaque inventore eos? Reprehenderit ipsa consequuntur magni, velit sapiente optio quo inventore nobis illo.
             </div>
         )
     }

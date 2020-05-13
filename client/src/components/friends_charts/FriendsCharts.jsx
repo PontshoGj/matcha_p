@@ -8,10 +8,11 @@ export default class FriendsCharts extends Component {
                 style={{
                     display: 'flex',
                     justifyContent: 'flex-end',
+                    flexDirection: 'row'
                 }}
             >
-                <Chart />
-                <Friends />
+                <div><Chart /></div>
+                <div><Friends /></div>
             </div>
         )
     }

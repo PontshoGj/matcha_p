@@ -10,7 +10,7 @@ class dbConnection{
         try{
             //connecting to the mongodb cloud database
             
-            let client = new MongoClient("mongodb+srv://Pontsho:Bizhub454@pontshodb-zenb7.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+            let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
             await client.connect(async (err, db) => {
                 if (err) throw err //checking for err in connecting to the database
                 

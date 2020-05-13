@@ -7,9 +7,9 @@ export const Ui = () => {
     // const display = (log) ? <UIProfile /> : <Ui_Register_Login  setLogin={setLogin}/> 
     return (
         <div style={{
-            display: 'flex  ',
-            flexDirection: 'column',
-            justifyContent: 'center',
+            // display: 'flex',
+            // flexDirection: 'column',
+            // justifyContent: 'center',
         }}>
             {/* {display} */}
             <UIProfile />

@@ -41,7 +41,7 @@ fileServer.post('/uploadImage', upload.single('pic'), async (req, res, next) =>{
         console.log('invalid image')
         res.json({result: false, message: 'invalid image'})
     }else{
-        res.json({result: true, message: `${req.file.length}  image uploaded successufly`})
+        res.json({result: true, message: `${req.file.filename}  image uploaded successufly`})
         
         let user_id =  req.body.id
         let img = `uploads/${req.file.filename}`

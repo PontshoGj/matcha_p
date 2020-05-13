@@ -9,11 +9,15 @@ export default class Chart extends Component {
             <div
                 style={{
                     // display: 'flex',
+                    // justifyContent: 'flex-end',
                     width: '20rem',
                     border: 'solid',
                     height: '4vh',
-                    marginTop: '96vh',
-                    // position: 'fixed'
+                    // marginTop: '50vh',
+                    // marginRight: '15vw',
+                    // position: 'fixed',
+                    // position: 'absolute',
+                    bottom: '1vh'
                 }}
             >
                  <Card>

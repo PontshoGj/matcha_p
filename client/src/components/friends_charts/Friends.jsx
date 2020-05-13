@@ -6,13 +6,18 @@ export default class Friends extends Component {
         return (
             <div
             style={{
-                display: 'flex',
+                // display: 'flex',
                 flexDirection: 'column',
                 // justifyContent: 'center',
-                width: '20rem',
-                height: '100vh',
-                border: 'solid',
-                // position: 'fixed'
+                width: '15rem',
+                height: '90vh',
+                border: 'solid 1px',
+                borderBottom: 'none',
+                borderRight: 'none',
+                borderTop: 'none'
+                // position: 'fixed',
+                // position: 'right',
+                // marginTop: '7vh'
             }}
         >
             <Card>

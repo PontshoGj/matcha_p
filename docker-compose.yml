@@ -1,0 +1,58 @@
+version: '3.3'
+services:
+    mongo:
+        image: "mongo"
+        networks: 
+            - backenddb
+        ports:
+            - "27017:27017"
+
+    usermanagement:
+        image: usermanagement
+        build: ./user
+        # networks: 
+        #     - backend
+        #     - backenddb
+        command: "node user.js"
+        # ports:
+        #     - "5001:5001"
+        expose: 
+            - '5001'
+        depends_on:
+            - "mongo"
+                
+    filesever:
+        image: fileserver
+        build: ./fileServer
+        # networks: 
+        #     - backend
+        #     - backenddb
+        command: "node fileServer.js"
+        # ports:
+        #     - "5004:5004"
+        depends_on:
+            - "mongo"
+                
+    nginx:
+        build: ./nginx
+        # image: "nginx"
+        # networks:
+            # - backend
+        ports: 
+            - "8080:80"
+        # volumes: 
+            # - ./nginx/defualt.conf:/etc/nginx/conf.d/defualt.conf
+                # client_frontend:
+        #     image: client
+        #     build: ./client
+        #     command: "npm start"
+        #     ports:
+        #         - "80:3000"
+networks:
+    backend:
+        driver: bridge
+    backenddb:
+        driver: bridge
+
+
+    

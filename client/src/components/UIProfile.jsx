@@ -3,6 +3,7 @@ import NavigationSuccess from './navigation/NavigationSuccess'
 import FriendsCharts from './friends_charts/FriendsCharts'
 import FooterSuccess from './footer/FooterSuccess'
 import Chart from './friends_charts/Chart'
+import {Profile} from './profile/Profile'
 export const UIProfile = (props) => {
         return (
             <div style={{
@@ -27,13 +28,21 @@ export const UIProfile = (props) => {
                 >
                     <NavigationSuccess />
                 </div>
-                <div
+                {/* <div
                     style={{
                         // display: 'row',
                         // gridArea: 'main'
                     }}
                 >
                     <div><FriendsCharts /></div>
+                </div> */}
+                <div
+                    style={{
+                        width: '100%',
+                        height: '80vh',
+                    }}
+                >
+                    <Profile />
                 </div>
 
                 <div

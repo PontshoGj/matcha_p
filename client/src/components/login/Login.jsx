@@ -5,12 +5,12 @@ import {Form, Col, Row, Button} from 'react-bootstrap'
 
 export const Login = (props) => {
     const { register, handleSubmit, errors } = useForm()
-    const {handleExitLoging, setLogin} = props
+    const {setLogin} = props
     const [incorrect, setIncorrect] =  React.useState(false);
 
     const onSubmit = async (data) => {
         // console.log(data)
-        await fetch('/login', {
+        await fetch('/user/login', {
             method: 'POST',
             redirect: 'manual',
             headers: {
@@ -22,10 +22,10 @@ export const Login = (props) => {
             return result.json()
         })
         .then (data =>{
-            console.log(data)
+            // console.log(data)
             if (data.result === 1){
                 setLogin(true)
-                handleExitLoging()
+                // handleExitLoging()
             }else{
                 setIncorrect(true)
             }

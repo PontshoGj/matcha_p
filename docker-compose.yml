@@ -1,45 +1,57 @@
-version: '3.3'
+version: '2'
 services:
     mongo:
         image: "mongo"
         networks: 
             - backenddb
+        expose: 
+            - '27017'
         ports:
             - "27017:27017"
 
     usermanagement:
         image: usermanagement
         build: ./user
-        # networks: 
-        #     - backend
-        #     - backenddb
-        command: "node user.js"
-        # ports:
-        #     - "5001:5001"
+        container_name: usermanagement
+        # links: 
+            # - "nginx"
+        networks: 
+            - backend
+            - backenddb
         expose: 
             - '5001'
+        command: "node user.js"
+        ports:
+            - "5001:5001"
         depends_on:
             - "mongo"
                 
     filesever:
         image: fileserver
         build: ./fileServer
-        # networks: 
-        #     - backend
-        #     - backenddb
+        container_name: fileserver
+        networks: 
+            - backend
+            - backenddb
+        expose: 
+            - '5004'
         command: "node fileServer.js"
-        # ports:
-        #     - "5004:5004"
+        ports:
+            - "5004:5004"
         depends_on:
             - "mongo"
                 
     nginx:
         build: ./nginx
-        # image: "nginx"
-        # networks:
-            # - backend
+        container_name: nginx   
+        restart: always
+        links: 
+            - "usermanagement"
+            # - "fileserver"
+        networks:
+            - backend
         ports: 
-            - "8080:80"
+            - 80:80
         # volumes: 
             # - ./nginx/defualt.conf:/etc/nginx/conf.d/defualt.conf
                 # client_frontend:

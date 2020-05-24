@@ -8,13 +8,13 @@ export default class FooterSuccess extends Component {
                     display: 'reletive',
                     // marginTop: '5vh',
                     position: 'bottom',
-                    borderTop: 'solid',
-                    paddingTop: '2vh'
-                    // position: "fixed"
+                    // borderTop: 'solid',
+                    // paddingTop: '1vh',
+                    position: "bottom fixed"
                 }}
             >
-                {/* <hr /> */}
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit corporis totam omnis, id iste quisquam soluta eaque inventore eos? Reprehenderit ipsa consequuntur magni, velit sapiente optio quo inventore nobis illo.
+                <hr />
+                <p>matcha&copy;</p>
             </div>
         )
     }

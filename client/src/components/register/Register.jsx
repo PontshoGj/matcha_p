@@ -13,7 +13,7 @@ export const Register = (props) => {
     const onSubmit = async (data) => {
     // console.log(data)
       //checking if username is taken or not
-      await fetch('/save', {
+      await fetch('/user/save', {
           method: 'POST',
           redirect: 'manual',
           headers: {

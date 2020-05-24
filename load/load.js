@@ -8,6 +8,7 @@ load.use(bodyParser.json());
 load.use(bodyParser.urlencoded({extended: false}));
 
 load.all('/user/*',async (req, res, next) =>{
+    console.log(req.body)
     let path = req.url.split('/')
     await fetch(`http://localhost:5001/${path[2]}`,{
                 method: 'post',
@@ -27,7 +28,7 @@ load.all('/user/*',async (req, res, next) =>{
 
 load.all('/uploadImage*',async (req, res, next) =>{
     let path = req.url.split('/')
-    await fetch(`http://localhost:5001/${path[2]}`,{
+    await fetch(`http://localhost:5004/${path[2]}`,{
                 method: 'post',
                 body: JSON.stringify(req.body),
                 headers: {

@@ -104,7 +104,8 @@ class dbConnection{
                 "age": `${user.age}`,
                 "race": `${user.race}`,
                 "interest": `${user.interest}`,
-                "boi": `${user.boi}`
+                "boi": `${user.boi}`,
+                "gender": `${user.gender}`
             }
             };
             const options = { "upsert": false };
@@ -292,10 +293,9 @@ class dbConnection{
                 return({
                     "firstname": ret.firstname,
                     "lastname": ret.lastname,
-                    'email': ret.email,
                     "age": ret.age,
-                    "boi": ret.boi,
-                    "interest": ret.interest
+                    "interest": ret.interest,
+                    "gender": ret.gender
                 });
         }catch (e) {
             console.log(e);

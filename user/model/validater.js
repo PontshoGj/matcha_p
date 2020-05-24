@@ -50,6 +50,8 @@ class Validater extends db {
         return 0;
     }
 
+
+
     //checking if the input is an email and that it does not match any on the database
     async checkemail () {
         let patt = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/;
@@ -88,6 +90,7 @@ class Validater extends db {
         if (result && !(result = this.checkpassword())){
             err.push({password: "password incorrect"});
         }
+
         // console.log(err)
         if (result && err == ''){
             let users = {

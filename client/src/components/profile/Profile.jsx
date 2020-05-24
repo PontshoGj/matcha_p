@@ -2,13 +2,20 @@ import React from 'react'
 import {Button, ButtonGroup} from 'react-bootstrap'
 import { EditProfile } from './EditProfile'
 import { BioProfile } from './BioProfile'
-
+import { EmailProfile} from './EmailProfile'
+import { PasswordProfile } from './PasswordProfile'
 export const Profile = () => {
+    const [display, setDisplay] = React.useState(<EditProfile />);
+
+    const  editProfile = () => {setDisplay(<EditProfile />);}
+    const  passwordProfile = () => {setDisplay(<PasswordProfile />);}
+    const  bioProfile = () => {setDisplay(<BioProfile />);}
+    const  emailProfile = () => {setDisplay(<EmailProfile />);}
     return (
         <div style={{
             display: 'column',
             // flexDirection: 'column',
-            paddingTop: '20vh',
+            paddingTop: '10vh',
             width: '100%',
             overflow: 'auto',
             // border: 'solid'
@@ -19,7 +26,7 @@ export const Profile = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     width: '100%',
-                    fontSize: '2vw'
+                    fontSize: '3.5vw'
                     // border: 'solid'
                 }}
             >
@@ -31,19 +38,29 @@ export const Profile = () => {
                     // border: 'solid'
                 }}
             >
-                <div>
+                <div
+                    style={{
+                        borderRight: 'solid .1vw',
+                        paddingRight: '2vw'
+
+                    }}
+                >
                     <ButtonGroup vertical>
-                        <Button bg="dark"  type='submit' size='lg'  style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Profile</Button>
-                        <Button bg="dark" type='submit' size='lg'  style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Email</Button>
-                        <Button bg="dark" type='submit' size='lg'  style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Bio</Button>
+                        <Button bg="dark"  type='submit' size='lg' onClick={editProfile}  style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Profile</Button>
+                        <Button bg="dark" type='submit' size='lg'  onClick={emailProfile}  style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Email</Button>
+                        <Button bg="dark" type='submit' size='lg'  onClick={bioProfile} style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Bio</Button>
                         <Button bg="dark" type='submit' size='lg'  style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Loaction</Button>
-                        <Button bg="dark" type='submit' size='lg'  style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Password</Button>
+                        <Button bg="dark" type='submit' size='lg'  onClick={passwordProfile} style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Password</Button>
+                        <Button bg="dark" type='submit' size='lg'  onClick={passwordProfile} style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Pictures</Button>
 
                     </ButtonGroup>
                 </div>
                 <div>
-                    <BioProfile />
+                    {/* <BioProfile /> */}
                     {/* <EditProfile /> */}
+                    {/* <EmailProfile /> */}
+                    {/* <PasswordProfile /> */}
+                    {display}
                 </div>
             </div>
         </div>

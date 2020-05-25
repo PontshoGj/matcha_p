@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, ButtonGroup, Form, Col, Row} from 'react-bootstrap'
+import {Button, Form, Col, Row} from 'react-bootstrap'
 import {useForm} from 'react-hook-form'
 
 export const EmailProfile = () => {
@@ -19,7 +19,7 @@ export const EmailProfile = () => {
             return data.json()
         })
         .then (data => {
-            console.log(data)
+            // console.log(data)
             setEmail(data.email)
         })
     }
@@ -41,7 +41,7 @@ export const EmailProfile = () => {
             return data.json()
         })
         .then (value =>{
-            console.log(value)
+            // console.log(value)
         })
     }
     return (

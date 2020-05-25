@@ -104,7 +104,7 @@ class dbConnection{
                 "age": `${user.age}`,
                 "race": `${user.race}`,
                 "interest": `${user.interest}`,
-                "boi": `${user.boi}`,
+                "bio": `${user.bio}`,
                 "gender": `${user.gender}`
             }
             };
@@ -134,7 +134,7 @@ class dbConnection{
             const update = {
                 "$set": {
                     "age": `${user.age}`,
-                    "boi": `${user.boi}`,
+                    "bio": `${user.bio}`,
                     "gender": `${user.gender}`,
                     "interest": `${user.interest}`   
                 } 
@@ -165,7 +165,7 @@ class dbConnection{
                     "firstname": `${user.firstname}`,
                     "lastname": `${user.lastname}`,
                     "age": `${user.age}`,
-                    "boi": `${user.boi}`,
+                    "bio": `${user.bio}`,
                     "gender": `${user.gender}`,
                     "interest": `${user.interest}`   
                 } 
@@ -322,6 +322,50 @@ class dbConnection{
             return 0;
         }   
         return 1;
+    }
+
+    async getbio (username) {
+        try{
+            let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
+
+            let db = await client.connect()
+            
+            const dbdo = db.db("Us").collection("users");
+            let ret = await dbdo.findOne({username: username})
+            db.close()
+            if (!(ret === null)){
+                console.log(ret.bio)
+                return(ret.bio);}
+        }catch (e) {
+            console.log(e);
+            return 0;
+        }   
+        return 0;
+    }
+
+    async UpdateBio (user) {
+        try{
+            let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
+
+            let db = await client.connect()
+            
+            const dbdo = db.db("Us").collection("users");
+            const query = { "username": user.username };
+            const update = {
+                "$set": {
+                    "bio": `${user.bio}` 
+                } 
+            };
+            const options = { "upsert": false };
+            let ret = await dbdo.updateOne(query, update, options)
+            db.close()
+            if (ret.result.n === 1)
+                return 1
+        }catch (e) {
+            console.log(e);
+            return 0;
+        }   
+        return 0;
     }
 }
 

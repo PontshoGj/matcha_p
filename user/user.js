@@ -11,6 +11,8 @@ const getuser = require('./control/getinfo');
 const getemail = require('./control/getemail');
 const checkuser = require('./control/checkuser')
 const login = require('./control/login')
+const bio = require('./control/getBio')
+const updatebio = require('./control/updatebio')
 const server = express();
 let port = process.env.PORT || 5001;
 
@@ -26,5 +28,7 @@ server.use('/getuserinfo', getuser);
 server.use('/getemail', getemail);
 server.use('/checkuser', checkuser);
 server.use('/login', login);
+server.use('/updatebio', updatebio);
+server.use('/getbio', bio);
 
 server.listen(port, () => {console.log(`User Running on Port ${port}`)})

@@ -2,12 +2,12 @@ const db = require('./dbConnection')
 
 class ValidateUpdate extends db {
 
-    constructor (age, race, interest, boi, username, gender){
+    constructor (age, race, interest, bio, username, gender){
         super();
         this.age = age;
         this.race = race;
         this.interest = interest;
-        this.boi = boi;
+        this.bio = bio;
         this.username = username;
         this.gender = gender
     }
@@ -25,7 +25,7 @@ class ValidateUpdate extends db {
     }
 
     checkBoi () {
-        if (this.boi === ''){
+        if (this.bio === ''){
             return 0
         }
         return 1;
@@ -52,7 +52,7 @@ class ValidateUpdate extends db {
             err.push({interest: "you must have minimum of 3 interest"})
         }
         if (result && !(result = this.checkBoi)){
-            err.push({boi: 'you must have a boi'})
+            err.push({bio: 'you must have a boi'})
         }
         if (result && !(result = this.checkgender())){
             this.gender = 'Bisexuelle'
@@ -63,7 +63,7 @@ class ValidateUpdate extends db {
                 age: `${this.age}`,
                 race: `${this.race}`,
                 interest: `${this.interest}`,
-                boi: `${this.boi}`,
+                bio: `${this.bio}`,
                 username: `${this.username}`,
                 gender: `${this.gender}`
             }

@@ -7,6 +7,29 @@ const bodyParser = require('body-parser')
 load.use(bodyParser.json());
 load.use(bodyParser.urlencoded({extended: false}));
 
+load.use( async (req, res, next) =>{
+    console.log(req)
+    let path = req.url.split('/')
+    if (path[1] === 'login' || path[1] === 'register'){
+        await fetch(`http://localhost:5005/${path[1]}`,{
+                method: 'post',
+                body: JSON.stringify(req.body),
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                }
+            }
+        )
+        .then (data => {
+            return data.json()
+        })
+        .then(data =>{
+            res.json(data);
+        })
+    }else{
+        next();
+    }
+})
+
 load.all('/user/*',async (req, res, next) =>{
     console.log(req.body)
     let path = req.url.split('/')

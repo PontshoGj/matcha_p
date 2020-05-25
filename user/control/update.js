@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
                                 req.body.age, 
                                 req.body.race, 
                                 req.body.interest, 
-                                req.body.boi,
+                                req.body.bio,
                                 req.body.username,
                                 req.body.gender
                             );

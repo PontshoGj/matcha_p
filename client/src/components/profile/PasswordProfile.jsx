@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {Button, ButtonGroup, Form, Col, Row} from 'react-bootstrap'
 import {useForm} from 'react-hook-form'
+import {GlobalContext} from '../../context/GlobalState'
 
 export const PasswordProfile = () => {
+    const   {setLog} = useContext(GlobalContext)
     const   {register, handleSubmit} = useForm()
     const onSubmit = async (data) => {
         data.username = 'Pontsho'
@@ -11,26 +13,29 @@ export const PasswordProfile = () => {
             method: 'POST',
             redirect: 'manual',
             headers: {
-              'Content-Type': 'application/json;charset=utf-8'
+              'Content-Type': 'application/json;charset=utf-8',
+              'authorization': `bearer ${localStorage.getItem('authorization')}` 
             },
             body: JSON.stringify(data)
         })
         .then (data => {
+            if(data.status === 403) throw data
             return data.json()
         })
         .then (value =>{
             console.log(value)
         })
+        .catch(err =>{
+            if (err.status === 403)
+                setLog(false)
+        })
     }
     return (
         <div style={{
             display: 'column',
-            // flexDirection: 'column',
             width: '60vw',
             marginTop: '3vh',
             marginLeft: '3vw',
-            // paddingLeft: '2vw'
-            // height: '50vh'
         }}>
                 <Form onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group as={Row} controlId='formHorizontalPassword'>

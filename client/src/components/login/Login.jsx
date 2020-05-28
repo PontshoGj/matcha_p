@@ -1,16 +1,17 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {useForm, ErrorMessage} from 'react-hook-form'
-// import auth from '../auth/auth'
 import {Form, Col, Row, Button} from 'react-bootstrap'
+import {GlobalContext} from '../../context/GlobalState'
 
 export const Login = (props) => {
-    const { register, handleSubmit, errors } = useForm()
-    const {setLogin} = props
+    const {addAuth, setLog, log} = useContext(GlobalContext);
+    const { register, handleSubmit, errors } = useForm();
+    const {setLogin} = props;
     const [incorrect, setIncorrect] =  React.useState(false);
 
     const onSubmit = async (data) => {
         // console.log(data)
-        await fetch('/user/login', {
+        await fetch('/login', {
             method: 'POST',
             redirect: 'manual',
             headers: {
@@ -24,7 +25,10 @@ export const Login = (props) => {
         .then (data =>{
             // console.log(data)
             if (data.result === 1){
-                setLogin(true)
+                addAuth(data.token)
+                // console.log(localStorage.getItem('authorization'))
+                setLog(true)
+                console.log(log)
                 // handleExitLoging()
             }else{
                 setIncorrect(true)

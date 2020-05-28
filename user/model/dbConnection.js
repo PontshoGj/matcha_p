@@ -24,8 +24,8 @@ class dbConnection{
             return 1
         }catch (e) {
             console.log(e);
-            return 0;
         }
+        return 0;
     }
 
     async checkemails (email) {
@@ -315,13 +315,14 @@ class dbConnection{
             let ret = await dbdo.findOne({username: username, password: password})
             db.close()
 
-            if (ret === null)
-                return 0
+            // console.log(ret)
+            if (ret != null)
+                return ({result: 1, id: ret._id, username: ret.username, firstinput: ret.firstinput})
         }catch (e) {
             console.log(e);
             return 0;
         }   
-        return 1;
+        return {result: 0};
     }
 
     async getbio (username) {

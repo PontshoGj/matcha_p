@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {Button, Form, Col, Row} from 'react-bootstrap'
 import {useForm} from 'react-hook-form'
+import {GlobalContext} from '../../context/GlobalState'
 
 export const EmailProfile = () => {
+    const   {setLog} = useContext(GlobalContext)
     const   [email, setEmail] = React.useState('')
     const   {register, handleSubmit} = useForm()
 
@@ -11,16 +13,22 @@ export const EmailProfile = () => {
             method: 'POST',
             redirect: 'manual',
             headers: {
-              'Content-Type': 'application/json;charset=utf-8'
+              'Content-Type': 'application/json;charset=utf-8',
+              'authorization': `bearer ${localStorage.getItem('authorization')}` 
             },
             body: JSON.stringify({username: 'Pontsho'})
         })
         .then (data => {
+            if(data.status === 403) throw data
             return data.json()
         })
         .then (data => {
             // console.log(data)
             setEmail(data.email)
+        })
+        .catch(err =>{
+            if (err.status === 403)
+                setLog(false)
         })
     }
 
@@ -33,15 +41,21 @@ export const EmailProfile = () => {
             method: 'POST',
             redirect: 'manual',
             headers: {
-              'Content-Type': 'application/json;charset=utf-8'
+              'Content-Type': 'application/json;charset=utf-8',
+              'authorization': `bearer ${localStorage.getItem('authorization')}` 
             },
             body: JSON.stringify(data)
         })
         .then (data => {
+            if(data.status === 403) throw data
             return data.json()
         })
         .then (value =>{
             // console.log(value)
+        })
+        .catch(err =>{
+            if (err.status === 403)
+                setLog(false)
         })
     }
     return (

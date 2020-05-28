@@ -1,18 +1,18 @@
-import React, {useState} from 'react'
+import React, {useContext} from 'react'
 import {Ui_Register_Login} from './Ui_Register_Login'
 import {UIProfile} from './UIProfile'
-export const Ui = () => {
-    // const [log, setLogin] = useState(false)
+import {GlobalContext} from '../context/GlobalState'
+import {FirstRegUi} from './firstReg/FirstRegUi'
 
-    // const display = (log) ? <UIProfile /> : <Ui_Register_Login  setLogin={setLogin}/> 
+export const Ui = () => {
+    const {log} = useContext(GlobalContext)
+
+    const display = (log) ? <UIProfile /> : <Ui_Register_Login /> 
     return (
         <div style={{
-            // display: 'flex',
-            // flexDirection: 'column',
-            // justifyContent: 'center',
         }}>
             {/* {display} */}
-            <UIProfile />
+            <FirstRegUi   />
         </div>
     )
 }

@@ -5,7 +5,9 @@ export default class Navigation extends Component {
         return (
             <div
                 style={{
-                    marginTop: "10vh"
+                    // marginTop: "10vh",
+                    height: '3vh',
+                    paddingTop: '3vh'
                 }}
             >
                 <hr />

@@ -2,6 +2,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const auth = express();
 const bodyParser = require('body-parser')
+const jwt = require('jsonwebtoken');
 
 let port = process.env.POR || 5005;
 

@@ -56,10 +56,6 @@ export const Profile = () => {
                     </ButtonGroup>
                 </div>
                 <div>
-                    {/* <BioProfile /> */}
-                    {/* <EditProfile /> */}
-                    {/* <EmailProfile /> */}
-                    {/* <PasswordProfile /> */}
                     {display}
                 </div>
             </div>

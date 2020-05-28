@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {Button, Form, Col, Row} from 'react-bootstrap'
 import {useForm} from 'react-hook-form'
+import {GlobalContext} from '../../context/GlobalState'
 
 // import { parse } from '@fortawesome/fontawesome-svg-core';
 
 export const EditProfile = () => {
+    const   {setLog} = useContext(GlobalContext)
     const   [firstname, setFirstName] = React.useState('');
     const   [lastname, setLastName] = React.useState('');
     const   [email, setEamil] = React.useState('');
@@ -18,11 +20,13 @@ export const EditProfile = () => {
             method: 'POST',
             redirect: 'manual',
             headers: {
-              'Content-Type': 'application/json;charset=utf-8'
+              'Content-Type': 'application/json;charset=utf-8',
+              'authorization': `bearer ${localStorage.getItem('authorization')}` 
             },
             body: JSON.stringify({username: 'Pontsho'})
         })
         .then (data => {
+            if(data.status === 403) throw data
             return data.json()
         })
         .then (data => {
@@ -34,6 +38,10 @@ export const EditProfile = () => {
             setGender(data.userinfo.gender)
             selectgender(data.userinfo.gender)
             setCheck(data.userinfo.interest)
+        })
+        .catch(err => {
+            if (err.status === 403)
+                setLog(false)
         })
     }
     
@@ -54,16 +62,23 @@ export const EditProfile = () => {
             method: 'POST',
             redirect: 'manual',
             headers: {
-              'Content-Type': 'application/json;charset=utf-8'
+              'Content-Type': 'application/json;charset=utf-8',
+              'authorization': `bearer ${localStorage.getItem('authorization')}` 
             },
             body: JSON.stringify(data)
         })
         .then (data => {
+            if(data.status === 403) throw data
             return data.json()
         })
         .then (value =>{
             console.log(value)
             clearForm()
+        })
+        .catch (err => {
+            if (err.status === 403)
+                setLog(false)
+            // console.log(err);
         })
     }
 

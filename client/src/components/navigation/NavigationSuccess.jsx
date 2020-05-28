@@ -34,10 +34,10 @@ export default class NavigationSuccess extends Component {
                                 <Nav.Link href="#firends">
                                     <FontAwesomeIcon icon={faUserFriends} size='2x' />
                                 </Nav.Link>
-                                <Nav.Link href="#messsage">
+                                <Nav.Link  href="#messsage">
                                     <FontAwesomeIcon icon={faEnvelope} size='2x' />
                                 </Nav.Link>
-                                <Nav.Link href="#signout">
+                                <Nav.Link onClick={this.props.changeLog} href="#signout">
                                     <FontAwesomeIcon icon={faSignOutAlt} size='2x' />
                                 </Nav.Link>
                             </Nav>

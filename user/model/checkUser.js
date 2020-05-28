@@ -9,12 +9,12 @@ class checkUser extends classes (db, validater) {
     }
 
     async checkuser (username, password) {
-
+        let result = {}
         if (this.checkInput(username) && this.checkInput(password)){
-            if (await this.checkUserLogin(username, password))
-                return 1;
+            if (await (result = this.checkUserLogin(username, password)))
+                return result;
         }
-        return 0;
+        return {result: 0};
     }
 }
 

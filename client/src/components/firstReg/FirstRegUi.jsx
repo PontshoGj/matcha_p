@@ -4,6 +4,7 @@ import {GlobalContext} from '../../context/GlobalState'
 import Navigation from '../navigation/Navigation'
 import FooterSuccess from '../footer/FooterSuccess'
 import { Card } from 'react-bootstrap'
+import { Fourth } from './Fourth'
 
 export const FirstRegUi = (props) => {
     const {setLog} = useContext(GlobalContext)
@@ -32,11 +33,13 @@ export const FirstRegUi = (props) => {
                     width: '50vw',
                     marginLeft: '22vw',
                     marginTop: '4vw',
+                    overflow: 'auto',
                 }}
             >
                 <Card >
                     <Card.Body >
-                        <EditionalInfo />
+                        {/* <EditionalInfo /> */}
+                        <Fourth />
                     </Card.Body>
                 </Card>
             </div>

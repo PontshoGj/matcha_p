@@ -5,32 +5,13 @@ const load = express()
 const port = process.env.PORT || 3020
 const fetch = require('node-fetch')
 const bodyParser = require('body-parser')
+const multer = require('multer')
+const FormData = require('form-data');
+const fs = require('fs')
 
 load.use(bodyParser.json());
 load.use(bodyParser.urlencoded({extended: false}));
 
-// load.use( async (req, res, next) =>{
-//     console.log(req.body)
-//     let path = req.url.split('/')
-//     if (path[1] === 'login' || path[1] === 'register'){
-//         await fetch(`http://localhost:5005/${path[1]}`,{
-//                 method: 'post',
-//                 body: JSON.stringify(req.body),
-//                 headers: {
-//                     'Content-Type': 'application/json;charset=utf-8'
-//                 }
-//             }
-//         )
-//         .then (data => {
-//             return data.json()
-//         })
-//         .then(data =>{
-//             res.json(data);
-//         })
-//     }else{
-//         next();
-//     }
-// })
 
 load.all('/login*', async (req, res, next) =>{
     console.log(req.body)
@@ -86,7 +67,9 @@ load.all('/save*', async (req, res, next) =>{
 })
 
 load.all('/user/*', verify,async (req, res, next) =>{
-    console.log(req.authData)
+    console.log(req.authData.user.username)
+    req.body.username = req.authData.user.username
+    console.log(req.body)
     let path = req.url.split('/')
     await fetch(`http://localhost:5001/${path[2]}`,{
                 method: 'post',
@@ -103,23 +86,52 @@ load.all('/user/*', verify,async (req, res, next) =>{
     .catch (err => console.log(err))
     // next();
 })
+const storage = multer.diskStorage({
+    destination: (req, file, cb) =>{
+        // console.log(file)
+        file.userid = req.authData.user.id
+        // console.log(files)
+        cb(null, './')
+    },
+    filename: (req, file, cb)=>{
+        cb(null, file.originalname);
+    }
+});
 
-load.all('/uploadImage*', verify,async (req, res, next) =>{
+
+const upload = multer({ storage: storage})
+
+load.all('/uploadImage*', verify, upload.single('pic'),async (req, res) =>{
     let path = req.url.split('/')
-    await fetch(`http://localhost:5004/${path[2]}`,{
+    // console.log(req.file)
+    const file = new FormData()
+    // console.log(req.authData.user.id)
+    file.append('pic', fs.createReadStream(req.file.filename), req.authData.user.id)
+    // file.append('userid', req.authData.user.)
+    // file.append('userid',req.authData.user.id)
+    // file.append('pic', req.file)
+    await fetch(`http://localhost:5004/${path[1]}`,{
                 method: 'post',
-                body: JSON.stringify(req.body),
                 headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                }
+                    'userid': req.authData.user.id
+                },
+                body: file
         }
     )
     .then (data => {
+        if (data.status === 500) throw data
         return data.json()
     })
-    .then (data => res.json(data))
-    .catch (err => console.log(err))
-    // next();
+    .then (data => {
+        // console.log(data)
+            fs.unlinkSync(req.file.filename)
+            res.json(data)
+    })
+    .catch (err => {
+        res.json({result: 0, message: 'image format not accepted'})   
+        // console.log(err)
+    })
+    // res.sendStatus(200)
 })
 
 function verify(req, res, next) {

@@ -368,6 +368,36 @@ class dbConnection{
         }   
         return 0;
     }
+
+    async insertFirst (user) {
+        try{
+            let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
+
+            let db = await client.connect()
+            
+            const dbdo = db.db("Us").collection("users");
+            const query = { "username": user.username };
+            const update = {
+            "$set": {
+                "age": `${user.age}`,
+                "race": `${user.race}`,
+                "interest": `${user.interest}`,
+                "gender": `${user.gender}`
+            }
+            };
+            const options = { "upsert": false };
+            let ret = await dbdo.updateOne(query, update, options)
+            // console.log(ret.result.n)
+            db.close()
+            if (ret.result.n === 1){
+                return 1
+            }
+        }catch (e) {
+            console.log(e);
+            return 0;
+        }   
+        return 0;
+    }
 }
 
 module.exports = dbConnection;

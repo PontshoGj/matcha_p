@@ -8,7 +8,8 @@ const uploadfile = require('./model/UploadImage')
 //----------------upload--------------------------------------//
 const storage = multer.diskStorage({
     destination: (req, file, cb) =>{
-        // console.log(files)
+        // console.log(file)
+        // req.body.userid = req.authData.user.id
         cb(null, './uploads/')
     },
     filename: (req, file, cb)=>{
@@ -35,15 +36,15 @@ const upload = multer({ storage: storage,
     fileFilter: fileFilter
 })
 
-fileServer.post('/uploadImage', upload.single('pic'), async (req, res, next) =>{
-        
+fileServer.post('/uploadImage', upload.single('pic'),async (req, res, next) =>{
+    // console.log(req.headers['userid'])
     if (req.file.length === 0){
         console.log('invalid image')
         res.json({result: false, message: 'invalid image'})
     }else{
         res.json({result: true, message: `${req.file.filename}  image uploaded successufly`})
-        
-        let user_id =  req.body.id
+        // console.log(req.file)
+        let user_id =  req.headers['userid']
         let img = `uploads/${req.file.filename}`
         let resul = new uploadfile(user_id, img)
         let up = await resul.Uploadimage()

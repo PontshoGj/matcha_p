@@ -13,6 +13,7 @@ const checkuser = require('./control/checkuser')
 const login = require('./control/login')
 const bio = require('./control/getBio')
 const updatebio = require('./control/updatebio')
+const insertFirst = require('./control/insertFirst')
 const server = express();
 let port = process.env.PORT || 5001;
 
@@ -21,6 +22,10 @@ server.use(bodyParser.urlencoded({extended: false}));
 // server.use(express.json());
 server.use('/save', save);
 server.use('/updateinfo', updateinfo);
+server.use('/first', insertFirst);
+server.use('/second', updateinfo);
+server.use('/third', updateinfo);
+server.use('/fourth', updateinfo);
 server.use('/updateemail', updateemail);
 server.use('/updatesuername', updateusername);
 server.use('/updatepassword', updatepassword);

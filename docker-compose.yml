@@ -3,8 +3,8 @@ services:
     mongo:
         image: "mongo"
         restart: always
-        networks: 
-            - backenddb
+        # networks: 
+        #     - backenddb
         expose: 
             - '27017'
         ports:
@@ -44,9 +44,9 @@ services:
         container_name: usermanagement
         # links: 
             # - "nginx"
-        networks: 
-            - backend
-            - backenddb
+        # networks: 
+        #     - backend
+        #     - backenddb
         expose: 
             - '5001'
         command: "node user.js"
@@ -60,9 +60,9 @@ services:
         build: ./fileServer
         restart: always
         container_name: fileserver
-        networks: 
-            - backend
-            - backenddb
+        # networks: 
+        #     - backend
+        #     - backenddb
         expose: 
             - '5004'
         command: "node fileServer.js"
@@ -90,11 +90,11 @@ services:
         #     command: "npm start"
         #     ports:
         #         - "80:3000"
-networks:
-    backend:
-        driver: bridge
-    backenddb:
-        driver: bridge
+# networks:
+#     backend:
+#         driver: bridge
+#     backenddb:
+#         driver: bridge
 
 
     

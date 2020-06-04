@@ -6,7 +6,7 @@ WORKDIR /client
 
 FROM builder As fileserver
 
-EXPOSE 5004
+EXPOSE 3000
 
 COPY package.json .
 

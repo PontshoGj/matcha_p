@@ -70,7 +70,16 @@ services:
             - "5004:5004"
         depends_on:
             - "mongo"
-                
+    client:
+        image: client
+        build: ./client
+        restart: always
+        container_name: client
+        expose: 
+            - '3001'
+        command: "npm start"
+        ports:
+            - "3001:3000"
     # nginx:
     #     build: ./nginx
     #     container_name: nginx   

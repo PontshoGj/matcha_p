@@ -11,8 +11,8 @@ export const Ui = () => {
     return (
         <div style={{
         }}>
-            {/* {display} */}
-            <FirstRegUi   />
+            {display}
+            {/* <FirstRegUi   /> */}
         </div>
     )
 }

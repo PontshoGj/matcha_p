@@ -27,6 +27,23 @@ class dbConnection{
             return 0;
         }
     }
+    async getImage (user) {
+        try{
+            //connecting to the mongodb cloud database
+            
+            let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
+            let db = await client.connect()
+            const dbdo = db.db("Image").collection("Images"); //selecting the dtabase to use
+            
+            let ret = await dbdo.find({userid: user.userid})
+            db.close()
+            console.log(ret)
+            return 1
+        }catch (e) {
+            console.log(e);
+            return 0;
+        }
+    }
 }
 
 module.exports = dbConnection;

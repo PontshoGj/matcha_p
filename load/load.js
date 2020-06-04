@@ -133,6 +133,35 @@ load.all('/uploadImage*', verify, upload.single('pic'),async (req, res) =>{
     })
     // res.sendStatus(200)
 })
+load.all('/getImage*', verify, upload.single('pic'),async (req, res) =>{
+    let path = req.url.split('/')
+    // console.log(req.file)
+    // console.log(req.authData.user.id)
+    // file.append('userid', req.authData.user.)
+    // file.append('userid',req.authData.user.id)
+    // file.append('pic', req.file)
+    await fetch(`http://localhost:5004/${path[1]}`,{
+                method: 'post',
+                headers: {
+                    'userid': req.authData.user.id
+                },
+        }
+    )
+    .then (data => {
+        if (data.status === 500) throw data
+        return data.json()
+    })
+    .then (data => {
+        // console.log(data)
+            fs.unlinkSync(req.file.filename)
+            res.json(data)
+    })
+    .catch (err => {
+        res.json({result: 0, message: 'image format not accepted'})   
+        // console.log(err)
+    })
+    // res.sendStatus(200)
+})
 
 function verify(req, res, next) {
     const bearerHeader = req.headers['authorization'];

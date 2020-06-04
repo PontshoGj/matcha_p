@@ -2,6 +2,7 @@ version: '2'
 services:
     mongo:
         image: "mongo"
+        restart: always
         networks: 
             - backenddb
         expose: 
@@ -9,9 +10,37 @@ services:
         ports:
             - "27017:27017"
 
+    mysql:
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        container_name: sql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+    
+    # adminer:
+    #     image: adminer
+    #     restart: always
+    #     container_name: admin
+    #     ports:
+    #         - 8080:8080
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: admin
+        restart: always
+        links:
+            - mysql:mysql
+        ports:
+            - 9191:80
+        environment:
+            MYSQL_USERNAME: root
+            MYSQL_ROOT_PASSWORD: root
+            PMA_HOST: mysql
+
     usermanagement:
         image: usermanagement
         build: ./user
+        restart: always
         container_name: usermanagement
         # links: 
             # - "nginx"
@@ -29,6 +58,7 @@ services:
     filesever:
         image: fileserver
         build: ./fileServer
+        restart: always
         container_name: fileserver
         networks: 
             - backend
@@ -41,17 +71,17 @@ services:
         depends_on:
             - "mongo"
                 
-    nginx:
-        build: ./nginx
-        container_name: nginx   
-        restart: always
-        links: 
-            - "usermanagement"
-            # - "fileserver"
-        networks:
-            - backend
-        ports: 
-            - 80:80
+    # nginx:
+    #     build: ./nginx
+    #     container_name: nginx   
+    #     restart: always
+    #     links: 
+    #         - "usermanagement"
+    #         # - "fileserver"
+    #     networks:
+    #         - backend
+    #     ports: 
+    #         - 80:80
         # volumes: 
             # - ./nginx/defualt.conf:/etc/nginx/conf.d/defualt.conf
                 # client_frontend:

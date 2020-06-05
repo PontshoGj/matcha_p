@@ -3,7 +3,7 @@ import AppReducer from './AppReducer';
 
 // Initial state
 const initialState = {
-  log: false
+  log:  false
 }
 
 // Create context
@@ -28,7 +28,6 @@ export const GlobalProvider = ({ children }) => {
     });
   }
 
-
   function setLog(logs){
     dispatch({
       type: 'SET_LOG',
@@ -36,11 +35,26 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
+  function setLogStorage(logs){
+    dispatch({
+      type: 'SET_STORAGE',
+      payload: logs
+    })
+  }
+
+  function getLog(){
+    dispatch({
+      type: 'GET_LOG'
+    })
+  }
+
   return (<GlobalContext.Provider value={{
     log: state.log,
     deleteAuth,
     addAuth,
-    setLog
+    setLog,
+    getLog,
+    setLogStorage
   }}>
     {children}
   </GlobalContext.Provider>);

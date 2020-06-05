@@ -1,8 +1,8 @@
 import React, {useContext} from 'react'
-import {Form, Col, Row, Button} from 'react-bootstrap'
+import {Button} from 'react-bootstrap'
 import {GlobalContext} from '../../context/GlobalState'
 import {Third} from './Third'
-import {useForm} from 'react-hook-form'
+// import {useForm} from 'react-hook-form'
 import {UploadImage} from '../upload/UploadImage'
 
 export const Fourth = ({setDisplay}) => {
@@ -12,7 +12,6 @@ export const Fourth = ({setDisplay}) => {
     
     const counter = () =>{
         SetCount(count + 1)
-        let val = count
         if (count >= 4){
             setDisabled(false)
         }

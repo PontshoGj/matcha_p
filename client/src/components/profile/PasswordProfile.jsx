@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import {Button, ButtonGroup, Form, Col, Row} from 'react-bootstrap'
+import {Button, Form, Col, Row} from 'react-bootstrap'
 import {useForm} from 'react-hook-form'
 import {GlobalContext} from '../../context/GlobalState'
 
@@ -44,7 +44,7 @@ export const PasswordProfile = () => {
                             <Form.Control type="password" name="password" ref={register}/>
                         </Col>
                     </Form.Group>
-                    <Button bg="dark"  type='submit' size='lg'  style={{width: '25vw', marginLeft: '19vw', marginTop: '3vh'}} block>Update Password</Button>
+                    <Button variant="dark"  type='submit' size='lg'  style={{width: '25vw', marginLeft: '19vw', marginTop: '3vh'}} block>Update Password</Button>
                 </Form>
         </div>
     )

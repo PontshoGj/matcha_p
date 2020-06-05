@@ -1,16 +1,17 @@
 import React, {useContext } from 'react'
 import NavigationSuccess from './navigation/NavigationSuccess'
-import FriendsCharts from './friends_charts/FriendsCharts'
+// import FriendsCharts from './friends_charts/FriendsCharts'
 import FooterSuccess from './footer/FooterSuccess'
-import Chart from './friends_charts/Chart'
+// import Chart from './friends_charts/Chart'
 import {Profile} from './profile/Profile'
 import {GlobalContext} from '../context/GlobalState'
 
 export const UIProfile = (props) => {
-    const {setLog} = useContext(GlobalContext)
+    const {setLog, setLogStorage} = useContext(GlobalContext)
     // const [changeLog, setChangeLog] = React.useState(true);
     const changeLog = () =>{
         setLog(false)
+        setLogStorage(false)
     }
     return (
         <div 

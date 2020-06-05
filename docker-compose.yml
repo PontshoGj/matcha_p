@@ -70,16 +70,31 @@ services:
             - "5004:5004"
         depends_on:
             - "mongo"
-    client:
-        image: client
-        build: ./client
-        restart: always
-        container_name: client
-        expose: 
-            - '3001'
-        command: "npm start"
-        ports:
-            - "3001:3000"
+    
+    # load:
+    #     image: load
+    #     build: ./load
+    #     restart: always
+    #     container_name: load
+    #     # networks: 
+    #     #     - backend
+    #     #     - backenddb
+    #     expose: 
+    #         - '3020'
+    #     command: "npm start"
+    #     ports:
+    #         - "3020:3020"
+
+    # client:
+    #     image: client
+    #     build: ./client
+    #     restart: always
+    #     container_name: client
+    #     expose: 
+    #         - '3001'
+    #     command: "npm start"
+    #     ports:
+            # - "3001:3000"
     # nginx:
     #     build: ./nginx
     #     container_name: nginx   

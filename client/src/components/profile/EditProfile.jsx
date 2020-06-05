@@ -9,7 +9,7 @@ export const EditProfile = () => {
     const   {setLog} = useContext(GlobalContext)
     const   [firstname, setFirstName] = React.useState('');
     const   [lastname, setLastName] = React.useState('');
-    const   [email, setEamil] = React.useState('');
+    // const   [email, setEamil] = React.useState('');
     const   [age, setAge] = React.useState('')
     const   [gender, setGender] = React.useState('')
     const   [clearF, setClearF] = React.useState('')
@@ -33,7 +33,7 @@ export const EditProfile = () => {
             // console.log(data.userinfo);
             setFirstName(data.userinfo.firstname)
             setLastName(data.userinfo.lastname)
-            setEamil(data.userinfo.email)
+            // setEamil(data.userinfo.email)
             setAge(data.userinfo.age)
             setGender(data.userinfo.gender)
             selectgender(data.userinfo.gender)
@@ -130,7 +130,7 @@ export const EditProfile = () => {
                 </Form.Group>
                 
                 <Form.Group as={Row} controlId='formHorizontalAge'>
-                    <Form.Label column sm={2}>LAST NAME:</Form.Label>
+                    <Form.Label column sm={2}>AGE:</Form.Label>
                     <Col sm={10}>
                         <Form.Control type="text" name="age" defaultValue={age} ref={register}/>
                     </Col>
@@ -164,7 +164,7 @@ export const EditProfile = () => {
                     </Col>
                 </Form.Group>
             
-                <Button bg="dark" type='submit' size='lg'  style={{width: '25vw', marginLeft: '19vw', marginTop: '3vh'}} block>Update</Button>
+                <Button variant="dark" type='submit' size='lg'  style={{width: '25vw', marginLeft: '19vw', marginTop: '3vh'}} block>Update</Button>
 
             </Form>
         </div>

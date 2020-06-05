@@ -8,11 +8,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 export const Ui_Register_Login = (props) => {
-        const [modeVisible, setModeVisible] = useState(false);
+        // const [modeVisible, setModeVisible] = useState(false);
         const {setLogin} = props
         const [RegisterDisplay, setRegisterDisplay] = useState('none');
         const [register, setRegister] = useState('')
         const [Loging, setLoging] = useState('none');
+        
         const handleRegister = () =>{
             setRegisterDisplay('flex')
         }
@@ -38,8 +39,8 @@ export const Ui_Register_Login = (props) => {
                         marginTop: '30vh'
                     }}
                 >
-                    <Button onClick={handleRegister} style={{width: '20vw'}}>Register</Button>
-                    <Button onClick={handleLoging}style={{width: '20vw', marginLeft: '5vw'}}>Login</Button>
+                    <Button variant="dark" onClick={handleRegister} style={{width: '20vw'}}>Register</Button>
+                    <Button variant="dark" onClick={handleLoging}style={{width: '20vw', marginLeft: '5vw'}}>Login</Button>
                 </div>
                     <div
                         style={{
@@ -58,7 +59,7 @@ export const Ui_Register_Login = (props) => {
                     >
                         <div>
                         <Register
-                            setModeVisible={setModeVisible}
+                            // setModeVisible={setModeVisible}
                             setRegister={setRegister}
                             handleExitRegister={handleExitRegister}
                         />

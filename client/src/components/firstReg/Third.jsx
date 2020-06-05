@@ -1,7 +1,7 @@
-import React, {useContext} from 'react'
-import {Button, Form, Col, Row} from 'react-bootstrap'
-import {useForm} from 'react-hook-form'
-import {GlobalContext} from '../../context/GlobalState'
+import React from 'react'
+import {Button, Form    } from 'react-bootstrap'
+// import {useForm} from 'react-hook-form'
+// import {GlobalContext} from '../../context/GlobalState'
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { Second } from './Second'
 import {Fourth} from './Fourth'
@@ -10,10 +10,7 @@ export const Third = ({setDisplay}) => {
 
 
     const onSubmit = async (e) => {
-        e.PreventDefualt()
-        console.log(e)
-        // console.log(GoogleMap)
-        // setDisplay(<Fourth setDisplay={setDisplay} />)
+        setDisplay(<Fourth setDisplay={setDisplay} />)
         // await fetch('', {
         //     method: 'POST',
         //     redirect: 'manual',
@@ -51,10 +48,10 @@ export const Third = ({setDisplay}) => {
         lat: -26.205051, 
         lng: 28.040141
       };
-      const onLoad = marker => {
+    //   const onLoad = marker => {
     //     let markers = marker
-        console.log(marker)
-      }
+        // console.log(marker)
+    //   }
       const back = () =>{
           setDisplay(<Second setDisplay={setDisplay}/>)
       }
@@ -75,7 +72,7 @@ export const Third = ({setDisplay}) => {
                     zoom={18}
                     >
                         <Marker
-                            onLoad={onLoad}
+                            // onLoad={onLoad}
                             position={position}
                             draggable={true}
                             onPositionChanged={change}

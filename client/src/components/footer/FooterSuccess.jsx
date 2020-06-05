@@ -7,7 +7,6 @@ export default class FooterSuccess extends Component {
                 style={{
                     display: 'reletive',
                     // marginTop: '5vh',
-                    position: 'bottom',
                     // borderTop: 'solid',
                     // paddingTop: '1vh',
                     position: "bottom fixed"

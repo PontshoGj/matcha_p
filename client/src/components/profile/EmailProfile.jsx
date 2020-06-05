@@ -75,7 +75,7 @@ export const EmailProfile = () => {
                             <Form.Control type="email" name="email" defaultValue={email} ref={register}/>
                         </Col>
                     </Form.Group>
-                    <Button bg="dark"  type='submit' size='lg'  style={{width: '25vw', marginLeft: '19vw', marginTop: '3vh'}} block>Update Email</Button>
+                    <Button variant="dark"  type='submit' size='lg'  style={{width: '25vw', marginLeft: '19vw', marginTop: '3vh'}} block>Update Email</Button>
 
                 </Form>
         </div>

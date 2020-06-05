@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
-import {useForm, ErrorMessage} from 'react-hook-form'
-import {Form, Col, Row, Button} from 'react-bootstrap'
+// import {useForm, ErrorMessage} from 'react-hook-form'
+import {Form} from 'react-bootstrap'
 import {GlobalContext} from '../../context/GlobalState'
 
 export const UploadImage = ({counter, id}) => {

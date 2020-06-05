@@ -4,6 +4,8 @@ import { EditProfile } from './EditProfile'
 import { BioProfile } from './BioProfile'
 import { EmailProfile} from './EmailProfile'
 import { PasswordProfile } from './PasswordProfile'
+import { Location } from './Location'
+
 export const Profile = () => {
     const [display, setDisplay] = React.useState(<EditProfile />);
 
@@ -11,6 +13,7 @@ export const Profile = () => {
     const  passwordProfile = () => {setDisplay(<PasswordProfile />);}
     const  bioProfile = () => {setDisplay(<BioProfile />);}
     const  emailProfile = () => {setDisplay(<EmailProfile />);}
+    const  location = () => {setDisplay(<Location />);}
     return (
         <div style={{
             display: 'column',
@@ -46,12 +49,12 @@ export const Profile = () => {
                     }}
                 >
                     <ButtonGroup vertical>
-                        <Button bg="dark"  type='submit' size='lg' onClick={editProfile}  style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Profile</Button>
-                        <Button bg="dark" type='submit' size='lg'  onClick={emailProfile}  style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Email</Button>
-                        <Button bg="dark" type='submit' size='lg'  onClick={bioProfile} style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Bio</Button>
-                        <Button bg="dark" type='submit' size='lg'  style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Loaction</Button>
-                        <Button bg="dark" type='submit' size='lg'  onClick={passwordProfile} style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Password</Button>
-                        <Button bg="dark" type='submit' size='lg'  onClick={passwordProfile} style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Pictures</Button>
+                        <Button variant="dark"  type='submit' size='lg' onClick={editProfile}  style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Profile</Button>
+                        <Button variant="dark" type='submit' size='lg'  onClick={emailProfile}  style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Email</Button>
+                        <Button variant="dark" type='submit' size='lg'  onClick={bioProfile} style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Bio</Button>
+                        <Button variant="dark" type='submit' size='lg'  onClick={location} style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Loaction</Button>
+                        <Button variant="dark" type='submit' size='lg'  onClick={passwordProfile} style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Password</Button>
+                        <Button variant="dark" type='submit' size='lg'  onClick={passwordProfile} style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Pictures</Button>
 
                     </ButtonGroup>
                 </div>

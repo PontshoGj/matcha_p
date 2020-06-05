@@ -1,13 +1,12 @@
 import React, {useContext} from 'react'
-import {Button, Form, Col, Row} from 'react-bootstrap'
+import {Button, Form, Col} from 'react-bootstrap'
 import {useForm} from 'react-hook-form'
 import {GlobalContext} from '../../context/GlobalState'
 import {Third} from './Third'
 import { First } from './First'
+
 export const Second = ({setDisplay}) => {
     const   {setLog} = useContext(GlobalContext)
-    const   [age, setAge] = React.useState('')
-    const   [gender, setGender] = React.useState('')
     const   {register, handleSubmit} = useForm()
 
     const onSubmit = async (data) => {

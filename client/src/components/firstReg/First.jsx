@@ -22,6 +22,9 @@ export const First = ({setDisplay}) => {
         newInterest = newInterest + '}'
         data.interest = newInterest
         console.log(data)
+        setAge(data.age)
+        setGender(data.gender)
+        setRace(data.race)
         await fetch('/user/first', {
             method: 'POST',
             redirect: 'manual',

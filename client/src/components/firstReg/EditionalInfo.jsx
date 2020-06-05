@@ -1,8 +1,4 @@
-import React, {useContext} from 'react'
-import {Button, Form, Col, Row} from 'react-bootstrap'
-import {useForm} from 'react-hook-form'
-import {GlobalContext} from '../../context/GlobalState'
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import React from 'react'
 import { First } from './First'
 import { Second } from './Second'
 import { Third } from './Third'

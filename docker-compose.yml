@@ -3,8 +3,8 @@ services:
     mongo:
         image: "mongo"
         restart: always
-        # networks: 
-        #     - backenddb
+        networks: 
+            - backend
         expose: 
             - '27017'
         ports:
@@ -12,18 +12,18 @@ services:
 
     mysql:
         image: mysql
-        command: --default-authentication-plugin=mysql_native_password
+        # command: --default-authentication-plugin=mysql_native_password
         restart: always
-        container_name: sql
+        container_name: mysql
+        networks: 
+            - backend
+        expose: 
+            - 3306
+        ports:
+            - "3306:3306"
         environment:
             MYSQL_ROOT_PASSWORD: root
-    
-    # adminer:
-    #     image: adminer
-    #     restart: always
-    #     container_name: admin
-    #     ports:
-    #         - 8080:8080
+
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         container_name: admin
@@ -32,6 +32,8 @@ services:
             - mysql:mysql
         ports:
             - 9191:80
+        networks: 
+            - backend
         environment:
             MYSQL_USERNAME: root
             MYSQL_ROOT_PASSWORD: root
@@ -42,11 +44,8 @@ services:
         build: ./user
         restart: always
         container_name: usermanagement
-        # links: 
-            # - "nginx"
-        # networks: 
-        #     - backend
-        #     - backenddb
+        networks: 
+            - backend
         expose: 
             - '5001'
         command: "node user.js"
@@ -54,15 +53,18 @@ services:
             - "5001:5001"
         depends_on:
             - "mongo"
+            - "mysql"
+        links:
+            - mysql:mysql
+            - mongo:mongo
                 
     filesever:
         image: fileserver
         build: ./fileServer
         restart: always
         container_name: fileserver
-        # networks: 
-        #     - backend
-        #     - backenddb
+        networks: 
+            - backend
         expose: 
             - '5004'
         command: "node fileServer.js"
@@ -70,6 +72,26 @@ services:
             - "5004:5004"
         depends_on:
             - "mongo"
+            - "mysql"
+        links:
+            - mysql:mysql
+            - mongo:mongo
+                
+    setups:
+        image: setups
+        build: ./server
+        container_name: setups
+        networks: 
+            - backend
+        expose: 
+            - 5006
+        command: "npm start"
+        ports:
+            - "5006:5006"
+        depends_on:
+            - "mysql"
+        links:
+            - mysql:mysql
     
     # load:
     #     image: load
@@ -95,30 +117,9 @@ services:
     #     command: "npm start"
     #     ports:
             # - "3001:3000"
-    # nginx:
-    #     build: ./nginx
-    #     container_name: nginx   
-    #     restart: always
-    #     links: 
-    #         - "usermanagement"
-    #         # - "fileserver"
-    #     networks:
-    #         - backend
-    #     ports: 
-    #         - 80:80
-        # volumes: 
-            # - ./nginx/defualt.conf:/etc/nginx/conf.d/defualt.conf
-                # client_frontend:
-        #     image: client
-        #     build: ./client
-        #     command: "npm start"
-        #     ports:
-        #         - "80:3000"
-# networks:
-#     backend:
-#         driver: bridge
-#     backenddb:
-#         driver: bridge
+networks:
+    backend:
+        driver: bridge
 
 
     

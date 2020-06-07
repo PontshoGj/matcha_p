@@ -14,6 +14,7 @@ const login = require('./control/login')
 const bio = require('./control/getBio')
 const updatebio = require('./control/updatebio')
 const insertFirst = require('./control/insertFirst')
+const updatefirstinput = require('./control/updateFirstInput')
 const server = express();
 let port = process.env.PORT || 5001;
 
@@ -35,5 +36,6 @@ server.use('/checkuser', checkuser);
 server.use('/login', login);
 server.use('/updatebio', updatebio);
 server.use('/getbio', bio);
+server.use('/updatefirstinput', updatefirstinput);
 
 server.listen(port, () => {console.log(`User Running on Port ${port}`)})

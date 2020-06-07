@@ -17,9 +17,9 @@ export const Fourth = ({setDisplay}) => {
         }
     }
     const onSubmit = async () => {
-        console.log(count)
-        if (count => 4){
-            await fetch('', {
+        // console.log(count)
+        if (count >= 4){
+            await fetch('/user/updatefirstinput', {
                 method: 'POST',
                 redirect: 'manual',
                 headers: {

@@ -19,6 +19,8 @@
     "extends-classes": "^1.0.5",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.4",
-    "nodemon": "^1.1.2"
+    "nodemon": "^1.1.2",
+    "mysql": "^2.17.1",
+    "mysql2": "^2.0.0"
   }
 }

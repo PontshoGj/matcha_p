@@ -16,7 +16,7 @@ load.use(bodyParser.urlencoded({extended: false}));
 load.all('/login*', async (req, res, next) =>{
     console.log(req.body)
     let path = req.url.split('/')
-    console.log(path)
+    // console.log(path)
     await fetch(`http://localhost:5001/${path[1]}`,{
             method: 'post',
             body: JSON.stringify(req.body),
@@ -29,18 +29,23 @@ load.all('/login*', async (req, res, next) =>{
         return data.json()
     })
     .then(data =>{
-        let user ={
-            id: data.id,
-            username: data.username
-        }
-        jwt.sign({user}, 'secretkey', (err, token) => {
-            res.json({
-                token,
-                result: data.result,
+        console.log(data)
+        if (data.result){
+            let user ={
                 id: data.id,
-                firstinput: data.firstinput
+                username: data.username
+            }
+            jwt.sign({user}, 'secretkey', (err, token) => {
+                res.json({
+                    token,
+                    result: data.result,
+                    id: data.id,
+                    firstinput: data.firstinput
+                });
             });
-        });
+        }else{
+            res.json({result: data.result})
+        }
     })
 })
 

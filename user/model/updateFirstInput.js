@@ -9,10 +9,10 @@ class updatefirstInput extends classes (db) {
         super();
     }
 
-    async updatefirstinput (username) {
+    async updatefirstinput (username, res) {
         let users;
         if (await this.checkusernames(username)){
-            if ((users = await this.UpdateFirstInput(username))){
+            if ((users = await this.UpdateFirstInput(username, res))){
                 return 1;
             }
         }else {

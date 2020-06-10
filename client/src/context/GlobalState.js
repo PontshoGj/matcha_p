@@ -48,13 +48,21 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
+  function setFirstInput(logs){
+    dispatch({
+      type: 'SET_FIRST',
+      payload: logs
+    })
+  }
+
   return (<GlobalContext.Provider value={{
-    log: state.log,
+    // log: state.log,
     deleteAuth,
     addAuth,
     setLog,
     getLog,
-    setLogStorage
+    setLogStorage,
+    setFirstInput
   }}>
     {children}
   </GlobalContext.Provider>);

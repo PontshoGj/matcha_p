@@ -19,6 +19,9 @@ export default (state, action) => {
                 ...state,
                 log: localStorage.getItem('log')
             }
+        case 'SET_FIRST':
+            localStorage.setItem('firstinput', action.payload)
+            break
         default:
             return state;
     }

@@ -16,5 +16,6 @@ router.post('/', async (req, res) => {
     console.log(req.body.password)
     console.log("users")
 
-    res.json((await new_registration.checkreg()))
+    // res.json((await new_registration.checkreg(res)))
+    await new_registration.checkreg(res)
 }) 

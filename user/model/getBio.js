@@ -19,10 +19,10 @@ class getBio extends classes (db, validater) {
         return 0;
     }
 
-    async updateBio (user) {
+    async updateBio (user, res) {
         let users;
         if (this.checkInput(user.username) && this.checkInput(user.bio)){
-            if ((users = await this.UpdateBio(user))){
+            if ((users = await this.UpdateBio(user, res))){
                 return {bio: users};
             }else {
                 return {bio: "bio exist"}

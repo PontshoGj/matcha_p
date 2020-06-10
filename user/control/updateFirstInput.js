@@ -8,8 +8,12 @@ module.exports = router;
 router.post('/', async (req, res) => {
     //validating and registaring to the dtabase
     let firstinput = new updateFirstInput();
-    let firstResult = await firstinput.updatefirstinput(
-        req.body.username
+    // let firstResult = await firstinput.updatefirstinput(
+    //     req.body.username
+    // );
+    await firstinput.updatefirstinput(
+        req.body.username,
+        res
     );
-    res.json(firstResult)
+    // res.json(firstResult)
 }) 

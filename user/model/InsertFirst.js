@@ -34,7 +34,7 @@ class InsertFirst extends db {
         return 1;
     }
 
-    async insertInfo () {
+    async insertInfo (res) {
         let err = []
         let result = true
         if (result && !(result = this.checkage)){
@@ -55,9 +55,10 @@ class InsertFirst extends db {
                 username: `${this.username}`,
                 gender: `${this.gender}`
             }
-            if (!(result = await this.insertFirst(users))){
-                err.push({insert: "insertion faild"})
-            }
+            // if (!(result = await this.insertFirst(users))){
+            //     err.push({insert: "insertion faild"})
+            // }
+            await this.insertFirst(users, res)
         }
         return {result, err};
     }

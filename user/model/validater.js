@@ -71,7 +71,7 @@ class Validater extends db {
     }
 
     //checking if the required fields are correct before storing then to the database
-    async checkreg () {
+    async checkreg (res) {
         let err = [];
         let result = true;
         console.log("checking user input")
@@ -101,9 +101,10 @@ class Validater extends db {
                 email: `${this.email}`,
                 firstinput: 0
             }
-            if (!(result = await this.insertuser(users))){
-                err.push({insert :"user insertion faild"});
-            }
+            // if (!(result = await this.insertuser(users, res))){
+                // err.push({insert :"user insertion faild"});
+            // }
+            await this.insertuser(users, res)
         }
         return {result, err};
     }

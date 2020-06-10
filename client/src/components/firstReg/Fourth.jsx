@@ -6,7 +6,7 @@ import {Third} from './Third'
 import {UploadImage} from '../upload/UploadImage'
 
 export const Fourth = ({setDisplay}) => {
-    const   {setLog} = useContext(GlobalContext)
+    const   {setLog, setFirstInput} = useContext(GlobalContext)
     const   [count, SetCount] = React.useState(0)
     const   [disabled, setDisabled] = React.useState(true)
     
@@ -33,6 +33,10 @@ export const Fourth = ({setDisplay}) => {
             })
             .then (value =>{
                 console.log(value)
+                if (value.result){
+                    setFirstInput(1)
+                    setLog(true)
+                }
             })
             .catch (err => {
                 if (err.status === 403)

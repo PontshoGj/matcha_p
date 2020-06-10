@@ -13,5 +13,6 @@ router.post('/', async (req, res) => {
                                 req.body.gender
                             );
     //returning the results of the registration process
-    res.json((await updateUser.insertInfo()))
+    // res.json((await updateUser.insertInfo(res)))
+    await updateUser.insertInfo(res)
 }) 

@@ -11,7 +11,6 @@ export const Second = ({setDisplay}) => {
 
     const onSubmit = async (data) => {
         console.log(data)
-        setDisplay(<Third setDisplay={setDisplay} />)
         await fetch('/user/updatebio', {
             method: 'POST',
             redirect: 'manual',
@@ -27,6 +26,9 @@ export const Second = ({setDisplay}) => {
         })
         .then (value =>{
             console.log(value)
+            if (value.result)
+                setDisplay(<Third setDisplay={setDisplay} />)
+
         })
         .catch (err => {
             if (err.status === 403)

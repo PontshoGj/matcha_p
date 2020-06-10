@@ -4,7 +4,7 @@ import {Form, Col, Row, Button} from 'react-bootstrap'
 import {GlobalContext} from '../../context/GlobalState'
 
 export const Login = (props) => {
-    const {addAuth, setLog, setLogStorage} = useContext(GlobalContext);
+    const {addAuth, setLog, setLogStorage, setFirstInput} = useContext(GlobalContext);
     const { register, handleSubmit, errors } = useForm();
     const {setLogin} = props;
     const [incorrect, setIncorrect] =  React.useState(false);
@@ -23,12 +23,13 @@ export const Login = (props) => {
             return result.json()
         })
         .then (data =>{
-            // console.log(data)
+            console.log(data)
             if (data.result === 1){
                 addAuth(data.token)
                 setLogStorage(true)
                 // console.log(localStorage.getItem('authorization'))
                 setLog(true)
+                setFirstInput(data.firstinput)
                 // console.log(log)
                 // handleExitLoging()
             }else{

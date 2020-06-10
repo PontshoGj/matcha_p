@@ -6,15 +6,14 @@ import {FirstRegUi} from './firstReg/FirstRegUi'
 
 export const Ui = () => {
     const {log} = useContext(GlobalContext)
-    // getLog()
-    // console.log(localStorage.getItem('log') === 'true')
-    // console.log(log)
-    const display = (localStorage.getItem('log') === 'true' ||  log === 'true') ? <UIProfile /> : <Ui_Register_Login /> 
+    const display = (localStorage.getItem('log') === 'true' ||  log === 'true') ? 
+        (localStorage.getItem("firstinput") === '1') ? <UIProfile /> : <FirstRegUi /> 
+    : 
+        <Ui_Register_Login /> 
     return (
         <div style={{
         }}>
-            {/* {display} */}
-            <FirstRegUi   />
+            {display}
         </div>
     )
 }

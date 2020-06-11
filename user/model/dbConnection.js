@@ -44,46 +44,25 @@ class dbConnection{
                 console.log('inserting users');
                 console.log(user);
                 this.connection.query('INSERT INTO users SET ?', user, (err, result) => {
-                if (!err){
-                    if(result.affectedRows){
-                        console.log('user saved  aaaaaaa');
-                        res.json({result: 1, err: {}});
-                        // throw '1'
+                    if (!err){
+                        if(result.affectedRows){
+                            console.log('user saved  aaaaaaa');
+                            res.json({result: 1, err: {}});
+                            // throw '1'
+                        }else{
+                            console.log("user insertion failed")
+                            res.json({result: 0, err: {insert: "user insertion failed"}});
+                        }
                     }else{
-                        console.log("user insertion failed")
+                        console.log(err);
                         res.json({result: 0, err: {insert: "user insertion failed"}});
                     }
-                }else{
-                    console.log(err);
-                    // throw '0'
-                }
                 })
             })
-            .catch(err =>{
-                console.log(err)
-            })
-            // let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
-
-            // let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
-            // // let db = await client.connect()
-
-            // await client.connect(async (err, db) => {
-            //     if (err) throw err //checking for err in connecting to the database
-                
-            //     const dbdo = db.db("Us").collection("users"); //selecting the dtabase to use
-            //     await dbdo.insertOne(user, (err, res) => { //selecting the collection/table inside the dtabase i want to use
-            //         if (err) throw err //checking for err in inserting data to the database
-            //         console.log("User inserted");
-            //     })
-            //     // db.close()
-            // })
-            console.log('qwerty')
-            // return 0
         }catch (e) {
             console.log(e);
-            // res.json({result: 0, err: {insert: "user insertion faild"}});
+            res.json({result: 0, err: {insert: "user insertion faild"}});
         }
-        // return 0;
     }
 
     async checkemails (email) {

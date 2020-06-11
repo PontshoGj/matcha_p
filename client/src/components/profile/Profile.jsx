@@ -5,6 +5,7 @@ import { BioProfile } from './BioProfile'
 import { EmailProfile} from './EmailProfile'
 import { PasswordProfile } from './PasswordProfile'
 import { Location } from './Location'
+import { ProfilePic } from './ProfilePic'
 
 export const Profile = () => {
     const [display, setDisplay] = React.useState(<EditProfile />);
@@ -14,6 +15,7 @@ export const Profile = () => {
     const  bioProfile = () => {setDisplay(<BioProfile />);}
     const  emailProfile = () => {setDisplay(<EmailProfile />);}
     const  location = () => {setDisplay(<Location />);}
+    const  picture = () => {setDisplay(<ProfilePic />);}
     return (
         <div style={{
             display: 'column',
@@ -54,7 +56,7 @@ export const Profile = () => {
                         <Button variant="dark" type='submit' size='lg'  onClick={bioProfile} style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Bio</Button>
                         <Button variant="dark" type='submit' size='lg'  onClick={location} style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Loaction</Button>
                         <Button variant="dark" type='submit' size='lg'  onClick={passwordProfile} style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Password</Button>
-                        <Button variant="dark" type='submit' size='lg'  onClick={passwordProfile} style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Pictures</Button>
+                        <Button variant="dark" type='submit' size='lg'  onClick={picture} style={{width: '25vw', marginLeft: '5vw', marginTop: '3vh'}} block>Pictures</Button>
 
                     </ButtonGroup>
                 </div>

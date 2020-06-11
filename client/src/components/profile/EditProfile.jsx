@@ -23,7 +23,6 @@ export const EditProfile = () => {
               'Content-Type': 'application/json;charset=utf-8',
               'authorization': `bearer ${localStorage.getItem('authorization')}` 
             },
-            body: JSON.stringify({username: 'Pontsho'})
         })
         .then (data => {
             if(data.status === 403) throw data

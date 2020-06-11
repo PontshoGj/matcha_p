@@ -37,37 +37,20 @@ const upload = multer({ storage: storage,
 })
 
 fileServer.post('/uploadImage', upload.single('pic'),async (req, res, next) =>{
-    // console.log(req.headers['userid'])
     if (req.file.length === 0){
         console.log('invalid image')
         res.json({result: false, message: 'invalid image'})
     }else{
         res.json({result: true, message: `${req.file.filename}  image uploaded successufly`})
-        // console.log(req.file)
         let user_id =  req.headers['userid']
-        // let img = `uploads/${req.file.filename}`
-        // let imgage: (`uploads/${req.file.filename}`)
-        // let images = fs.readFileSync(`uploads/${req.file.filename}`)
         let resul = new uploadfile(user_id, fs.readFileSync(`uploads/${req.file.filename}`))
-        let up = await resul.Uploadimage()
-        // uploadimage(image)
-        if (up){
-            console.log('image data saved to database')
-        }else{
-            console.log('image data not saved to database')
-        }
+        await resul.Uploadimage(res)
     }
 });
 fileServer.post('/getImage', async (req, res, next) =>{
     console.log(req.headers['userid'])
         let user_id =  req.headers['userid']
         let resul = new uploadfile(user_id,null)
-        let up = await resul.getimage()
-        // uploadimage(image)
-        if (up){
-            console.log('image data saved to database')
-        }else{
-            console.log('image data not saved to database')
-        }
+        await resul.getimage(res)
 });
 fileServer.listen(port, () => {console.log(`fileServer Running on Port ${port}`)})

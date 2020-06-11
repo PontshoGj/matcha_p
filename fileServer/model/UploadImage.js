@@ -8,25 +8,13 @@ class UploadImage extends db {
         this.image = images
     }
 
-    async Uploadimage () {
-        let result;
-        console.log(this.image)
-        if ((result = await this.insertImage({userid: this.userid, images: this.image}))){
-            return ({result})
-        }else{
-            return ({result})
-        }
+    async Uploadimage (res) {
+        await this.insertImage({user_id: this.userid, img: this.image} ,res)
         
     }
-    async getimage () {
-        let result;
-        console.log(this.userid)
-        if ((result = await this.getImage({userid: this.userid}))){
-            return ({result})
-        }else{
-            return ({result})
-        }
-        
+    async getimage (res) {
+        console.log("aaaaa")
+        await this.getImage({user_id: this.userid}, res)
     }
 }
 module.exports = UploadImage;

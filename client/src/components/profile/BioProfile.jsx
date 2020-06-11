@@ -33,8 +33,7 @@ export const BioProfile = () => {
 
     onload()
     const onSubmit = async (data) => {
-        data.username = 'Pontsho'
-        console.log(data)
+        // console.log(data)
         await fetch('/user/updatebio', {
             method: 'POST',
             redirect: 'manual',

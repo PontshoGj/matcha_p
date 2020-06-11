@@ -9,10 +9,8 @@ class UpdatePassword extends classes (db, validater) {
         super();
     }
 
-    async UpdatePassword (user) {
-        if (await this.updatePassword(user))
-            return 1;
-        return 0;
+    async UpdatePassword (user, res) {
+        await this.updatePassword(user, res)
     }
 
 

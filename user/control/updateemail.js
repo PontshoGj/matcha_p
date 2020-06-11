@@ -8,9 +8,8 @@ module.exports = router;
 router.post('/', async (req, res) => {
     //validating and registaring to the dtabase
     let email = new UpdateEmail();
-    let emailResult = await email.updateEmail({
-        username: req.body.username,
-        email: req.body.email
-    });
-    res.json(emailResult)
+    await email.updateEmail({
+            username: req.body.username,
+            email: req.body.email,
+        }, res);
 }) 

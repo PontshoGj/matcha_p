@@ -9,10 +9,10 @@ class getInfo extends classes (db, validater) {
         super();
     }
 
-    async getUserInfo (username) {
+    async getUserInfo (username, res) {
         let user;
         if (this.checkInput(username)){
-            if ((user = await this.getInfo(username))){
+            if ((user = await this.getInfo(username, res))){
                 return user;
             }
         }

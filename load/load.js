@@ -14,7 +14,7 @@ load.use(bodyParser.urlencoded({extended: false}));
 
 
 load.all('/login*', async (req, res, next) =>{
-    console.log(req.body)
+    // console.log(req.body)
     let path = req.url.split('/')
     // console.log(path)
     await fetch(`http://localhost:5001/${path[1]}`,{
@@ -29,7 +29,7 @@ load.all('/login*', async (req, res, next) =>{
         return data.json()
     })
     .then(data =>{
-        console.log(data)
+        // console.log(data)
         if (data.result){
             let user ={
                 id: data.id,

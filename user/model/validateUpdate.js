@@ -2,12 +2,12 @@ const db = require('./dbConnection')
 
 class ValidateUpdate extends db {
 
-    constructor (age, race, interest, bio, username, gender){
+    constructor (age, firstname, interest, lastname, username, gender){
         super();
         this.age = age;
-        this.race = race;
+        this.firstname = firstname;
         this.interest = interest;
-        this.bio = bio;
+        this.lastname = lastname;
         this.username = username;
         this.gender = gender
     }
@@ -42,7 +42,7 @@ class ValidateUpdate extends db {
         return 1;
     }
 
-    async updateInfo () {
+    async updateInfo (res) {
         let err = []
         let result = true
         if (result && !(result = this.checkage)){
@@ -61,15 +61,13 @@ class ValidateUpdate extends db {
         if (result && err == ''){
             let users = {
                 age: `${this.age}`,
-                race: `${this.race}`,
+                firstname: `${this.firstname}`,
                 interest: `${this.interest}`,
-                bio: `${this.bio}`,
+                lastname: `${this.lastname}`,
                 username: `${this.username}`,
                 gender: `${this.gender}`
             }
-            if (!(result = await this.addmoredetails(users))){
-                err.push({insert: "insertion faild"})
-            }
+            await this.addmoredetails(users, res)
         }
         return {result, err};
     }

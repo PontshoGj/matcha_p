@@ -7,8 +7,7 @@ export const PasswordProfile = () => {
     const   {setLog} = useContext(GlobalContext)
     const   {register, handleSubmit} = useForm()
     const onSubmit = async (data) => {
-        data.username = 'Pontsho'
-        console.log(data)
+        // console.log(data)
         await fetch('/user/updatepassword', {
             method: 'POST',
             redirect: 'manual',

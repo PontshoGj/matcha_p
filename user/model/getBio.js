@@ -9,10 +9,10 @@ class getBio extends classes (db, validater) {
         super();
     }
 
-    async getBio (username) {
+    async getBio (username, res) {
         let user;
         if (this.checkInput(username)){
-            if ((user = await this.getbio(username))){
+            if ((user = await this.getbio(username, res))){
                 return user;
             }
         }

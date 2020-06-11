@@ -35,8 +35,7 @@ export const EmailProfile = () => {
     onload()
     
     const onSubmit = async (data) => {
-        data.username = 'Pontsho'
-        console.log(data)
+        // console.log(data)
         await fetch('/user/updateemail', {
             method: 'POST',
             redirect: 'manual',

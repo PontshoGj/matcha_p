@@ -1,6 +1,6 @@
 require('dotenv').config()
 let mysql = require('mysql')
-
+// let {res, req} = require('express');
 const {MongoClient} = require('mongodb');
 
 class dbConnection{
@@ -190,36 +190,32 @@ class dbConnection{
         return 0;
     }
 
-    async addmoredetails (user) {
+    async addmoredetails (user, res) {
         try{
-            let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
-
-            let db = await client.connect()
-            
-            const dbdo = db.db("Us").collection("users");
-            const query = { "username": user.username };
-            const update = {
-            "$set": {
-                "age": `${user.age}`,
-                "race": `${user.race}`,
-                "interest": `${user.interest}`,
-                "bio": `${user.bio}`,
-                "gender": `${user.gender}`
-            }
-            };
-            const options = { "upsert": false };
-            let ret = await dbdo.updateOne(query, update, options)
-            // console.log(ret.result.n)
-            db.close()
-            if (ret.result.n === 1){
-                if (await this.updateFirstInput(user.username))
-                    return 1
-            }
+            await this.connection.getConnection((err) => {
+                if (!this.errors(err)) return
+                console.log(user.firstname)
+                this.connection.query(`UPDATE users SET age = ${user.age}, firstname= \'${user.firstname}\', lastname = \'${user.lastname}\', gender = \'${user.gender}\' WHERE username = \'${user.username}\'`, (err, result) => {
+                    if (!err){
+                        // console.log(result.affectedRows)
+                        if(result.affectedRows){
+                             console.log('done');
+                             res.json({result: 1}) 
+                        }else{
+                            console.log("info not updated not updated")
+                            res.json({result: 0})
+                        }
+                    }else{
+                        console.log(err);
+                        res.json({result: 0})
+                    }
+                })
+            })
+           
         }catch (e) {
             console.log(e);
-            return 0;
+            res.json({result: 0})
         }   
-        return 0;
     }
 
     async updateProfile (user) {
@@ -282,96 +278,56 @@ class dbConnection{
         return 0;
     }
 
-    async UpdateEmail (user) {
+    async UpdateEmail (user, res) {
         try{
-            
-            // await this.connection.getConnection((err) => {
-            //     if (!this.errors(err)) return
-            //     console.log('inserting users');
-            //     console.log(user);
-            //     this.connection.query(`UPDATE users SET email = ? WHERE username = ${user.username}`, user.email, (err, result) => {
-            //     if (!err){
-            //         if(result.affectedRows){
-            //             console.log('user saved');
-            //             return 1;
-            //             // throw '1'
-            //         }
-            //     }else{
-            //         console.log(err);
-            //         // throw '0'
-            //     }
-            //     })
-            // })
-            // .catch(err =>{
-            //     console.log(err)
-            // })
-            let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
-
-            let db = await client.connect()
-            
-            const dbdo = db.db("Us").collection("users");
-            const query = { "username": user.username };
-            const update = {
-                "$set": {
-                    "email": `${user.email}` 
-                } 
-            };
-            const options = { "upsert": false };
-            let ret = await dbdo.updateOne(query, update, options)
-            db.close()
-            if (ret.result.n === 1)
-                return 1
+            await this.connection.getConnection((err) => {
+                if (!this.errors(err)) return
+                console.log('updating email');
+                // console.log(user);
+                this.connection.query(`UPDATE users SET email = ? WHERE username = \'${user.username}\'`, user.email, (err, result) => {
+                if (!err){
+                    if(result.affectedRows){
+                        console.log('email updated');
+                        res.json({result: 1})
+                    }else{
+                        res.json({result : 1})
+                    }
+                }else{
+                    console.log(err);
+                    res.json({result: 1})
+                }
+                })
+            })
         }catch (e) {
             console.log(e);
-            return 0;
+            res.json({result: 1})
         }   
-        return 0;
     }
 
-    async updatePassword (user) {
+    async updatePassword (user, res) {
         try{
-            // await this.connection.getConnection((err) => {
-            //     if (!this.errors(err)) return
-            //     console.log('inserting users');
-            //     console.log(user);
-            //     this.connection.query(`UPDATE users SET password = ? WHERE username = ${user.username}`, user.password, (err, result) => {
-            //     if (!err){
-            //         if(result.affectedRows){
-            //             console.log('user saved');
-            //             return 1;
-            //             // throw '1'
-            //         }
-            //     }else{
-            //         console.log(err);
-            //         // throw '0'
-            //     }
-            //     })
-            // })
-            // .catch(err =>{
-            //     console.log(err)
-            // })
-            let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
-
-            let db = await client.connect()
-            
-            const dbdo = db.db("Us").collection("users");
-            const query = { "username": user.username };
-            const update = {
-                "$set": {
-                    "password": `${user.password}`   
-                } 
-            };
-            const options = { "upsert": false };
-            let ret = await dbdo.updateOne(query, update, options)
-            // console.log(ret)
-            db.close()
-            if (ret.result.n === 1)
-                return 1
+            await this.connection.getConnection((err) => {
+                if (!this.errors(err)) return
+                console.log('updating password');
+                this.connection.query(`UPDATE users SET password = \'${user.password}\' WHERE username = \'${user.username}\'`, (err, result) => {
+                if (!err){
+                    if(result.affectedRows){
+                        console.log('password updated');
+                        res.json({result: 1})
+                    }else{
+                        console.log('password not updated')
+                        res.json({result: 0})
+                    }
+                }else{
+                    console.log(err);
+                    res.json({result: 0})
+                }
+                })
+            })
         }catch (e) {
             console.log(e);
-            return 0;
+            res.json({result: 0})
         }   
-        return 0;
     }
 
     async updateUsername (user) {
@@ -420,56 +376,65 @@ class dbConnection{
         return 0;
     }
 
-    async getemail (username) {
+    async getemail (username, res) {
         try{
-            //  await this.connection.getConnection((err) => {
-            //     if (!this.errors(err)) return
-            //     this.connection.query('SELECT email FROM users WHERE username = ?', username, (err, result) => {
-            //         if (!err){
-            //             if(result.length > 0){
-            //                  console.log('done');
-            //                  return result 
-            //             }
-            //         }else{
-            //             console.log(err);
-            //         }
-            //     })
-            // })
-            let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
+             await this.connection.getConnection((err) => {
+                if (!this.errors(err)) return
+                this.connection.query(`SELECT email FROM users WHERE username = \'${username}\'`, (err, result) => {
+                    if (!err){
+                        let check = JSON.stringify(result)
+                        if(check.localeCompare('[]') !== 0){
+                            //  console.log(result);
+                             res.json({result: 1, email: result[0].email})
+                        }else{
+                            res.json({result: 0 ,username: "username does not exist"})
+                        }
+                    }else{
+                        console.log(err);
+                        res.json({result: 0 ,username: "username does not exist"})
+                    }
+                })
+            })
+            // let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
 
-            let db = await client.connect()
+            // let db = await client.connect()
             
-            const dbdo = db.db("Us").collection("users");
+            // const dbdo = db.db("Us").collection("users");
             
-            let ret = await dbdo.findOne({username: username})
-            db.close()
-            if (!(ret === null))
-                return(ret.email);
+            // let ret = await dbdo.findOne({username: username})
+            // db.close()
+            // if (!(ret === null))
+            //     return(ret.email);
         }catch (e) {
             console.log(e);
-            return 0;
+            // return 0;
+            res.json({result: 0 ,username: "username does not exist"})
         }   
-        return 0;
+        // return 0;
     }
 
-    async getInfo(username) {
+    async getInfo(username, res) {
         try{
             await this.connection.getConnection((err) => {
                 if (!this.errors(err)) return
                 this.connection.query('SELECT firstname, lastname, age, interest, gender FROM users WHERE username = ?', username, (err, result) => {
                     if (!err){
-                        if(result.length > 0){
-                            console.log('done');
-                            return result({
-                                "firstname": result.firstname,
-                                "lastname": result.lastname,
-                                "age": result.age,
-                                "interest": result.interest,
-                                "gender": result.gender
-                            })
+                        let check = JSON.stringify(result)
+                        if(check.localeCompare('[]') !== 0){
+                            // console.log(result[0].firstname);
+                                res.json({result: 1,userinfo: {
+                                "firstname": result[0].firstname,
+                                "lastname": result[0].lastname,
+                                "age": result[0].age,
+                                "interest": result[0].interest,
+                                "gender": result[0].gender
+                            }})
+                        }else{
+                            res.json({result: 0 ,username: "username does not exist"})
                         }
                     }else{
                         console.log(err);
+                        res.json({result: 0 ,username: "username does not exist"})
                     }
                 })
             })
@@ -491,9 +456,9 @@ class dbConnection{
             //     });
         }catch (e) {
             console.log(e);
-            return 0;
+            res.json({result: 0 ,username: "username does not exist"})
         }   
-        return 0;
+
     }
 
     async checkUserLogin(username, password, res) {
@@ -535,40 +500,35 @@ class dbConnection{
         return {result: 0};
     }
 
-    async getbio (username) {
+    async getbio (username, res) {
         try{
-            // await this.connection.getConnection((err) => {
-            //     if (!this.errors(err)) return
-            //     this.connection.query('SELECT bio FROM users WHERE username = ?', username, (err, result) => {
-            //         if (!err){
-            //             if(result.length > 0){
-            //                  console.log('done');
-            //                  return result.bio 
-            //             }
-            //         }else{
-            //             console.log(err);
-            //         }
-            //     })
-            // })
-            let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
-
-            let db = await client.connect()
-            
-            const dbdo = db.db("Us").collection("users");
-            let ret = await dbdo.findOne({username: username})
-            db.close()
-            if (!(ret === null)){
-                console.log(ret.bio)
-                return(ret.bio);}
+            await this.connection.getConnection((err) => {
+                if (!this.errors(err)) return
+                this.connection.query(`SELECT bio FROM users WHERE username = \'${username}\'`, (err, result) => {
+                    if (!err){
+                        let check = JSON.stringify(result)
+                        if(check.localeCompare('[]') !== 0){
+                            //  console.log(result);
+                             res.json({result: 1, userinfo: result[0].bio})
+                        }else{
+                            res.json({result: 0 ,username: "username does not exist"})
+                        }
+                    }else{
+                        console.log(err);
+                        res.json({result: 0 ,username: "username does not exist"})
+                    }
+                })
+            })
         }catch (e) {
             console.log(e);
-            return 0;
+            res.json({result: 0 ,username: "username does not exist"})
         }   
-        return 0;
     }
 
     async UpdateBio (user, res) {
-        await this.connection.getConnection((err) => {
+
+        try{
+            await this.connection.getConnection((err) => {
                 if (!this.errors(err)) return
                 this.connection.query(`UPDATE users SET bio = ? WHERE username = \'${user.username}\'`, user.bio, (err, result) => {
                     if (!err){
@@ -586,23 +546,6 @@ class dbConnection{
                     }
                 })
             })
-        try{
-            let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
-
-            let db = await client.connect()
-            
-            const dbdo = db.db("Us").collection("users");
-            const query = { "username": user.username };
-            const update = {
-                "$set": {
-                    "bio": `${user.bio}` 
-                } 
-            };
-            const options = { "upsert": false };
-            let ret = await dbdo.updateOne(query, update, options)
-            db.close()
-            if (ret.result.n === 1)
-                return 1
         }catch (e) {
             console.log(e);
             return 0;

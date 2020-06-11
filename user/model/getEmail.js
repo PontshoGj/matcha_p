@@ -9,21 +9,21 @@ class getEmail extends classes (db, validater) {
         super();
     }
 
-    async getEmail (username) {
+    async getEmail (username, res) {
         let user;
         if (this.checkInput(username)){
-            if ((user = await this.getemail(username))){
+            if ((user = await this.getemail(username, res))){
                 return user;
             }
         }
         return 0;
     }
 
-    async updateEmail (user) {
+    async updateEmail (user, res) {
         let users;
         if (this.checkInput(user.username) && this.checkInput(user.email)){
             if (await this.checkemails(user.email)){
-                if ((users = await this.UpdateEmail(user))){
+                if ((users = await this.UpdateEmail(user, res))){
                     return {email: users};
                 }
             }else {

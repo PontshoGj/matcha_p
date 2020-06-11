@@ -7,14 +7,12 @@ router.post('/', async (req, res) => {
     //validating and registaring to the dtabase
     let updateUser = new validateUpadte(
                                 req.body.age, 
-                                req.body.race, 
+                                req.body.firstname, 
                                 req.body.interest, 
-                                req.body.bio,
+                                req.body.lastname,
                                 req.body.username,
                                 req.body.gender
                             );
     console.log(req.body.gender)
-    //returning the results of the registration process
-    res.json((await updateUser.updateInfo()))
-    // await updateUser.updateInfo(res)
+    await updateUser.updateInfo(res)
 }) 

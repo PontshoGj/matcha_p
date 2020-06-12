@@ -5,14 +5,22 @@ import FooterSuccess from './footer/FooterSuccess'
 // import Chart from './friends_charts/Chart'
 import {Profile} from './profile/Profile'
 import {GlobalContext} from '../context/GlobalState'
+import {Message} from './message/Message'
+import {Friends} from './friends/Friends'
+import {Match} from './match/Match'
 
 export const UIProfile = (props) => {
     const {setLog, setLogStorage} = useContext(GlobalContext)
     // const [changeLog, setChangeLog] = React.useState(true);
+    const   [display, setDisplay] = React.useState(<Profile />)
     const changeLog = () =>{
         setLog(false)
         setLogStorage(false)
     }
+    const changeProfile = () =>{setDisplay(<Profile />)};
+    const changeMessage = () => {setDisplay(<Message />)};
+    const changeFriends = () => {setDisplay(<Friends />)};
+    const changeMatch = () => {setDisplay(<Match />)};
     return (
         <div 
             style={{
@@ -29,23 +37,21 @@ export const UIProfile = (props) => {
                 style={{
                 }}
             >
-                <NavigationSuccess changeLog={changeLog}/>
+                <NavigationSuccess 
+                    changeLog={changeLog} 
+                    changeProfile={changeProfile}
+                    changeFriends={changeFriends}
+                    changeMatch={changeMatch}
+                    changeMessage={changeMessage}
+                />
             </div>
-            {/* <div
-                style={{
-                    // display: 'row',
-                    // gridArea: 'main'
-                }}
-            >
-                <div><FriendsCharts /></div>
-            </div> */}
             <div
                 style={{
                     width: '100%',
                     height: '80vh',
                 }}
             >
-                <Profile />
+                { display }
             </div>
 
             <div

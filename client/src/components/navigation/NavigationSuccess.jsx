@@ -22,19 +22,19 @@ export default class NavigationSuccess extends Component {
             >
                 <>
                     <Navbar bg="dark" variant="dark" style={{width: '100%'}}>
-                        <Navbar.Brand href="#Profile">Matcha</Navbar.Brand>
+                        <Navbar.Brand onClick={this.props.changeProfile} href="#Profile">Matcha</Navbar.Brand>
                         <Navbar.Collapse className="justify-content-end">
                             <Nav className="mr-auto">
-                                <Nav.Link  href="#Profile">
+                                <Nav.Link onClick={this.props.changeProfile} href="#Profile">
                                     <FontAwesomeIcon icon={faHome} size='2x' />
                                 </Nav.Link>
-                                <Nav.Link  href="#match">
+                                <Nav.Link onClick={this.props.changeMatch}  href="#match">
                                     <FontAwesomeIcon icon={faHeart} size='2x' />
                                 </Nav.Link>
-                                <Nav.Link href="#firends">
+                                <Nav.Link onClick={this.props.changeFriends} href="#friends">
                                     <FontAwesomeIcon icon={faUserFriends} size='2x' />
                                 </Nav.Link>
-                                <Nav.Link  href="#messsage">
+                                <Nav.Link onClick={this.props.changeMessage}  href="#messsage">
                                     <FontAwesomeIcon icon={faEnvelope} size='2x' />
                                 </Nav.Link>
                                 <Nav.Link onClick={this.props.changeLog} href="#signout">

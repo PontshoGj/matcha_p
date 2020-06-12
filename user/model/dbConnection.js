@@ -12,7 +12,7 @@ class dbConnection{
             user     : 'root',
             password : 'root',
             database : 'matcha',
-            connectionLimit: 10
+            connectionLimit: 1000000
         })
     }
 
@@ -58,13 +58,14 @@ class dbConnection{
                         res.json({result: 0, err: {insert: "user insertion failed"}});
                     }
                 })
+                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
             res.json({result: 0, err: {insert: "user insertion faild"}});
         }
     }
-
+    //
     async checkemails (email) {
         try{
             //  await this.connection.getConnection((err) => {
@@ -94,7 +95,7 @@ class dbConnection{
         }   
         return 0;
     }
-
+    //
     async checkusernames (username) {
         try{
             // await this.connection.getConnection((err) => {
@@ -124,7 +125,7 @@ class dbConnection{
         }   
         return 0;
     }
-
+    // 
     async updateFirstInput (username) {
         try{
             // await this.connection.getConnection((err) => {
@@ -189,6 +190,7 @@ class dbConnection{
                         res.json({result: 0})
                     }
                 })
+                // this.connection.end()
             })
            
         }catch (e) {
@@ -196,7 +198,7 @@ class dbConnection{
             res.json({result: 0})
         }   
     }
-
+    // 
     async updateProfile (user) {
         try{
             let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
@@ -225,7 +227,7 @@ class dbConnection{
         }   
         return 0;
     }
-    
+    // 
     async Profile (user) {
         try{
             let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
@@ -276,6 +278,7 @@ class dbConnection{
                     res.json({result: 1})
                 }
                 })
+                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -289,19 +292,20 @@ class dbConnection{
                 if (!this.errors(err)) return
                 console.log('updating password');
                 this.connection.query(`UPDATE users SET password = \'${user.password}\' WHERE username = \'${user.username}\'`, (err, result) => {
-                if (!err){
-                    if(result.affectedRows){
-                        console.log('password updated');
-                        res.json({result: 1})
+                    if (!err){
+                        if(result.affectedRows){
+                            console.log('password updated');
+                            res.json({result: 1})
+                        }else{
+                            console.log('password not updated')
+                            res.json({result: 0})
+                        }
                     }else{
-                        console.log('password not updated')
+                        console.log(err);
                         res.json({result: 0})
                     }
-                }else{
-                    console.log(err);
-                    res.json({result: 0})
-                }
                 })
+                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -309,6 +313,7 @@ class dbConnection{
         }   
     }
 
+    //
     async updateUsername (user) {
         try{
             // await this.connection.getConnection((err) => {
@@ -373,23 +378,12 @@ class dbConnection{
                         res.json({result: 0 ,username: "username does not exist"})
                     }
                 })
+                // this.connection.end()
             })
-            // let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
-
-            // let db = await client.connect()
-            
-            // const dbdo = db.db("Us").collection("users");
-            
-            // let ret = await dbdo.findOne({username: username})
-            // db.close()
-            // if (!(ret === null))
-            //     return(ret.email);
         }catch (e) {
             console.log(e);
-            // return 0;
             res.json({result: 0 ,username: "username does not exist"})
         }   
-        // return 0;
     }
 
     async getInfo(username, res) {
@@ -400,7 +394,6 @@ class dbConnection{
                     if (!err){
                         let check = JSON.stringify(result)
                         if(check.localeCompare('[]') !== 0){
-                            // console.log(result[0].firstname);
                                 res.json({result: 1,userinfo: {
                                 "firstname": result[0].firstname,
                                 "lastname": result[0].lastname,
@@ -416,27 +409,12 @@ class dbConnection{
                         res.json({result: 0 ,username: "username does not exist"})
                     }
                 })
+                // this.connection.end()
             })
-            // let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
-
-            // let db = await client.connect()
-            
-            // const dbdo = db.db("Us").collection("users");
-            
-            // let ret = await dbdo.findOne({username: username})
-            // db.close()
-            // if (!(ret === null))
-            //     return({
-            //         "firstname": ret.firstname,
-            //         "lastname": ret.lastname,
-            //         "age": ret.age,
-            //         "interest": ret.interest,
-            //         "gender": ret.gender
-            //     });
         }catch (e) {
             console.log(e);
             res.json({result: 0 ,username: "username does not exist"})
-        }   
+        }
 
     }
 
@@ -444,7 +422,6 @@ class dbConnection{
         try{
              await this.connection.getConnection((err) => {
                 if (!this.errors(err)) return
-                // console.log(`SELECT id, username, firstinput FROM users WHERE  && `)
                 this.connection.query(`SELECT id, username, firstinput FROM users WHERE password = \'${password}\' AND username = \'${username}\'`, (err, result) => {
                     if (!err){
                         console.log(result)
@@ -459,24 +436,12 @@ class dbConnection{
                         console.log(err);
                     }
                 })
+                // this.connection.end()
             })
-            // let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
-
-            // let db = await client.connect()
-            
-            // const dbdo = db.db("Us").collection("users");
-            
-            // let ret = await dbdo.findOne({username: username, password: password})
-            // db.close()
-
-            // // console.log(ret)
-            // if (ret != null)
-            //     return ({result: 1, id: ret._id, username: ret.username, firstinput: ret.firstinput})
         }catch (e) {
             console.log(e);
-            return 0;
+            res.json({result: 0})
         }   
-        return {result: 0};
     }
 
     async getbio (username, res) {
@@ -497,6 +462,7 @@ class dbConnection{
                         res.json({result: 0 ,username: "username does not exist"})
                     }
                 })
+                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -524,12 +490,12 @@ class dbConnection{
                         res.json({result: 0})
                     }
                 })
+                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
-            return 0;
+            res.json({result: 0})
         }   
-        return 0;
     }
 
     async insertFirst (user, res) {
@@ -537,94 +503,52 @@ class dbConnection{
             await this.connection.getConnection((err) => {
                 if (!this.errors(err)) return
                 console.log('inserting users');
-                // console.log(user);
                 let interest = user.interest
                 this.connection.query(`UPDATE users SET age = ${user.age}, gender = \'${user.gender}\' WHERE username = \'${user.username}\'`, (err, result) => {
-                if (!err){
-                    if(result.affectedRows){
-                        console.log('user saved');
-                        res.json({result:1});
-                        // throw '1'
+                    if (!err){
+                        if(result.affectedRows){
+                            console.log('user saved');
+                            res.json({result:1});
+                        }else{
+                            res.json({result: 0})
+                        }
                     }else{
+                        console.log(err);
                         res.json({result: 0})
                     }
-                }else{
-                    console.log(err);
-                    // throw '0'
-                    res.json({result: 0})
-                }
                 })
+                // this.connection.end()
             })
-            // let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
-
-            // let db = await client.connect()
-            
-            // const dbdo = db.db("Us").collection("users");
-            // const query = { "username": user.username };
-            // const update = {
-            // "$set": {
-            //     "age": `${user.age}`,
-            //     "race": `${user.race}`,
-            //     "interest": `${user.interest}`,
-            //     "gender": `${user.gender}`
-            // }
-            // };
-            // console.log(user.username)
-            // const options = { "upsert": false };
-            // let ret = await dbdo.updateOne(query, update, options)
-            // // console.log(ret.result.n)
-            // db.close()
-            // if (ret.result.n === 1){
-            //     return 1
-            // }
-            // return 1;
         }catch (e) {
             console.log(e);
-            // return 0;
+            res.json({result: 0})
         }   
-        // return 0;
     }
 
     async UpdateFirstInput (user, res) {
         try{
             await this.connection.getConnection((err) => {
-                    if (!this.errors(err)) return
-                    this.connection.query(`UPDATE users SET firstinput = 1 WHERE username = \'${user}\'`, (err, result) => {
-                        if (!err){
-                            console.log(result)
-                            if(result.affectedRows){
-                                 console.log('done');
-                                 res.json({result: 1}) 
-                            }else{
-                                res.json({result: 0})
-                            }
+                if (!this.errors(err)) return
+                this.connection.query(`UPDATE users SET firstinput = 1 WHERE username = \'${user}\'`, (err, result) => {
+                    if (!err){
+                        console.log(result)
+                        if(result.affectedRows){
+                                console.log('done');
+                                res.json({result: 1}) 
                         }else{
-                            console.log(err);
                             res.json({result: 0})
                         }
-                    })
+                    }else{
+                        console.log(err);
+                        res.json({result: 0})
+                    }
                 })
-            // let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
-
-            // let db = await client.connect()
-            
-            // const dbdo = db.db("Us").collection("users");
-            // const query = { "username": user.username };
-            // const update = {
-            //     "$set": {
-            //         "fistinput": 1 
-            //     } 
-            // };
-            // const options = { "upsert": false };
-            // let ret = await dbdo.updateOne(query, update, options)
-            // db.close()
-            // if (ret.result.n === 1)
-                return 1
+                // this.connection.end()
+            })
         }catch (e) {
             console.log(e);
-            return 0;
+            res.json({result: 0})
         }   
-        return 0;
     }
 }
 

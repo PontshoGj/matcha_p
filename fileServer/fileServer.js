@@ -48,7 +48,6 @@ fileServer.post('/uploadImage', upload.single('pic'),async (req, res, next) =>{
     }
 });
 fileServer.post('/getImage', async (req, res, next) =>{
-    console.log(req.headers['userid'])
         let user_id =  req.headers['userid']
         let resul = new uploadfile(user_id,null)
         await resul.getimage(res)

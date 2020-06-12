@@ -58,11 +58,11 @@ export const Ui_Register_Login = (props) => {
                         }}
                     >
                         <div>
-                        <Register
-                            // setModeVisible={setModeVisible}
-                            setRegister={setRegister}
-                            handleExitRegister={handleExitRegister}
-                        />
+                            <Register
+                                // setModeVisible={setModeVisible}
+                                setRegister={setRegister}
+                                handleExitRegister={handleExitRegister}
+                            />
                         </div>
                         <div
                             style={{

@@ -35,16 +35,16 @@ export const EditProfile = () => {
             // setEamil(data.userinfo.email)
             setAge(data.userinfo.age)
             setGender(data.userinfo.gender)
-            selectgender(data.userinfo.gender)
             setCheck(data.userinfo.interest)
+            selectgender(data.userinfo.gender)
         })
         .catch(err => {
             if (err.status === 403)
                 setLog(false)
         })
     }
-    
-    onload()
+    if (gender === '')
+        onload()
     const onSubmit = async (data) => {
         let newInterest ='{'
         let i = data.interest.length, j = 1
@@ -55,8 +55,6 @@ export const EditProfile = () => {
         })
         newInterest = newInterest + '}'
         data.interest = newInterest
-        data.username = 'Pontsho'
-        console.log(data)
         await fetch('/user/updateinfo', {
             method: 'POST',
             redirect: 'manual',
@@ -71,7 +69,6 @@ export const EditProfile = () => {
             return data.json()
         })
         .then (value =>{
-            console.log(value)
             clearForm()
         })
         .catch (err => {

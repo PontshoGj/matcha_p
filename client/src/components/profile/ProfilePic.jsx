@@ -1,12 +1,10 @@
 import React, { useContext } from 'react'
-import {Button, Form, Col, Row} from 'react-bootstrap'
-import {useForm} from 'react-hook-form'
 import {GlobalContext} from '../../context/GlobalState'
-import {Card} from 'react-bootstrap'
+import { Picture } from './Picture'
 
 export const ProfilePic = () => {
     const   {setLog} = useContext(GlobalContext)
-    const    [im, setImages] = React.useState(<img />)
+    const    [image, setImages] = React.useState("")
 
    const onload = async () => {
         await fetch('/getImage', {
@@ -22,9 +20,10 @@ export const ProfilePic = () => {
             return data.json()
         })
         .then (data => {
-            // console.log(data.img[0])
-            // setImages( <img src={data.img[0]} />)
-            // console.log(im)
+            if (data.result === 1){
+                console.log(data)
+                setImages(data.img)
+            }
         })
         .catch(err =>{
             if (err.status === 403)
@@ -32,18 +31,23 @@ export const ProfilePic = () => {
         })
     }
 
-    onload()
+    if (image === "")
+        onload()
     return (
         <div
             style={{
-                margin: '5rem'
+                display: 'flex',
+                flexWrap: 'wrap',
+                margin: '5rem',
+                height: '100%',
+                width: '55vw'
             }}
         >
-            <Card style={{ width: '40rem' }}>
-                <Card.Body>
-                    {im}
-                </Card.Body>
-            </Card>
+            <Picture image={image[0]} />
+            <Picture image={image[1]} />
+            <Picture image={image[2]} />
+            <Picture image={image[3]} />
+            <Picture image={image[4]} />
         </div>
     )
 }

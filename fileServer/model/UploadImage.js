@@ -13,7 +13,6 @@ class UploadImage extends db {
         
     }
     async getimage (res) {
-        console.log("aaaaa")
         await this.getImage({user_id: this.userid}, res)
     }
 }

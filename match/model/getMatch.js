@@ -2,15 +2,15 @@ const db = require('./dbConnection')
 // const classes = require('extends-classes');
 
 
-class getBio extends db {
+class getMatch extends db {
 
     constructor (){
         super();
     }
 
-    async getmatch (interest, res) {
-        await this.getMatch(interest, res)
+    async getmatch (interest, longitude, latidute, res) {
+        await this.getMatch(interest, longitude, latidute, res)
     }
 }
 
-module.exports = getBio;
+module.exports = getMatch;

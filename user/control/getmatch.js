@@ -6,6 +6,8 @@ const getMatch = require('../model/getMatch')
 module.exports = router;
 
 router.post('/', async (req, res) => {
+    //validating and registaring to the dtabase
     let user = new getMatch()
-    await user.getmatch(req.body.interest, req.body.longitude, req.body.latidute, res);
+    // let userinfo = await user.getUserInfo(req.body.username);
+    await user.getmatch(req.body.user_id, res);
 }) 

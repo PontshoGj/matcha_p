@@ -418,6 +418,37 @@ class dbConnection{
 
     }
 
+    async getMatcha(user_id, res) {
+        try{
+            await this.connection.getConnection((err) => {
+                if (!this.errors(err)) return
+                this.connection.query('SELECT interest, latidute, longitude FROM users WHERE id = ?', user_id, (err, result) => {
+                    if (!err){
+                        let check = JSON.stringify(result)
+                        if(check.localeCompare('[]') !== 0){
+                                res.json({result: 1,userinfo: {
+                                "interest": result[0].interest,
+                                "latidute": result[0].latidue,
+                                "longitude": result[0].longitude,
+                                "latidute": result[0].latidute
+                            }})
+                        }else{
+                            res.json({result: 0 ,username: "username does not exist"})
+                        }
+                    }else{
+                        console.log(err);
+                        res.json({result: 0 ,username: "username does not exist"})
+                    }
+                })
+                // this.connection.end()
+            })
+        }catch (e) {
+            console.log(e);
+            res.json({result: 0 ,username: "username does not exist"})
+        }
+
+    }
+
     async checkUserLogin(username, password, res) {
         try{
              await this.connection.getConnection((err) => {

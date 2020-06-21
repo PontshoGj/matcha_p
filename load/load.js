@@ -141,7 +141,16 @@ load.all('/getImage*', verify,async (req, res) =>{
 
 load.all('/match/*', verify,async (req, res) =>{
     let path = req.url.split('/')
-    let user_id = {user_id: req.authData.user.id, interest: req.body.interest}
+
+    let person = await fetch('http://usermanagement:5001/getmatch',{
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({user_id: req.authData.user.id})
+    })
+    let person_response = await person.json();
+    let user_id = {user_id: req.authData.user.id, interest: person_response.userinfo.interest, latidute: person_response.userinfo.latidute, longitude: person_response.userinfo.longitude}
     await fetch(`http://match:5005/${path[2]}`,{
             method: 'post',
             body: JSON.stringify(user_id), 

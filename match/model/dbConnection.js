@@ -35,23 +35,37 @@ class dbConnection{
     }
 
     //getting mathed user 
-    async getMatch(interest, res){
+    async getMatch(interest, longitud, latitud, res){
         try {
             await this.connection.getConnection((err) => {
                 if (!this.errors(err)) return
                 let r = interest.split(',')
                 let g = r.join("%]'||'[%")
-                let latitude = -30.559483
-                let longitude = 22.937506
-                let r_earth = Math.pow(6371, 3)
-                console.log(`SELECT * FROM users WHERE interest LIKE \'[%${g.substring(1, g.length - 1)}%]\' && latidute BETWEEN ${latitude} AND ${latitude + (5 / r_earth) * (180 / 3.145)} && longitude BETWEEN ${longitude} AND ${longitude + (5 / r_earth) * (180 / 3.145) / Math.cos(latitude * 3.145/180)}`)
+                // let latitude = -30.559483
+                let latitude = parseFloat(latitud)
+                // let longitude = 22.937506
+                let longitude = parseFloat(longitud)
+                // let r_earth = Math.pow(6371, 3)
+                let r_earth = 6371
                 this.connection.query(`SELECT * FROM users WHERE interest LIKE \'[%${g.substring(1, g.length - 1)}%]\' && latidute BETWEEN latidute AND ${latitude + (5 / r_earth) * (180 / 3.145)} && longitude BETWEEN longitude AND ${longitude + (5 / r_earth) * (180 / 3.145) / Math.cos(latitude * 3.145/180)}`, (err, result) => {
                     if (!err){
                         let check = JSON.stringify(result)
-                         console.log(result);
+                        //  console.log(result);
                         if(check.localeCompare('[]') !== 0){
                             //  console.log(result);
-                            //  res.json({result: 1, email: result[0].email})
+                             res.json({result: 1, 
+                                info: result.map(data => {
+                                    return {
+                                        user_id: data.id,
+                                        firstname: data.firstname,
+                                        lastname: data.lastname,
+                                        age: data.age,
+                                        bio: data.bio,
+                                        interest: data.interest,
+                                        gender: data.gender
+                                    }
+                                })
+                            })
                         }else{
                             // res.json({result: 0 ,username: "username does not exist"})
                         }

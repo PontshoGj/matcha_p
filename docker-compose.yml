@@ -92,20 +92,35 @@ services:
             - "mysql"
         links:
             - mysql:mysql
-    
-    # load:
-    #     image: load
-    #     build: ./load
-    #     restart: always
-    #     container_name: load
-    #     # networks: 
-    #     #     - backend
-    #     #     - backenddb
-    #     expose: 
-    #         - '3020'
-    #     command: "npm start"
-    #     ports:
-    #         - "3020:3020"
+            
+    match:
+        image: match
+        build: ./match
+        container_name: match
+        networks: 
+            - backend
+        expose: 
+            - 5005
+        command: "npm start"
+        ports:
+            - "5005:5005"
+        depends_on:
+            - "mysql"
+        links:
+            - mysql:mysql
+    load:
+        image: load
+        build: ./load
+        restart: always
+        container_name: load
+        networks: 
+            - backend
+        #     - backenddb
+        expose: 
+            - '3020'
+        command: "npm start"
+        ports:
+            - "3020:3020"
 
     # client:
     #     image: client

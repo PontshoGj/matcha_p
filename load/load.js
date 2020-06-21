@@ -14,10 +14,8 @@ load.use(bodyParser.urlencoded({extended: false}));
 
 
 load.all('/login*', async (req, res, next) =>{
-    // console.log(req.body)
     let path = req.url.split('/')
-    // console.log(path)
-    await fetch(`http://localhost:5001/${path[1]}`,{
+    await fetch(`http://usermanagement:5001/${path[1]}`,{
             method: 'post',
             body: JSON.stringify(req.body),
             headers: {
@@ -26,17 +24,17 @@ load.all('/login*', async (req, res, next) =>{
         }
     )
     .then (data => {
+        if (data.status === 500) throw data
         return data.json()
     })
     .then(data =>{
-        // console.log(data)
         if (data.result){
             let user ={
                 id: data.id,
                 username: data.username
             }
             jwt.sign({user}, 'secretkey', (err, token) => {
-                res.json({
+                res.status(200).json({
                     token,
                     result: data.result,
                     id: data.id,
@@ -47,13 +45,12 @@ load.all('/login*', async (req, res, next) =>{
             res.json({result: data.result})
         }
     })
+    .catch(err => {})
 })
 
 load.all('/save*', async (req, res, next) =>{
-    console.log(req.body)
     let path = req.url.split('/')
-    console.log(path)
-    await fetch(`http://localhost:5001/${path[1]}`,{
+    await fetch(`http://usermanagement:5001/${path[1]}`,{
             method: 'post',
             body: JSON.stringify(req.body),
             headers: {
@@ -62,21 +59,17 @@ load.all('/save*', async (req, res, next) =>{
         }
     )
     .then (data => {
+        if (data.status === 500) throw data
         return data.json()
     })
-    .then(data =>{
-        res.json({
-            data,
-        });
-    })
+    .then(data =>{res.status(200).json({data});})
+    .catch(data=>{console.log(data)})
 })
 
 load.all('/user/*', verify,async (req, res, next) =>{
-    console.log(req.authData.user.username)
     req.body.username = req.authData.user.username
-    console.log(req.body)
     let path = req.url.split('/')
-    await fetch(`http://localhost:5001/${path[2]}`,{
+    await fetch(`http://usermanagement:5001/${path[2]}`,{
                 method: 'post',
                 body: JSON.stringify(req.body),
                 headers: {
@@ -85,17 +78,16 @@ load.all('/user/*', verify,async (req, res, next) =>{
         }
     )
     .then (data => {
+        if (data.status === 500) throw data
         return data.json()
     })
-    .then (data => res.json(data))
+    .then (data => res.status(200).json(data))
     .catch (err => console.log(err))
-    // next();
 })
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) =>{
-        // console.log(file)
         file.userid = req.authData.user.id
-        // console.log(files)
         cb(null, './')
     },
     filename: (req, file, cb)=>{
@@ -108,19 +100,14 @@ const upload = multer({ storage: storage})
 
 load.all('/uploadImage*', verify, upload.single('pic'),async (req, res) =>{
     let path = req.url.split('/')
-    // console.log(req.file)
     const file = new FormData()
-    // console.log(req.authData.user.id)
     file.append('pic', fs.createReadStream(req.file.filename), req.authData.user.id)
-    // file.append('userid', req.authData.user.)
-    // file.append('userid',req.authData.user.id)
-    // file.append('pic', req.file)
-    await fetch(`http://localhost:5004/${path[1]}`,{
-                method: 'post',
-                headers: {
-                    'userid': req.authData.user.id
-                },
-                body: file
+    await fetch(`http://fileserver:5004/${path[1]}`,{
+            method: 'post',
+            headers: {
+                'userid': req.authData.user.id
+            },
+            body: file
         }
     )
     .then (data => {
@@ -128,23 +115,19 @@ load.all('/uploadImage*', verify, upload.single('pic'),async (req, res) =>{
         return data.json()
     })
     .then (data => {
-        // console.log(data)
             fs.unlinkSync(req.file.filename)
-            res.json(data)
+            res.status(200).json(data)
     })
-    .catch (err => {
-        res.json({result: 0, message: 'image format not accepted'})   
-        // console.log(err)
-    })
-    // res.sendStatus(200)
+    .catch (err => {res.json({result: 0, message: 'image format not accepted'});})
 })
+
 load.all('/getImage*', verify,async (req, res) =>{
     let path = req.url.split('/')
-    await fetch(`http://localhost:5004/${path[1]}`,{
-                method: 'post',
-                headers: {
-                    'userid': req.authData.user.id
-                },
+    await fetch(`http://fileserver:5004/${path[1]}`,{
+            method: 'post',
+            headers: {
+                'userid': req.authData.user.id
+            },
         }
     )
     .then (data => {
@@ -152,15 +135,29 @@ load.all('/getImage*', verify,async (req, res) =>{
         if (data.status === 500) throw data
         return data.json()
     })
-    .then (data => {
-            res.json(data)
-    })
-    .catch (err => {
-        res.json({result: 0, message: 'image format not accepted'})   
-        // console.log(err)
-    })
-    // res.sendStatus(200)
+    .then (data => {res.status(200).json(data)})
+    .catch (err => {res.json({result: 0, message: 'image format not accepted'});})
 })
+
+load.all('/match/*', verify,async (req, res) =>{
+    let path = req.url.split('/')
+    let user_id = {user_id: req.authData.user.id, interest: req.body.interest}
+    await fetch(`http://match:5005/${path[2]}`,{
+            method: 'post',
+            body: JSON.stringify(user_id), 
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+        }
+    )
+    .then (data => {
+        if (data.status === 500) throw data
+        return data.json()
+    })
+    .then (data => {res.status(200).json(data)})
+    .catch(err =>{console.log(err)})
+})
+
 
 function verify(req, res, next) {
     const bearerHeader = req.headers['authorization'];

@@ -29,7 +29,7 @@ USE `matcha`;
 -- Table structure for table `auth`
 --
 
-CREATE TABLE `auth` (
+CREATE TABLE IF NOT EXISTS `auth` (
   `username` varchar(100) NOT NULL,
   `token` varchar(1000) DEFAULT NULL,
   `selec` varchar(1000) DEFAULT NULL
@@ -41,7 +41,7 @@ CREATE TABLE `auth` (
 -- Table structure for table `images`
 --
 
-CREATE TABLE `images` (
+CREATE TABLE IF NOT EXISTS `images` (
   `image_id` int UNSIGNED NOT NULL,
   `user_id` int NOT NULL,
   `img` longblob NOT NULL
@@ -53,7 +53,7 @@ CREATE TABLE `images` (
 -- Table structure for table `likes`
 --
 
-CREATE TABLE `likes` (
+CREATE TABLE IF NOT EXISTS `likes` (
   `id` int UNSIGNED NOT NULL,
   `username` varchar(100) NOT NULL,
   `liked` varchar(100) NOT NULL
@@ -65,7 +65,7 @@ CREATE TABLE `likes` (
 -- Table structure for table `messages`
 --
 
-CREATE TABLE `messages` (
+CREATE TABLE IF NOT EXISTS `messages` (
   `id` int UNSIGNED NOT NULL,
   `username` varchar(100) NOT NULL,
   `sender` varchar(100) NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE `messages` (
 -- Table structure for table `passrest`
 --
 
-CREATE TABLE `passrest` (
+CREATE TABLE IF NOT EXISTS `passrest` (
   `username` varchar(100) NOT NULL,
   `token` varchar(1000) DEFAULT NULL,
   `selec` varchar(1000) DEFAULT NULL
@@ -90,7 +90,7 @@ CREATE TABLE `passrest` (
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int UNSIGNED NOT NULL,
   `username` varchar(100) NOT NULL,
   `lastname` varchar(100) DEFAULT NULL,
@@ -110,7 +110,7 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `lastname`, `firstname`, `email`, `passwd`, `gender`, `bio`, `interest`, `age`, `latidute`, `longitude`, `vf`) VALUES
+INSERT INTO `users` (`id`, `username`, `lastname`, `firstname`, `email`, `password`, `gender`, `bio`, `interest`, `age`, `latidute`, `longitude`, `vf`) VALUES
 (1, 'rogers63', 'john', 'david', 'test@gamil.com', 'e6a33eee180b07e563d74fee8c2c66b8', 'Female', 'Hey there I am using matcha', '[\"flirty\", \"ambitious\", \"introvert\"]', 25, '-30.559483', '22.937506', 1),
 (2, 'mike28', 'paul', 'rogers', 'test@gamil.com', '2e7dc6b8a1598f4f75c3eaa47958ee2f', 'Male', 'Hey there I am using matcha', '[\"flirty\", \"ambitious\", \"introvert\"]', 25, '-30.559483', '22.937506', 1),
 (3, 'rivera92', 'john', 'david', 'test@gamil.com', '1c3a8e03f448d211904161a6f5849b68', 'Male', 'Hey there I am using matcha', '[\"flirty\", \"ambitious\", \"introvert\"]', 25, '-30.559483', '22.937506', 1),
@@ -349,7 +349,7 @@ INSERT INTO `users` (`id`, `username`, `lastname`, `firstname`, `email`, `passwd
 (236, 'sanders38', 'miller', 'maria', 'test@gamil.com', 'd1d5eb3a1d067c8a11324be711ba87e4', 'Female', 'Hey there I am using matcha', '[\"flirty\", \"ambitious\", \"introvert\"]', 18, '-30.559483', '22.937506', 1),
 (237, 'morris63', 'morris', 'brooks', 'test@gamil.com', '5f185f2923ea5a0f61e29457946a7a01', 'Female', 'Hey there I am using matcha', '[\"flirty\", \"ambitious\", \"introvert\"]', 18, '-30.559483', '22.937506', 1),
 (238, 'michael25', 'morris', 'jenny09', 'test@gamil.com', 'afd4b0886c4743441488580ca8045ad8', 'Male', 'Hey there I am using matcha', '[\"flirty\", \"ambitious\", \"introvert\"]', 18, '-30.559483', '22.937506', 1);
-INSERT INTO `users` (`id`, `username`, `lastname`, `firstname`, `email`, `passwd`, `gender`, `bio`, `interest`, `age`, `latidute`, `longitude`, `vf`) VALUES
+INSERT INTO `users` (`id`, `username`, `lastname`, `firstname`, `email`, `password`, `gender`, `bio`, `interest`, `age`, `latidute`, `longitude`, `vf`) VALUES
 (239, 'smith89', 'smith', 'brown', 'test@gamil.com', '6af31b2b4f3e2911f6d61f2a4956b4e5', 'Female', 'Hey there I am using matcha', '[\"flirty\", \"ambitious\", \"introvert\"]', 18, '-30.559483', '22.937506', 1),
 (240, 'john97', 'chrishaydon', 'rivera', 'test@gamil.com', '5cd654fddcf0871f8247f277357519d8', 'Female', 'Hey there I am using matcha', '[\"flirty\", \"ambitious\", \"introvert\"]', 18, '-30.559483', '22.937506', 1),
 (241, 'jenny0985', 'sanders', 'paul', 'test@gamil.com', 'daa3a33a6d4d57691cafe0e98a45d8ee', 'Male', 'Hey there I am using matcha', '[\"flirty\", \"ambitious\", \"introvert\"]', 18, '-30.559483', '22.937506', 1),
@@ -593,7 +593,7 @@ INSERT INTO `users` (`id`, `username`, `lastname`, `firstname`, `email`, `passwd
 (479, 'john30', 'morgan', 'ross', 'test@gamil.com', '93ccc2579e526596814fa3a33be4887e', 'Male', 'Hey there I am using matcha', '[\"commited\", \"trusty\", \"open\"]', 27, '-30.559483', '22.937506', 1),
 (480, 'rivera2', 'ross', 'morris', 'test@gamil.com', '79b14af58600b268c15ab4b8e85c3dcd', 'Male', 'Hey there I am using matcha', '[\"commited\", \"trusty\", \"open\"]', 27, '-30.559483', '22.937506', 1),
 (481, 'wright17', 'jenny09', 'maria', 'test@gamil.com', '0333dc1686f348ac6a361c367c83d0fa', 'Male', 'Hey there I am using matcha', '[\"commited\", \"trusty\", \"open\"]', 27, '-30.559483', '22.937506', 1);
-INSERT INTO `users` (`id`, `username`, `lastname`, `firstname`, `email`, `passwd`, `gender`, `bio`, `interest`, `age`, `latidute`, `longitude`, `vf`) VALUES
+INSERT INTO `users` (`id`, `username`, `lastname`, `firstname`, `email`, `password`, `gender`, `bio`, `interest`, `age`, `latidute`, `longitude`, `vf`) VALUES
 (482, 'rivera30', 'morgan', 'miller', 'test@gamil.com', 'eb2864111a083cca837b5301a98455ca', 'Female', 'Hey there I am using matcha', '[\"commited\", \"trusty\", \"open\"]', 27, '-30.559483', '22.937506', 1),
 (483, 'daniel63', 'brooks', 'maria', 'test@gamil.com', 'd9941265e1be2b87b39c86bde28c4bee', 'Male', 'Hey there I am using matcha', '[\"commited\", \"trusty\", \"open\"]', 27, '-30.559483', '22.937506', 1),
 (484, 'brooks56', 'david', 'morgan', 'test@gamil.com', 'fe4db4d3555edd58a6c7893c8cc9b4a8', 'Male', 'Hey there I am using matcha', '[\"commited\", \"trusty\", \"open\"]', 27, '-30.559483', '22.937506', 1),

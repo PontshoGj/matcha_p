@@ -1,0 +1,3 @@
+SELECT * FROM `users` WHERE interest REGEXP '{"flirty"}'
+
+SELECT * FROM `users` WHERE interest LIKE '[%"flirty"%]', '[%"ambitious"%]'

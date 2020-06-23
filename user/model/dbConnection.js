@@ -2,6 +2,8 @@ require('dotenv').config()
 let mysql = require('mysql')
 // let {res, req} = require('express');
 const {MongoClient} = require('mongodb');
+const email= require('./sendEmail')
+const uuid = require('uuid/v1');
 
 class dbConnection{
  
@@ -38,6 +40,8 @@ class dbConnection{
 
     async insertuser (user, res) {
         try{
+            let uid = uuid()
+            let uid2 = uuid();
             // connecting to the mongodb cloud database
             await this.connection.getConnection((err) => {
                 if (!this.errors(err)) return
@@ -46,7 +50,11 @@ class dbConnection{
                 this.connection.query('INSERT INTO users SET ?', user, (err, result) => {
                     if (!err){
                         if(result.affectedRows){
-                            console.log('user saved  aaaaaaa');
+                            // console.log('user saved  aaaaaaa');
+                            let str = 'http://localhost:3000/Valid?token='+uid +'&selec='+uid2;
+                            let mail = new email()
+                            mail.sendmails(user.email, `<a href="${str}">Validate</a>`, "Account confirmation mail")
+
                             res.json({result: 1, err: {}});
                             // throw '1'
                         }else{
@@ -125,57 +133,13 @@ class dbConnection{
         }   
         return 0;
     }
-    // 
-    async updateFirstInput (username) {
-        try{
-            // await this.connection.getConnection((err) => {
-            //     if (!this.errors(err)) return
-            //     console.log('inserting users');
-            //     console.log(user);
-            //     this.connection.query(`INSERT INTO users SET ? WHERE username = ${username}`, user, (err, result) => {
-            //     if (!err){
-            //         if(result.affectedRows){
-            //             console.log('user saved' + s);
-            //             return 1;
-            //             // throw '1'
-            //         }
-            //     }else{
-            //         console.log(err);
-            //         // throw '0'
-            //     }
-            //     })
-            // })
-            // .catch(err =>{
-            //     console.log(err)
-            // })
-            let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
-
-            let db = await client.connect()
-            
-            const dbdo = db.db("Us").collection("users");
-            const query = { "username": username };
-            const update = {
-                "$set": {'firstinput': 1} 
-            };
-            const options = { "upsert": false };
-            let ret = await dbdo.updateOne(query, update, options)
-            // console.log(ret)
-            db.close()
-            if (ret.result.n === 1)
-                return 1
-        }catch (e) {
-            console.log(e);
-            return 0;
-        }   
-        return 0;
-    }
 
     async addmoredetails (user, res) {
         try{
             await this.connection.getConnection((err) => {
                 if (!this.errors(err)) return
-                console.log(user.firstname)
-                this.connection.query(`UPDATE users SET age = ${user.age}, firstname= \'${user.firstname}\', lastname = \'${user.lastname}\', gender = \'${user.gender}\' WHERE username = \'${user.username}\'`, (err, result) => {
+                console.log(user)
+                this.connection.query(`UPDATE users SET age = ${user.age}, firstname= \'${user.firstname}\', lastname = \'${user.lastname}\', gender = \'${user.gender}\', interest = \'${user.interest}\' WHERE username = \'${user.username}\'`, (err, result) => {
                     if (!err){
                         // console.log(result.affectedRows)
                         if(result.affectedRows){
@@ -197,66 +161,6 @@ class dbConnection{
             console.log(e);
             res.json({result: 0})
         }   
-    }
-    // 
-    async updateProfile (user) {
-        try{
-            let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
-
-            let db = await client.connect()
-            
-            const dbdo = db.db("Us").collection("users");
-            const query = { "username": user.username };
-            const update = {
-                "$set": {
-                    "age": `${user.age}`,
-                    "bio": `${user.bio}`,
-                    "gender": `${user.gender}`,
-                    "interest": `${user.interest}`   
-                } 
-            };
-            const options = { "upsert": false };
-            let ret = await dbdo.updateOne(query, update, options)
-            // console.log(ret)
-            db.close()
-            if (ret.result.n === 1)
-                return 1
-        }catch (e) {
-            console.log(e);
-            return 0;
-        }   
-        return 0;
-    }
-    // 
-    async Profile (user) {
-        try{
-            let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
-
-            let db = await client.connect()
-            
-            const dbdo = db.db("Us").collection("users");
-            const query = { "username": user.username };
-            const update = {
-                "$set": {
-                    "firstname": `${user.firstname}`,
-                    "lastname": `${user.lastname}`,
-                    "age": `${user.age}`,
-                    "bio": `${user.bio}`,
-                    "gender": `${user.gender}`,
-                    "interest": `${user.interest}`   
-                } 
-            };
-            const options = { "upsert": false };
-            let ret = await dbdo.updateOne(query, update, options)
-            // console.log(ret)
-            db.close()
-            if (ret.result.n === 1)
-                return 1
-        }catch (e) {
-            console.log(e);
-            return 0;
-        }   
-        return 0;
     }
 
     async UpdateEmail (user, res) {
@@ -535,7 +439,7 @@ class dbConnection{
                 if (!this.errors(err)) return
                 console.log('inserting users');
                 let interest = user.interest
-                this.connection.query(`UPDATE users SET age = ${user.age}, gender = \'${user.gender}\' WHERE username = \'${user.username}\'`, (err, result) => {
+                this.connection.query(`UPDATE users SET age = ${user.age}, gender = \'${user.gender}\', interest = \'${interest}\' WHERE username = \'${user.username}\'`, (err, result) => {
                     if (!err){
                         if(result.affectedRows){
                             console.log('user saved');
@@ -561,6 +465,32 @@ class dbConnection{
             await this.connection.getConnection((err) => {
                 if (!this.errors(err)) return
                 this.connection.query(`UPDATE users SET firstinput = 1 WHERE username = \'${user}\'`, (err, result) => {
+                    if (!err){
+                        console.log(result)
+                        if(result.affectedRows){
+                                console.log('done');
+                                res.json({result: 1}) 
+                        }else{
+                            res.json({result: 0})
+                        }
+                    }else{
+                        console.log(err);
+                        res.json({result: 0})
+                    }
+                })
+                // this.connection.end()
+            })
+        }catch (e) {
+            console.log(e);
+            res.json({result: 0})
+        }   
+    }
+
+    async inserLike (user, frnd,res) {
+        try{
+            await this.connection.getConnection((err) => {
+                if (!this.errors(err)) return
+                this.connection.query(`INSERT INTO FRIENDS SET user_id = ${user}, friend_id = ${frnd}`, (err, result) => {
                     if (!err){
                         console.log(result)
                         if(result.affectedRows){

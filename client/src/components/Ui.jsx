@@ -11,8 +11,10 @@ export const Ui = () => {
     : 
         <Ui_Register_Login /> 
     return (
-        <div style={{
-        }}>
+        <div 
+            style={{
+            }}
+        >
             {display}
         </div>
     )

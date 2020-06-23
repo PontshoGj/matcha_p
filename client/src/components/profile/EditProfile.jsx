@@ -46,14 +46,14 @@ export const EditProfile = () => {
     if (gender === '')
         onload()
     const onSubmit = async (data) => {
-        let newInterest ='{'
+        let newInterest ='['
         let i = data.interest.length, j = 1
         data.interest.forEach(value => {
-            newInterest = newInterest + '\'' + value + '\''
+            newInterest = newInterest + '\"' + value + '\"'
             if (j++ < i)
                 newInterest = newInterest  + ','
         })
-        newInterest = newInterest + '}'
+        newInterest = newInterest + ']'
         data.interest = newInterest
         await fetch('/user/updateinfo', {
             method: 'POST',
@@ -69,7 +69,8 @@ export const EditProfile = () => {
             return data.json()
         })
         .then (value =>{
-            clearForm()
+            // console.log(value)
+            // clearForm()
         })
         .catch (err => {
             if (err.status === 403)

@@ -6,7 +6,7 @@ import {Form, Col, Row, Button} from 'react-bootstrap'
 
 
 export const Register = (props) => {
-    const { setRegister, handleExitRegister} = props
+    const { setRegister, handleExitRegister, setDisplay, setRegisterDisplay} = props
     const [duplicateMail, setDuplicateMail] =  React.useState(false);
     const [duplicateUsername, setDuplicateUsername] =  React.useState(false);
     const { register, handleSubmit, errors } = useForm()
@@ -25,9 +25,10 @@ export const Register = (props) => {
         return result.json()
       })
       .then (rt =>{
-            // console.log(rt.err)
-            if (rt.result === 1){
-                // setModeVisible(true)
+            console.log(rt)
+            if (rt.data.result === 1){
+                setRegisterDisplay('flex')
+                setDisplay('flex')
                 setRegister('Registration successful Please confirm you account from your email')
                 handleExitRegister()
             }

@@ -6,37 +6,49 @@ import {Register} from './register/Register'
 import {Login} from './login/Login'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import {Messages} from './errorsAndmessages/Messages'
 
 export const Ui_Register_Login = (props) => {
-        // const [modeVisible, setModeVisible] = useState(false);
         const {setLogin} = props
         const [RegisterDisplay, setRegisterDisplay] = useState('none');
         const [register, setRegister] = useState('')
         const [Loging, setLoging] = useState('none');
+        const [display, setDisplay] = useState('none')
         
         const handleRegister = () =>{
             setRegisterDisplay('flex')
         }
+
         const handleLoging = () =>{
             setLoging('flex')
         }
+
         const handleExitRegister = () =>{
             setRegisterDisplay('none')
+            console.log("no this")
         }
+
         const handleExitLoging = () =>{
             setLoging('none')
         }
         
         return (
             <div style={{
-                display: 'flex  ',
+                display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
             }}>
                 <Navigation />
                 <div
                     style={{
-                        marginTop: '30vh'
+                        marginTop: '10vh'
+                    }}
+                >
+                    <Messages message={register} display={display}/>
+                </div>
+                <div
+                    style={{
+                        marginTop: '20vh'
                     }}
                 >
                     <Button variant="dark" onClick={handleRegister} style={{width: '20vw'}}>Register</Button>
@@ -59,9 +71,10 @@ export const Ui_Register_Login = (props) => {
                     >
                         <div>
                             <Register
-                                // setModeVisible={setModeVisible}
+                                setRegisterDisplay={setRegisterDisplay}
                                 setRegister={setRegister}
                                 handleExitRegister={handleExitRegister}
+                                setDisplay={setDisplay}
                             />
                         </div>
                         <div

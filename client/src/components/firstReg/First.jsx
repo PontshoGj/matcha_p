@@ -12,14 +12,14 @@ export const First = ({setDisplay}) => {
     const   {register, handleSubmit} = useForm()
 
     const onSubmit = async (data) => {
-        let newInterest ='{'
+        let newInterest ='['
         let i = data.interest.length, j = 1
         data.interest.forEach(value => {
-            newInterest = newInterest + '\'' + value + '\''
+            newInterest = newInterest + '\"' + value + '\"'
             if (j++ < i)
                 newInterest = newInterest  + ','
         })
-        newInterest = newInterest + '}'
+        newInterest = newInterest + ']'
         data.interest = newInterest
         console.log(data)
         setAge(data.age)

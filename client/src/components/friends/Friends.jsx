@@ -5,12 +5,12 @@ import {FriendProfileInfo} from "./FriendProfileInfo"
 export const Friends = () => {
     const   [display, setDisplay] = React.useState('none')
     const   [data, setData] = React.useState({name: 'Pontsho Mogwere'})
+    
     const handleDisplay = () =>{
         setDisplay('flex');
     }
     const handleExit = () =>{
         setDisplay('none');
-        console.log("its working")
     }
     return (
         <div

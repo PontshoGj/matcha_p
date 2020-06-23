@@ -35,8 +35,10 @@ connection.connect((err) => {
     connection.query('USE matcha');
     connection.query('CREATE TABLE IF NOT EXISTS users (id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, username VARCHAR(100) NOT NULL, lastname VARCHAR(100), firstname VARCHAR(100), email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, gender VARCHAR(25) DEFAULT \'Bisexuelle\', bio VARCHAR(1000), interest json DEFAULT NULL, age INT, latidute VARCHAR(255), longitude VARCHAR(255), vf INT DEFAULT 0, firstinput int)');
     console.log('Table users created');
-    connection.query('CREATE TABLE IF NOT EXISTS likes (id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, username VARCHAR(100) NOT NULL, liked VARCHAR(100) NOT NULL)');
+    connection.query('CREATE TABLE IF NOT EXISTS likes (user_id INT(9) UNSIGNED  NOT NULL, friend_id VARCHAR(100) NOT NULL, liked INT(9) NOT NULL)');
     console.log('Table likes created');
+    connection.query('CREATE TABLE IF NOT EXISTS friends (user_id INT(9) UNSIGNED  NOT NULL, friend_id VARCHAR(100) NOT NULL)');
+    console.log('Table freinds created');
     connection.query('CREATE TABLE IF NOT EXISTS messages (id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, username VARCHAR(100) NOT NULL, sender VARCHAR(100) NOT NULL, message VARCHAR(1000))');
     console.log('Table messages created');
     connection.query('CREATE TABLE IF NOT EXISTS auth(username VARCHAR(100) PRIMARY KEY NOT NULL, token VARCHAR(1000), selec VARCHAR(1000))');

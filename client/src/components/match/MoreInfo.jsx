@@ -1,9 +1,9 @@
 import React from 'react'
-import { Card } from 'react-bootstrap'
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import {Card, Button} from 'react-bootstrap'
+import { faTimes, faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export const FriendProfileInfo = ({data, handleExit}) => {
+export const MoreInfo = (props) => {
     return (
         <div
             style={{
@@ -25,15 +25,28 @@ export const FriendProfileInfo = ({data, handleExit}) => {
                 <Card style={{ width: '40rem', height: '40rem' }}>
                     <Card.Img  src="" width='200' height='200' />
                     <Card.Body>
-                        <Card.Title>{data.name}</Card.Title>
+                        <Card.Title><h2>{props.info.firstname} {props.info.lastname}</h2></Card.Title>
                         <div>
+                            <br/>
                             <div>
-                                Bio
-                                {data.bio}
+                                <h3>Age</h3>
+                                <div>{props.info.age}</div>
                             </div>
                             <div>
-                                Interests
-                                {data.interest}
+                                <h3>Gender</h3>
+                                <div>{props.info.gender}</div>
+                            </div>
+                            <div>
+                                <h3>Bio</h3>
+                                <div>{props.info.bio}</div>
+                            </div>
+                            <div>
+                                <h3>Interests</h3>
+                                <div>{props.info.interest}</div>
+                            </div>
+                            <div>
+                                <FontAwesomeIcon icon={faThumbsDown} size='2x' />
+                                <FontAwesomeIcon icon={faThumbsUp} style={{marginLeft: '2vw'}} size='2x' />
                             </div>
                         </div>
                         
@@ -45,7 +58,7 @@ export const FriendProfileInfo = ({data, handleExit}) => {
                     marginLeft: '10vw',
                     color: 'white'
                 }}
-                onClick={handleExit}
+                onClick={props.handleExit}
             >
                 <FontAwesomeIcon icon={faTimes} size='3x' />
             </div>

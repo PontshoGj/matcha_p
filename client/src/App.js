@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import './App.css';
 import {Ui} from './components/Ui'
 import {GlobalProvider} from './context/GlobalState'

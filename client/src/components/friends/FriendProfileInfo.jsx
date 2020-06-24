@@ -25,15 +25,26 @@ export const FriendProfileInfo = ({data, handleExit}) => {
                 <Card style={{ width: '40rem', height: '40rem' }}>
                     <Card.Img  src="" width='200' height='200' />
                     <Card.Body>
-                        <Card.Title>{data.name}</Card.Title>
+                        <Card.Title><h2>{data.firstname} {data.lastname}</h2></Card.Title>
                         <div>
+                            <br/>
                             <div>
-                                Bio
-                                {data.bio}
+                                <h3>Age</h3>
+                                <div>{data.age}</div>
                             </div>
                             <div>
-                                Interests
-                                {data.interest}
+                                <h3>Gender</h3>
+                                <div>{data.gender}</div>
+                            </div>
+                            <div>
+                                <h3>Bio</h3>
+                                <div>{data.bio}</div>
+                            </div>
+                            <div>
+                                <h3>Interests</h3>
+                                <div>{data.interest}</div>
+                            </div>
+                            <div>
                             </div>
                         </div>
                         

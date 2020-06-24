@@ -4,6 +4,7 @@ let mysql = require('mysql')
 const {MongoClient} = require('mongodb');
 const email= require('./sendEmail')
 const uuid = require('uuid/v1');
+const { use } = require('../control/like');
 
 class dbConnection{
  
@@ -509,6 +510,57 @@ class dbConnection{
         }catch (e) {
             console.log(e);
             res.json({result: 0})
+        }   
+    }
+
+    Friends (user_id, res) {
+        try{
+            let users = new Promise( async (resolve, reject) =>{
+                await this.connection.getConnection((err) => {
+                    if (!this.errors(err)) return
+                    this.connection.query(`SELECT * FROM friends WHERE user_id = \'${user_id}\'`, (err, result) => {
+                        if (!err){
+                            let check = JSON.stringify(result)
+                            if(check.localeCompare('[]') !== 0){
+                                //  console.log(result);
+                                 resolve({result: 1, userinfo: result})
+                            }else{
+                                reject({result: 0 ,username: "username does not exist"})
+                            }
+                        }else{
+                            console.log(err);
+                            resolve({result: 0 ,username: "username does not exist"})
+                        }
+                    })
+                    // this.connection.end()
+                })
+            })
+            users.then(async data =>{
+                user_id = data.userinfo.map(friend_id => `id = ${friend_id.friend_id}`)
+                user_id = user_id.join(" || ")
+                await this.connection.getConnection((err) => {
+                    if (!this.errors(err)) return
+                    this.connection.query(`SELECT * FROM users WHERE  ${user_id}`, (err, result) => {
+                        if (!err){
+                            let check = JSON.stringify(result)
+                            if(check.localeCompare('[]') !== 0){
+                                //  console.log(result);
+                                 res.json({result: 1, userinfo: result})
+                            }else{
+                                console.log(err)
+                                res.json({result: 0 ,username: "username does not exist"})
+                            }
+                        }else{
+                            console.log(err);
+                            res.json({result: 0 ,username: "username does not exist"})
+                        }
+                    })
+                    // this.connection.end()
+                })
+            })
+        }catch (e) {
+            console.log(e);
+            res.json({result: 0 ,username: "username does not exist"})
         }   
     }
 }

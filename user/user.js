@@ -17,6 +17,7 @@ const insertFirst = require('./control/insertFirst')
 const updatefirstinput = require('./control/updateFirstInput')
 const getmatch = require('./control/getmatch')
 const like = require('./control/like')
+const getFriends = require('./control/getFriends')
 const server = express();
 let port = process.env.PORT || 5001;
 
@@ -41,5 +42,6 @@ server.use('/getbio', bio);
 server.use('/updatefirstinput', updatefirstinput);
 server.use('/getmatch', getmatch);
 server.use('/like', like);
+server.use('/getFriends', getFriends);
 
 server.listen(port, () => {console.log(`User Running on Port ${port}`)})

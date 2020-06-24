@@ -4,7 +4,8 @@ import {FriendProfileInfo} from "./FriendProfileInfo"
 
 export const Friends = () => {
     const   [display, setDisplay] = React.useState('none')
-    const   [data, setData] = React.useState({name: 'Pontsho Mogwere'})
+    const   [comp, setComp] = React.useState()
+    const   [data, setData] = React.useState({})
     
     const handleDisplay = () =>{
         setDisplay('flex');
@@ -12,6 +13,32 @@ export const Friends = () => {
     const handleExit = () =>{
         setDisplay('none');
     }
+
+    const onload = async () =>{
+        await fetch('/user/getFriends', {
+            method: 'POST',
+            redirect: 'manual',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+              'authorization': `bearer ${localStorage.getItem('authorization')}` 
+            },
+        })
+        .then (data => {
+            if(data.status === 403) throw data
+            return data.json()
+        })
+        .then (data =>{
+            // console.log(data.userinfo)
+            let i= 0;
+            let holdInfo = data.userinfo.map(data => {
+                // console.log(data)
+                return <FriendProfile handleDisplay={handleDisplay}  data={data} setData={setData} key={i++}/>
+            })
+            setComp(holdInfo)
+        })
+    }
+    if (comp === undefined)
+        onload()
     return (
         <div
             style={{
@@ -31,16 +58,7 @@ export const Friends = () => {
                     height: '80vh'
                 }}
             >
-                <FriendProfile handleDisplay={handleDisplay} data={data} setData={setData}/>
-                <FriendProfile handleDisplay={handleDisplay} data={data} setData={setData}/>
-                <FriendProfile handleDisplay={handleDisplay} data={data} setData={setData}/>
-                <FriendProfile handleDisplay={handleDisplay} data={data} setData={setData}/>
-                <FriendProfile handleDisplay={handleDisplay} data={data} setData={setData}/>
-                <FriendProfile handleDisplay={handleDisplay} data={data} setData={setData}/>
-                <FriendProfile handleDisplay={handleDisplay} data={data} setData={setData}/>
-                <FriendProfile handleDisplay={handleDisplay} data={data} setData={setData}/>
-                <FriendProfile handleDisplay={handleDisplay} data={data} setData={setData}/>
-                <FriendProfile handleDisplay={handleDisplay} data={data} setData={setData}/>
+                {comp}
             </div>
             <div
                 style={{

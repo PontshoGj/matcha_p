@@ -486,11 +486,11 @@ class dbConnection{
         }   
     }
 
-    async inserLike (user, frnd,res) {
+    async insertLike (user, frnd,res) {
         try{
             await this.connection.getConnection((err) => {
                 if (!this.errors(err)) return
-                this.connection.query(`INSERT INTO FRIENDS SET user_id = ${user}, friend_id = ${frnd}`, (err, result) => {
+                this.connection.query(`INSERT INTO friends SET user_id = ${user}, friend_id = ${frnd}`, (err, result) => {
                     if (!err){
                         console.log(result)
                         if(result.affectedRows){

@@ -73,7 +73,8 @@ load.all('/user/*', verify,async (req, res, next) =>{
                 method: 'post',
                 body: JSON.stringify(req.body),
                 headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'userid': req.authData.user.id
                 }
         }
     )

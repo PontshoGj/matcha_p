@@ -122,16 +122,19 @@ services:
         ports:
             - "3020:3020"
 
-    # client:
-    #     image: client
-    #     build: ./client
-    #     restart: always
-    #     container_name: client
-    #     expose: 
-    #         - '3001'
-    #     command: "npm start"
-    #     ports:
-            # - "3001:3000"
+    client:
+        image: client
+        build: ./client
+        restart: always
+        container_name: client
+        networks: 
+            - backend
+        #     - backenddb
+        expose: 
+            - '3001'
+        command: "npm start"
+        ports:
+            - "3001:3000"
 networks:
     backend:
         driver: bridge

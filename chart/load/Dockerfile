@@ -1,12 +1,12 @@
 FROM node:alpine as builder
 
-RUN mkdir chart
+RUN mkdir load
 
-WORKDIR /chart
+WORKDIR /load
 
-FROM builder As chart
+FROM builder As load
 
-EXPOSE 4000
+EXPOSE 3020 5001 5002 5003 5004 5005 5000
 
 COPY package.json .
 

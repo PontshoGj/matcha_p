@@ -1,13 +1,75 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import socketIOClient from "socket.io-client";
+import { User } from './User'
+import {Messages} from './Messages'
+const ENDPOINT = "http://127.0.0.1:4001";
 
 export const Message = () => {
-    return (
-        <div>
-            <div>
-                
-            </div>
-            <div>
+    const [response, setResponse] = React.useState();
+    const   [comp, setComp] = React.useState()
+    const   [message, setMessage] = React.useState()
+    useEffect(() => {
+        const socket = socketIOClient(ENDPOINT);
+        // socket.on("FromAPI", data => {
+        //     setResponse(data.result);
+        //     console.log(data)
+        // })
+        socket.on("status", data =>{
+            setResponse(data.result)
+            console.log(data)
+        })
+        socket.emit("status",{authorization:localStorage.getItem('authorization')})
+    })
 
+    const onload = async () =>{
+        await fetch('/user/getFriends', {
+            method: 'POST',
+            redirect: 'manual',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+              'authorization': `bearer ${localStorage.getItem('authorization')}` 
+            },
+        })
+        .then (data => {
+            if(data.status === 403) throw data
+            return data.json()
+        })
+        .then (data =>{
+            // console.log(data.userinfo)
+            let holdInfo = data.userinfo.map(data => {
+                // console.log(data)
+                return <User data={data} setMessage={setMessage}/>
+            })
+            setComp(holdInfo)
+        })
+    }
+    if (comp === undefined)
+        onload()
+    return (
+        <div
+            style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                width: '100%',
+                overflow: 'auto',
+                height: '80vh'
+            }}
+        >
+            <div
+                style={{
+                    display: 'column',
+                    width: "20%",
+                    borderRight: 'solid'
+                }}
+            >
+                {comp}
+            </div>
+            <div
+                style={{
+                    width: '80%'
+                }}
+            >
+                <Messages message={message}/>
             </div>
         </div>
     )

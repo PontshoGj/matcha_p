@@ -2,12 +2,14 @@ require('dotenv').config()
 const express = require('express')
 const mongo = require('mongodb').MongoClient;
 const chat = express()
+// chat.listen(4001)
 const sockets = require('socket.io')
 const client = sockets(4001);
 const fetch = require('node-fetch')
 const bodyParser = require('body-parser')
-chat.use(bodyParser.json());
-chat.use(bodyParser.urlencoded({extended: false}));
+
+// chat.use(bodyParser.json());
+// chat.use(bodyParser.urlencoded({extended: false}));
 
 
 
@@ -36,6 +38,7 @@ client.on('connection', async function(socket){
     sendStatus = function(s){
         socket.emit('status', s);
     }
+
     socket.on("status", async (data) =>{
         sendStatus({result: 'online'})
         // console.log(data)
@@ -43,29 +46,13 @@ client.on('connection', async function(socket){
         jon.map(j =>{
             socket.join(j);
         })
+        socket.join('501')
+        socket.join('1')
     })
 
-    socket.on('FromAPI', function(data){
-        let name = data.name;
-        let message = data.message;
-
-        // Check for name and message
-        if(name == '' || message == ''){
-            // Send error status
-            sendStatus('Please enter a name and message');
-        } else {
-            // Insert message
-            chat.insert({name: name, message: message}, function(){
-                client.emit('output', [data]);
-
-                // Send status object
-                sendStatus({
-                    message: 'Message sent',
-                    clear: true
-                });
-            });
-        }
-    });
+    socket.on('message', data =>{
+        console.log(data)
+        socket.to(data.id).emit("message", {friend_id:'1', message:"just checking"})
+    })
 });
 
-chat.listen(4002)

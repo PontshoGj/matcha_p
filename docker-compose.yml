@@ -121,20 +121,20 @@ services:
         command: "npm start"
         ports:
             - "3020:3020"
-    chart:
-        image: chart
-        build: ./chart
-        restart: always
-        container_name: chart
-        networks: 
-            - backend
-        #     - backenddb
-        expose: 
-            - '4000'
-        command: "npm start"
-        ports:
-            - "4000:4000"
-    # client:
+    # chart:
+    #     image: chart
+    #     build: ./chart
+    #     restart: always
+    #     container_name: chart
+    #     networks: 
+    #         - backend
+    #     #     - backenddb
+    #     expose: 
+    #         - '4000'
+    #     command: "npm start"
+    #     ports:
+    #         - "4000:4000"
+    # # client:
     #     image: client
     #     build: ./client
     #     restart: always

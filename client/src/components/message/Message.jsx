@@ -8,8 +8,10 @@ export const Message = () => {
     const [response, setResponse] = React.useState();
     const   [comp, setComp] = React.useState()
     const   [message, setMessage] = React.useState()
+    const   [socket, setSocket] = React.useState(socketIOClient(ENDPOINT))
     useEffect(() => {
-        const socket = socketIOClient(ENDPOINT);
+        // const socket = socketIOClient(ENDPOINT);
+
         // socket.on("FromAPI", data => {
         //     setResponse(data.result);
         //     console.log(data)
@@ -19,6 +21,7 @@ export const Message = () => {
             console.log(data)
         })
         socket.emit("status",{authorization:localStorage.getItem('authorization')})
+        socket.on("message", data =>{console.log(data)})
     })
 
     const onload = async () =>{
@@ -43,33 +46,39 @@ export const Message = () => {
             setComp(holdInfo)
         })
     }
-    if (comp === undefined)
+    if (comp === undefined){
+        // setSocket(socket)
         onload()
+    }
     return (
         <div
             style={{
                 display: 'flex',
                 flexWrap: 'wrap',
                 width: '100%',
-                overflow: 'auto',
+                // overflow: 'auto',
                 height: '80vh'
             }}
         >
             <div
                 style={{
                     display: 'column',
+                    flexWrap: 'wrap',
                     width: "20%",
-                    borderRight: 'solid'
+                    borderRight: 'solid',
+                    height: '80vh',
+                    overflow: 'auto',
                 }}
             >
                 {comp}
             </div>
             <div
                 style={{
-                    width: '80%'
+                    width: '80%',
+                    height: '80vh'
                 }}
             >
-                <Messages message={message}/>
+                <Messages message={message} socket={socket}/>
             </div>
         </div>
     )

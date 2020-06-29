@@ -1,6 +1,7 @@
 import React from 'react'
 import {Suggest} from './Suggest'
 import {MoreInfo} from './MoreInfo'
+import {AdvancedMatch} from './AdvancedMatch'
 
 export const Match = () => {
     const   [display, setDisplay] = React.useState([])
@@ -42,22 +43,40 @@ export const Match = () => {
     return (
         <div
             style={{
-                display: 'flex',
+                display: 'colum',
                 flexWrap: 'wrap',
                 width: '100%',
                 overflow: 'auto',
                 height: '80vh'
             }}
         >
-            {/* <div> */}
-                {display}
-            {/* </div> */}
             <div
                 style={{
-                    display: displays
+                    display: 'flex',
+                    justifyContent: 'center'
                 }}
             >
-                <MoreInfo handleExit={handleExit} info={info}/>                
+                <AdvancedMatch />
+            </div>
+            <div
+                style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    width: '100%',
+                    overflow: 'auto',
+                    height: '70vh'
+                }}
+            >
+                {/* <div> */}
+                    {display}
+                {/* </div> */}
+                <div
+                    style={{
+                        display: displays
+                    }}
+                >
+                    <MoreInfo handleExit={handleExit} info={info}/>                
+                </div>
             </div>
         </div>
     )

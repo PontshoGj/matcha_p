@@ -3,12 +3,17 @@ import {Card, Button} from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 
-export const User = ({data}) => {
+export const User = ({data, setMessage}) => {
+    const setdata = () =>{
+        // console.log(data)
+        setMessage(data)
+    }
     return (
         <div
             style={{
                 marginTop: '1vh'
             }}
+            onClick={setdata}
         >
             <Card style={{ width: '90%' }}>
                 <Card.Body>

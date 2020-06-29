@@ -327,7 +327,7 @@ class dbConnection{
         try{
             await this.connection.getConnection((err) => {
                 if (!this.errors(err)) return
-                this.connection.query('SELECT interest, latidute, longitude FROM users WHERE id = ?', user_id, (err, result) => {
+                this.connection.query('SELECT interest, latidute, longitude, gender, age FROM users WHERE id = ?', user_id, (err, result) => {
                     if (!err){
                         let check = JSON.stringify(result)
                         if(check.localeCompare('[]') !== 0){
@@ -335,7 +335,9 @@ class dbConnection{
                                 "interest": result[0].interest,
                                 "latidute": result[0].latidue,
                                 "longitude": result[0].longitude,
-                                "latidute": result[0].latidute
+                                "latidute": result[0].latidute,
+                                "age": result[0].age,
+                                "gender": result[0].gender
                             }})
                         }else{
                             res.json({result: 0 ,username: "username does not exist"})

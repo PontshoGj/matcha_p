@@ -151,7 +151,19 @@ load.all('/match/*', verify,async (req, res) =>{
         body: JSON.stringify({user_id: req.authData.user.id})
     })
     let person_response = await person.json();
-    let user_id = {user_id: req.authData.user.id, interest: person_response.userinfo.interest, latidute: person_response.userinfo.latidute, longitude: person_response.userinfo.longitude}
+    let gender
+    if (person_response.userinfo.gender === "male")
+        gender = 'gender = \"Female\"'
+    else if (person_response.userinfo.gender === "female")
+        gender = 'gender = \'Male\''
+    else if (person_response.userinfo.gender === "gay")
+        gender = 'gender = \'Male\''
+    else if (person_response.userinfo.gender === "lesbian")
+        gender = 'gender = \'Female\''
+    else
+        gender = 'gender = \'Male\' || gender = \'Female\''
+    // console.log(person_response)
+    let user_id = {user_id: req.authData.user.id, interest: person_response.userinfo.interest, latidute: person_response.userinfo.latidute, longitude: person_response.userinfo.longitude, minage: person_response.userinfo.age, maxage: person_response.userinfo.age, gender: gender }
     await fetch(`http://match:5005/${path[2]}`,{
             method: 'post',
             body: JSON.stringify(user_id), 

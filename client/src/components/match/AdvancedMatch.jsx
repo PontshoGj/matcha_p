@@ -28,7 +28,7 @@ export const AdvancedMatch = () => {
                             display: 'colum',
                             justifyContent: 'center',
                             marginRight: '2vw',
-                            width: '40%'
+                            // width: '40%'
                         }}
                     >
                         <div><Form.Label column><h3>Distance</h3></Form.Label></div>
@@ -38,12 +38,13 @@ export const AdvancedMatch = () => {
                             onChange={changeEvent => setValue(Number(changeEvent.target.value))}
                             tooltip='on'
                             step={10}
+                            size='lg'
                         />
                     </div>
                     <div
                         style={{
                             display: 'colum',
-                            justifyContent: 'center'
+                            justifyContent: 'center',
                         }}
                     >
                         <Form.Label column><h3>Age Range</h3></Form.Label>
@@ -51,7 +52,7 @@ export const AdvancedMatch = () => {
                             style={{
                                 display: 'flex',
                                 justifyContent: 'center',
-                                width: '60%'
+                                // width: '60%'
                             }}
                         >
                             <RangeSlider
@@ -59,17 +60,23 @@ export const AdvancedMatch = () => {
                                 onChange={changeEvent => setValue(Number(changeEvent.target.value))}
                                 tooltip='on'
                                 step={10}
+                                size='lg'
                             />
                             <RangeSlider
                                 value={value}
                                 onChange={changeEvent => setValue(Number(changeEvent.target.value))}
                                 tooltip='on'
                                 step={10}
+                                size='lg'
                             />
                         </div>
                     </div>
                 </div>
-                <div>
+                <div
+                    style={{
+                        marginTop: '5vh'
+                    }}
+                >
                     <Form.Label column><h3>Interests: 3 MIN</h3></Form.Label>
                     <Form.Group as={Row} controlId='formHorizontalInterests'>
                         <Col sm={10}>
@@ -85,6 +92,15 @@ export const AdvancedMatch = () => {
                             <Form.Check type="checkbox" ref={register} name="interest" id="lusty" value="lusty" label="lusty" inline/>
                         </Col>
                     </Form.Group>
+
+                </div>
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Button variant="dark" type='submit' size='lg'  style={{width: '25vw', marginTop: '3vh'}} block>Search</Button>
                 </div>
             </Form>
         </div>

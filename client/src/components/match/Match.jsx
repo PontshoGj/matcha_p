@@ -2,11 +2,13 @@ import React from 'react'
 import {Suggest} from './Suggest'
 import {MoreInfo} from './MoreInfo'
 import {AdvancedMatch} from './AdvancedMatch'
+import {Button} from 'react-bootstrap'
 
 export const Match = () => {
     const   [display, setDisplay] = React.useState([])
     const   [displays, setDisplays] = React.useState('none')
     const   [info, setInfo] = React.useState({})
+    const   [search, setSearch] = React.useState('none')
 
     const handleExit = () =>{
         setDisplays('none');
@@ -40,6 +42,9 @@ export const Match = () => {
     }
     if (display[0] === undefined)
         onload()
+    const advancedSearch = () =>{
+        setSearch('flex')
+    }
     return (
         <div
             style={{
@@ -56,8 +61,17 @@ export const Match = () => {
                     justifyContent: 'center'
                 }}
             >
+                <Button variant="dark" type='submit' size='lg'  style={{width: '25vw', marginTop: '3vh'}} onClick={advancedSearch} block>Advanced Search</Button>
+            </div>
+            <div
+                style={{
+                    display: search,
+                    justifyContent: 'center'
+                }}
+            >
                 <AdvancedMatch />
             </div>
+            <hr />
             <div
                 style={{
                     display: 'flex',

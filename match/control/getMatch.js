@@ -7,5 +7,5 @@ module.exports = router;
 
 router.post('/', async (req, res) => {
     let user = new getMatch()
-    await user.getmatch(req.body.interest, req.body.longitude, req.body.latidute, res);
+    await user.getmatch(req.body.interest, req.body.longitude, req.body.latidute, req.body.minage, req.body.maxage, req.body.gender, res);
 }) 

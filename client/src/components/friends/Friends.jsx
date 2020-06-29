@@ -1,6 +1,7 @@
 import React from 'react'
 import {FriendProfile} from './FriendProfile'
 import {FriendProfileInfo} from "./FriendProfileInfo"
+import {Tabs, Tab} from 'react-bootstrap'
 
 export const Friends = () => {
     const   [display, setDisplay] = React.useState('none')
@@ -49,24 +50,48 @@ export const Friends = () => {
                 height: '80vh'
             }}
         >
-            <div
-                style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    width: '100%',
-                    overflow: 'auto',
-                    height: '80vh'
-                }}
-            >
-                {comp}
-            </div>
-            <div
-                style={{
-                    display: display
-                }}
-            >
-                <FriendProfileInfo handleExit={handleExit} data={data}/>                
-            </div>
+            <Tabs defaultActiveKey="friend" id="uncontrolled-tab-example">
+                <Tab eventKey="friend" title="firend">
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            width: '100%',
+                            overflow: 'auto',
+                            height: '80vh'
+                        }}
+                    >
+                        {comp}
+                    </div>
+                    <div
+                        style={{
+                            display: display
+                        }}
+                    >
+                        <FriendProfileInfo handleExit={handleExit} data={data}/>                
+                    </div>
+                </Tab>
+                <Tab eventKey="friendRequest" title="friendRequest">
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            width: '100%',
+                            overflow: 'auto',
+                            height: '80vh'
+                        }}
+                    >
+                        {comp}
+                    </div>
+                    <div
+                        style={{
+                            display: display
+                        }}
+                    >
+                        <FriendProfileInfo handleExit={handleExit} data={data}/>                
+                    </div>
+                </Tab>
+            </Tabs>
         </div>
     )
 }

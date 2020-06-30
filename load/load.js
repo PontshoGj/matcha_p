@@ -163,7 +163,18 @@ load.all('/match/*', verify,async (req, res) =>{
     else
         gender = 'gender = \'Male\' || gender = \'Female\''
     // console.log(person_response)
-    let user_id = {user_id: req.authData.user.id, interest: person_response.userinfo.interest, latidute: person_response.userinfo.latidute, longitude: person_response.userinfo.longitude, minage: person_response.userinfo.age, maxage: person_response.userinfo.age, gender: gender }
+    // console.log(req.body)
+    console.log(person_response.userinfo.interest)
+    let interest = (req.body.interest !== undefined) ? req.body.interest : person_response.userinfo.interest
+    // // let interest = person_response.userinfo.interest
+    let minage = (req.body.minage !== undefined) ? req.body.minage : person_response.userinfo.age
+    let maxage = (req.body.maxage !== undefined) ? req.body.maxage : person_response.userinfo.age
+    console.log(interest)
+    console.log(minage)
+    console.log(maxage)
+    
+    
+    let user_id = {user_id: req.authData.user.id, interest: interest, latidute: person_response.userinfo.latidute, longitude: person_response.userinfo.longitude, minage: minage, maxage: maxage, gender: gender }
     await fetch(`http://match:5005/${path[2]}`,{
             method: 'post',
             body: JSON.stringify(user_id), 

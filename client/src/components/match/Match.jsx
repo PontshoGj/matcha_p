@@ -35,7 +35,7 @@ export const Match = () => {
             // console.log(data)
             let i= 0;
             let holdInfo = data.info.map(data => {
-                return <Suggest handleDisplay={handleDisplay}  info={data} setInfo={setInfo} key={i++}/>
+                return <Suggest handleDisplay={handleDisplay}  handleDisplay setInfo={setInfo} key={i++}/>
             })
             setDisplay(holdInfo)
         })
@@ -44,6 +44,9 @@ export const Match = () => {
         onload()
     const advancedSearch = () =>{
         setSearch('flex')
+    }
+    const liked = (data) => {
+        setDisplay(data)
     }
     return (
         <div
@@ -69,7 +72,7 @@ export const Match = () => {
                     justifyContent: 'center'
                 }}
             >
-                <AdvancedMatch />
+                <AdvancedMatch setDisplay={setDisplay} handleDisplay={handleDisplay} setInfo={setInfo}/>
             </div>
             <hr />
             <div

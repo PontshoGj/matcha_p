@@ -4,10 +4,50 @@ import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import RangeSlider from 'react-bootstrap-range-slider';
 import {Button, Form, Col, Row} from 'react-bootstrap'
 
-export const AdvancedMatch = () => {
+export const AdvancedMatch = ([setDisplay]) => {
     const   {register, handleSubmit} = useForm()
-    const   [ value, setValue ] = React.useState(0); 
+    const   [ distance, setDistance ] = React.useState(0); 
+    const   [ minage, setMinage ] = React.useState(0); 
+    const   [ maxage, setMaxage ] = React.useState(0); 
 
+    const onSubmit = async (data) =>{
+        let newInterest ='['
+        let i = data.interest.length, j = 1
+        data.interest.forEach(value => {
+            newInterest = newInterest + '\"' + value + '\"'
+            if (j++ < i)
+                newInterest = newInterest  + ','
+        })
+        newInterest = newInterest + ']'
+        data.interest = newInterest
+        data.distance = distance
+        data.minage = minage
+        data.maxage = maxage
+        // console.log(data)
+        await fetch('/match/getMatch',{
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+              'authorization': `bearer ${localStorage.getItem('authorization')}` 
+            },
+            body: JSON.stringify(data)
+        })
+        .then (data =>{
+            if(data.status === 403) throw data
+            return data.json()
+        })
+        .then (data => {
+            console.log(data)
+            let i= 0;
+            let holdInfo = data.info.map(data => {
+                return <Suggest handleDisplay={handleDisplay}  info={data} setInfo={setInfo} key={i++}/>
+            })
+            setDisplay(holdInfo)
+        })
+        .catch (err =>{
+            console.log(err)
+        })
+    }
     return (
         <div
             style={{
@@ -16,7 +56,7 @@ export const AdvancedMatch = () => {
                 padding: '5vh'
             }}
         >
-            <Form>
+            <Form onSubmit={handleSubmit(onSubmit)}>
                 <div
                     style={{
                         display: 'flex',
@@ -34,11 +74,12 @@ export const AdvancedMatch = () => {
                         <div><Form.Label column><h3>Distance</h3></Form.Label></div>
                     
                         <RangeSlider
-                            value={value}
-                            onChange={changeEvent => setValue(Number(changeEvent.target.value))}
+                            value={distance}
+                            onChange={changeEvent => setDistance(Number(changeEvent.target.value))}
                             tooltip='on'
-                            step={10}
+                            step={5}
                             size='lg'
+                            name="distance"
                         />
                     </div>
                     <div
@@ -56,18 +97,20 @@ export const AdvancedMatch = () => {
                             }}
                         >
                             <RangeSlider
-                                value={value}
-                                onChange={changeEvent => setValue(Number(changeEvent.target.value))}
+                                value={minage}
+                                onChange={changeEvent => setMinage(Number(changeEvent.target.value))}
                                 tooltip='on'
-                                step={10}
+                                step={5}
                                 size='lg'
+                                name="minage"
                             />
                             <RangeSlider
-                                value={value}
-                                onChange={changeEvent => setValue(Number(changeEvent.target.value))}
+                                value={maxage}
+                                onChange={changeEvent => setMaxage(Number(changeEvent.target.value))}
                                 tooltip='on'
-                                step={10}
+                                step={5}
                                 size='lg'
+                                name="maxage"
                             />
                         </div>
                     </div>

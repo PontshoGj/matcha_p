@@ -11,8 +11,9 @@ services:
             - "27017:27017"
 
     mysql:
-        image: mysql
-        # command: --default-authentication-plugin=mysql_native_password
+        image: mysql/mysql-server:5.7
+        # command: mysql -u root -p root -e  "plugin='mysql_native_password' where user='root';"
+        command: --default-authentication-plugin=mysql_native_password
         restart: always
         container_name: mysql
         networks: 
@@ -121,32 +122,32 @@ services:
         command: "npm start"
         ports:
             - "3020:3020"
-    # chart:
-    #     image: chart
-    #     build: ./chart
-    #     restart: always
-    #     container_name: chart
-    #     networks: 
-    #         - backend
-    #     #     - backenddb
-    #     expose: 
-    #         - '4000'
-    #     command: "npm start"
-    #     ports:
-    #         - "4000:4000"
-    # # client:
-    #     image: client
-    #     build: ./client
-    #     restart: always
-    #     container_name: client
-    #             networks: 
-    #         - backend
-    #     #     - backenddb
-    #     expose: 
-    #         - '3001'
-    #     command: "npm start"
-    #     ports:
-    #         - "3001:3000"
+    chart:
+        image: chart
+        build: ./chart
+        restart: always
+        container_name: chart
+        networks: 
+            - backend
+        #     - backenddb
+        expose: 
+            - '4000'
+        command: "npm start"
+        ports:
+            - "4000:4000"
+    client:
+        image: client
+        build: ./client
+        restart: always
+        container_name: client
+        networks: 
+            - backend
+        #     - backenddb
+        expose: 
+            - '3001'
+        command: "npm start"
+        ports:
+            - "3001:3000"
 networks:
     backend:
         driver: bridge

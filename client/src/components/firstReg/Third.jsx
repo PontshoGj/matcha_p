@@ -8,50 +8,73 @@ import {Fourth} from './Fourth'
 export const Third = ({setDisplay}) => {
     // const   {register, handleSubmit} = useForm()
 
+    const   [lat, setLat] = React.useState()
+    const   [lng, setLng] = React.useState()
 
-    const onSubmit = async (e) => {
-        setDisplay(<Fourth setDisplay={setDisplay} />)
-        // await fetch('', {
-        //     method: 'POST',
-        //     redirect: 'manual',
-        //     headers: {
-        //       'Content-Type': 'application/json;charset=utf-8',
-        //       'authorization': `bearer ${localStorage.getItem('authorization')}` 
-        //     },
-        //     body: JSON.stringify(data)
-        // })
-        // .then (data => {
-        //     if(data.status === 403) throw data
-        //     return data.json()
-        // })
-        // .then (value =>{
-        //     console.log(value)
-        // })
-        // .catch (err => {
-        //     if (err.status === 403)
-        //         setLog(false)
-        // })
+    const onload = async () => {
+        const getLocation = () =>{
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(getPosition);
+            } else {
+                console.log("Geolocation is not supported by this browser.");
+            }
+        }
+    
+        function getPosition(position){
+            setLat(Number.parseFloat(position.coords.latitude).toFixed(5))
+            setLng(Number.parseFloat(position.coords.longitude).toFixed(5))
+        }
+        
+        getLocation()
     }
-    const change = () =>{
-        // console.log(e)
-    }
+
+    onload()
     const containerStyle = {
         width: '48vw',
         height: '60vh'
       };
-      
-      const center = {
-        lat: -26.205051, 
-        lng: 28.040141
-      };
-      const position = {
-        lat: -26.205051, 
-        lng: 28.040141
-      };
-    //   const onLoad = marker => {
-    //     let markers = marker
-        // console.log(marker)
-    //   }
+
+
+
+    const position = {
+        lat: +lat, 
+        lng: +lng
+    };
+
+    const center = {
+        lng: +lng,
+        lat: +lat 
+    };
+    const onSubmit = async () => {
+        setDisplay(<Fourth setDisplay={setDisplay} />)
+        let data = {
+            lat: lat,
+            lng: lng
+        }
+        await fetch('/user/saveLocation', {
+            method: 'POST',
+            redirect: 'manual',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+              'authorization': `bearer ${localStorage.getItem('authorization')}` 
+            },
+            body: JSON.stringify(data)
+        })
+        .then (data => {
+            if(data.status === 403) throw data
+            return data.json()
+        })
+        .then (value =>{
+            console.log(value)
+        setDisplay(<Fourth setDisplay={setDisplay} />)
+
+        })
+        .catch (err => {
+            if (err.status === 403)
+                setLog(false)
+        })
+    }
+
       const back = () =>{
           setDisplay(<Second setDisplay={setDisplay}/>)
       }
@@ -75,8 +98,6 @@ export const Third = ({setDisplay}) => {
                             // onLoad={onLoad}
                             position={position}
                             draggable={true}
-                            onPositionChanged={change}
-                            onFlatChanged={change}
                             // ref={register}
                         />
                     </GoogleMap>

@@ -6,11 +6,12 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 export const Location = () => {
     const   {setLog} = useContext(GlobalContext)
-    const   [email, setEmail] = React.useState('')
-    const   {register, handleSubmit} = useForm()
+    const   {handleSubmit} = useForm()
+    const   [lat, setLat] = React.useState()
+    const   [lng, setLng] = React.useState()
 
     const onload = async () => {
-        await fetch('/user/getemail', {
+        await fetch('/user/getLocation', {
             method: 'POST',
             redirect: 'manual',
             headers: {
@@ -23,13 +24,27 @@ export const Location = () => {
             return data.json()
         })
         .then (data => {
-            // console.log(data)
-            setEmail(data.email)
+            console.log(data)
+            // setEmail(data.email)
         })
         .catch(err =>{
             if (err.status === 403)
                 setLog(false)
         })
+        const getLocation = () =>{
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(getPosition);
+            } else {
+                console.log("Geolocation is not supported by this browser.");
+            }
+        }
+    
+        function getPosition(position){
+            setLat(Number.parseFloat(position.coords.latitude).toFixed(5))
+            setLng(Number.parseFloat(position.coords.longitude).toFixed(5))
+        }
+        
+        getLocation()
     }
 
     onload()
@@ -37,15 +52,18 @@ export const Location = () => {
         width: '48vw',
         height: '60vh'
       };
-      
-      const center = {
-        lat: -26.205051, 
-        lng: 28.040141
-      };
-      const position = {
-        lat: -26.205051, 
-        lng: 28.040141
-      };
+
+
+
+    const position = {
+        lat: +lat, 
+        lng: +lng
+    };
+
+    const center = {
+        lng: +lng,
+        lat: +lat 
+    };
     //   const onLoad = marker => {
     // //     let markers = marker
     //     console.log(marker)

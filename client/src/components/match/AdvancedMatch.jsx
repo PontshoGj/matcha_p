@@ -3,6 +3,7 @@ import {useForm} from 'react-hook-form'
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import RangeSlider from 'react-bootstrap-range-slider';
 import {Button, Form, Col, Row} from 'react-bootstrap'
+import  {Suggest} from './Suggest'
 
 export const AdvancedMatch = ([setDisplay]) => {
     const   {register, handleSubmit} = useForm()
@@ -38,11 +39,11 @@ export const AdvancedMatch = ([setDisplay]) => {
         })
         .then (data => {
             console.log(data)
-            let i= 0;
-            let holdInfo = data.info.map(data => {
-                return <Suggest handleDisplay={handleDisplay}  info={data} setInfo={setInfo} key={i++}/>
-            })
-            setDisplay(holdInfo)
+            // let i= 0;
+            // let holdInfo = data.info.map(data => {
+            //     return <Suggest handleDisplay={handleDisplay}  info={data} setInfo={setInfo} key={i++}/>
+            // })
+            // setDisplay(holdInfo)
         })
         .catch (err =>{
             console.log(err)

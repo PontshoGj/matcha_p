@@ -17,6 +17,8 @@ const insertFirst = require('./control/insertFirst')
 const updatefirstinput = require('./control/updateFirstInput')
 const getmatch = require('./control/getmatch')
 const like = require('./control/like')
+const saveLocation = require('./control/saveLocation')
+const getLocation = require('./control/getLocation')
 const getFriends = require('./control/getFriends')
 const server = express();
 let port = process.env.PORT || 5001;
@@ -43,5 +45,8 @@ server.use('/updatefirstinput', updatefirstinput);
 server.use('/getmatch', getmatch);
 server.use('/like', like);
 server.use('/getFriends', getFriends);
+server.use('/saveLocation', saveLocation);
+server.use('/getLocation', getLocation);
+
 
 server.listen(port, () => {console.log(`User Running on Port ${port}`)})

@@ -565,6 +565,61 @@ class dbConnection{
             res.json({result: 0 ,username: "username does not exist"})
         }   
     }
+
+    async saveloc (lat, lng, user_id, res) {
+        try{
+            let uid = uuid()
+            // connecting to the mongodb cloud database
+            await this.connection.getConnection((err) => {
+                if (!this.errors(err)) return
+                console.log('inserting location');
+                this.connection.query(`INSERT INTO users SET latidute = ${lat}, longitude = ${lng} WHERE id = ${user_id}`, (err, result) => {
+                    if (!err){
+                        if(result.affectedRows){
+                            console.log(result)
+                            // console.log('user saved  aaaaaaa');
+                            res.json({result: 1, err: {}});
+                            // throw '1'
+                        }else{
+                            console.log("loaction insertion failed")
+                            res.json({result: 0, err: {insert: "location insertion failed"}});
+                        }
+                    }else{
+                        console.log(err);
+                        res.json({result: 0, err: {insert: "location insertion failed"}});
+                    }
+                })
+                // this.connection.end()
+            })
+        }catch (e) {
+            console.log(e);
+            res.json({result: 0, err: {insert: "location insertion faild"}});
+        }
+    }
+    async getloc(userid, res){
+        try{
+            await this.connection.getConnection((err) => {
+                if (!this.errors(err)) return
+                this.connection.query(`SELECT latidute, longitude FROM friends WHERE user_id = \'${userid}\'`, (err, result) => {
+                    if (!err){
+                        let check = JSON.stringify(result)
+                        if(check.localeCompare('[]') !== 0){
+                            //  console.log(result);
+                             res.json({result: 1, lat: result.latidute,lng: result.longitude})
+                        }else{
+                            res.json({result: 0 ,username: "username does not exist"})
+                        }
+                    }else{
+                        console.log(err);
+                        res.json({result: 0 ,username: "username does not exist"})
+                    }
+                })
+                // this.connection.end()
+            })
+        }catch (e){
+
+        }
+    }
 }
 
 module.exports = dbConnection;

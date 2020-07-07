@@ -14,7 +14,6 @@ class sendEmail {
                 pass: "LLL;;;lll123" // generated ethereal password
             }
         });
-        console.log("fffffffffff")
         let info = transporter.sendMail({
             from: '"match" <matcha.match.info@gmail.com>', // sender address
             to: `${email}`, // list of receivers
@@ -24,7 +23,7 @@ class sendEmail {
            if(err){
                console.log(err);
            }else{
-               console.log("Message sent: %s", res);
+               console.log("Message sent");
            }}
         );
     }

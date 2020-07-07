@@ -11,21 +11,24 @@ export const Third = ({setDisplay}) => {
     const   [lat, setLat] = React.useState()
     const   [lng, setLng] = React.useState()
 
+    function getLocation () {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(getPosition);
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+    }
+
+    function getPosition(position){
+        console.log("it's in here")
+        setLat(Number.parseFloat(position.coords.latitude).toFixed(5))
+        setLng(Number.parseFloat(position.coords.longitude).toFixed(5))
+    }
     const onload = async () => {
-        const getLocation = () =>{
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(getPosition);
-            } else {
-                console.log("Geolocation is not supported by this browser.");
-            }
-        }
-    
-        function getPosition(position){
-            setLat(Number.parseFloat(position.coords.latitude).toFixed(5))
-            setLng(Number.parseFloat(position.coords.longitude).toFixed(5))
-        }
         
         getLocation()
+        console.log(lat)
+        console.log(lng)
     }
 
     onload()
@@ -70,8 +73,8 @@ export const Third = ({setDisplay}) => {
 
         })
         .catch (err => {
-            if (err.status === 403)
-                setLog(false)
+            // if (err.status === 403)
+                // setLog(false)
         })
     }
 

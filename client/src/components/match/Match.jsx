@@ -18,6 +18,7 @@ export const Match = () => {
         setDisplays('flex');
     }
 
+    console.log("dodod")
     const onload = async () =>{
         await fetch('/match/getMatch', {
             method: 'POST',
@@ -32,7 +33,7 @@ export const Match = () => {
             return data.json()
         })
         .then (data =>{
-            // console.log(data)
+            console.log(data)
             let i= 0;
             let holdInfo = data.info.map(data => {
                 return <Suggest handleDisplay={handleDisplay}  handleDisplay setInfo={setInfo} key={i++}/>

@@ -55,7 +55,10 @@ class dbConnection{
                             let str = 'http://localhost:3000/Valid?token='+uid +'&selec='+uid2;
                             let mail = new email()
                             mail.sendmails(user.email, `<a href="${str}">Validate</a>`, "Account confirmation mail")
-
+                            this.connection.query(`INSERT INTO auth SET id = ${result.insertId}, token = \'${uid}\', selec = \'${uid2}\'`, user, (err, result) => {
+                                if (err)
+                                    console.log(err)
+                            })
                             res.json({result: 1, err: {}});
                             // throw '1'
                         }else{
@@ -573,10 +576,11 @@ class dbConnection{
             await this.connection.getConnection((err) => {
                 if (!this.errors(err)) return
                 console.log('inserting location');
-                this.connection.query(`INSERT INTO users SET latidute = ${lat}, longitude = ${lng} WHERE id = ${user_id}`, (err, result) => {
+                this.connection.query(`UPDATE users SET latidute = ${lat}, longitude = ${lng} WHERE id = ${user_id}`, (err, result) => {
                     if (!err){
+                        // console.log(result)
                         if(result.affectedRows){
-                            console.log(result)
+                            // console.log(result)
                             // console.log('user saved  aaaaaaa');
                             res.json({result: 1, err: {}});
                             // throw '1'

@@ -41,9 +41,9 @@ connection.connect((err) => {
     console.log('Table freinds created');
     connection.query('CREATE TABLE IF NOT EXISTS messages (id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, username VARCHAR(100) NOT NULL, sender VARCHAR(100) NOT NULL, message VARCHAR(1000))');
     console.log('Table messages created');
-    connection.query('CREATE TABLE IF NOT EXISTS auth(username VARCHAR(100) PRIMARY KEY NOT NULL, token VARCHAR(1000), selec VARCHAR(1000))');
+    connection.query('CREATE TABLE IF NOT EXISTS auth(id INT(9) UNSIGNED PRIMARY KEY NOT NULL, token VARCHAR(1000), selec VARCHAR(1000))');
     console.log('Table auth created');
-    connection.query('CREATE TABLE IF NOT EXISTS passrest(username VARCHAR(100) PRIMARY KEY NOT NULL, token VARCHAR(1000), selec VARCHAR(1000))');
+    connection.query('CREATE TABLE IF NOT EXISTS passrest(id INT(9) UNSIGNED PRIMARY KEY NOT NULL, token VARCHAR(1000), selec VARCHAR(1000))');
     console.log('Table passrest created');
     connection.query('CREATE TABLE IF NOT EXISTS images (image_id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,user_id INT(9) NOT NULL, img LONGBLOB NOT NULL)')
     console.log("Table images created");

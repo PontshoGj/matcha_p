@@ -38,12 +38,33 @@ load.all('/login*', async (req, res, next) =>{
                     token,
                     result: data.result,
                     id: data.id,
-                    firstinput: data.firstinput
+                    firstinput: data.firstinput,
+                    vf: data.vf
                 });
             });
         }else{
             res.json({result: data.result})
         }
+    })
+    .catch(err => {})
+})
+
+load.all('/validate', async (req, res, next) =>{
+    let path = req.url.split('/')
+    await fetch(`http://usermanagement:5001/${path[1]}`,{
+            method: 'post',
+            body: JSON.stringify(req.body),
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        }
+    )
+    .then (data => {
+        if (data.status === 500) throw data
+        return data.json()
+    })
+    .then(data =>{
+            res.json({result: data.result})
     })
     .catch(err => {})
 })

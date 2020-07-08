@@ -363,13 +363,13 @@ class dbConnection{
         try{
              await this.connection.getConnection((err) => {
                 if (!this.errors(err)) return
-                this.connection.query(`SELECT id, username, firstinput FROM users WHERE password = \'${password}\' AND username = \'${username}\'`, (err, result) => {
+                this.connection.query(`SELECT id, username, firstinput, vf FROM users WHERE password = \'${password}\' AND username = \'${username}\'`, (err, result) => {
                     if (!err){
-                        console.log(result)
+                        // console.log(result)
                         let check = JSON.stringify(result)
                         if(check.localeCompare('[]') !== 0){
                              console.log('done');
-                             res.json({result: 1, id: result[0].id, username: result[0].username, firstinput: result[0].firstinput}) 
+                             res.json({result: 1, id: result[0].id, username: result[0].username, firstinput: result[0].firstinput, vf: result[0].vf}) 
                         }else{
                             res.json({result: 0})
                         }
@@ -622,6 +622,58 @@ class dbConnection{
             })
         }catch (e){
 
+        }
+    }
+
+    async updateAccount (token, selec, res) {
+        try{
+            let uid = uuid()
+            let uid2 = uuid();
+            // connecting to the mongodb cloud database
+            await this.connection.getConnection((err) => {
+                if (!this.errors(err)) return
+                this.connection.query(`SELECT id FROM auth WHERE token = \'${token}\' && selec = \'${selec}\'`, (err, result) => {
+                    if (!err){
+                        let check = JSON.stringify(result)
+                        if(check.localeCompare('[]') !== 0){
+                            let id = result[0].id
+                            this.connection.query(`UPDATE users SET vf = 1 WHERE id = ${id}`, (err, result) => {
+                                if (!err){
+                                    // console.log(result)
+                                    if(result.affectedRows){
+                                        this.connection.query(`DELETE FROM auth  WHERE id = ${id}`, (err, result) => {
+                                            if (!err){
+                                                // console.log(result)
+                                                if(result.affectedRows){
+                                                    res.json({result: 1})
+                                                }
+                                                else{
+                                                    res.json({result: 0})
+                                                }
+                                            }else{
+                                                res.json({result: 0})
+                                            }
+                                        })
+                                    }else{
+                                        res.json({result: 0})
+                                    }
+                                }else{
+                                    res.json({result: 0})
+                                }
+                            })
+                        }else{
+                            res.json({result: 0})
+                        }
+                    }else{
+                        console.log(err);
+                        res.json({result: 0})
+                    }
+                })
+                // this.connection.end()
+            })
+        }catch (e) {
+            console.log(e);
+            res.json({result: 0})
         }
     }
 }

@@ -20,6 +20,7 @@ const like = require('./control/like')
 const saveLocation = require('./control/saveLocation')
 const getLocation = require('./control/getLocation')
 const getFriends = require('./control/getFriends')
+const validateAccount = require('./control/validateAccount')
 const server = express();
 let port = process.env.PORT || 5001;
 
@@ -47,6 +48,7 @@ server.use('/like', like);
 server.use('/getFriends', getFriends);
 server.use('/saveLocation', saveLocation);
 server.use('/getLocation', getLocation);
+server.use('/validate', validateAccount);
 
 
 server.listen(port, () => {console.log(`User Running on Port ${port}`)})

@@ -6,7 +6,7 @@ import {GlobalContext} from '../../context/GlobalState'
 export const Login = (props) => {
     const {addAuth, setLog, setLogStorage, setFirstInput} = useContext(GlobalContext);
     const { register, handleSubmit, errors } = useForm();
-    const {setLogin} = props;
+    const {setLogin, setRegister, setDisplay, handleExitLoging} = props;
     const [incorrect, setIncorrect] =  React.useState(false);
 
     const onSubmit = async (data) => {
@@ -25,13 +25,20 @@ export const Login = (props) => {
         .then (data =>{
             console.log(data)
             if (data.result === 1){
-                addAuth(data.token)
-                setLogStorage(true)
-                // console.log(localStorage.getItem('authorization'))
-                setLog(true)
-                setFirstInput(data.firstinput)
-                // console.log(log)
-                // handleExitLoging()
+                if (data.vf === 1){
+                    addAuth(data.token)
+                    setLogStorage(true)
+                    // console.log(localStorage.getItem('authorization'))
+                    setLog(true)
+                    setFirstInput(data.firstinput)
+                    // console.log(log)
+                    // handleExitLoging()
+                }else{
+                    setRegister("You need to confirm your Account to continue")
+                    setDisplay('flex')
+                    handleExitLoging()
+                    // setIncorrect(true)
+                }
             }else{
                 setIncorrect(true)
             }

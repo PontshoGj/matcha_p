@@ -25,13 +25,15 @@ export const Ui_Register_Login = (props) => {
 
         const handleExitRegister = () =>{
             setRegisterDisplay('none')
-            console.log("no this")
         }
 
         const handleExitLoging = () =>{
             setLoging('none')
         }
-        
+        if (props.message !== ''){
+            setRegister(props.message)
+            setDisplay('flex')
+        }
         return (
             <div style={{
                 display: 'flex',
@@ -105,6 +107,9 @@ export const Ui_Register_Login = (props) => {
                             <Login 
                                 handleExitLoging={handleExitLoging}
                                 setLogin={setLogin}
+                                setRegister={setRegister}
+                                handleExitLoging={handleExitLoging}
+                                setDisplay={setDisplay}
                             />
                         </div>
                         <div

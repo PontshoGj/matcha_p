@@ -2,13 +2,16 @@ const db = require('./dbConnection')
 
 class InsertFirst extends db {
 
-    constructor (age, race, interest, username, gender){
+    constructor (age, race, interest, username, gender, distance, maxage, minage){
         super();
         this.age = age;
         this.race = race;
         this.interest = interest;
         this.username = username;
         this.gender = gender
+        this.distance = distance
+        this.maxage = maxage
+        this.minage = minage
     }
 
     checkage () {
@@ -53,7 +56,10 @@ class InsertFirst extends db {
                 race: `${this.race}`,
                 interest: `${this.interest}`,
                 username: `${this.username}`,
-                gender: `${this.gender}`
+                gender: `${this.gender}`,
+                distance: `${this.distance}`,
+                maxage: `${this.maxage}`,
+                minage: `${this.minage}`
             }
             // if (!(result = await this.insertFirst(users))){
             //     err.push({insert: "insertion faild"})

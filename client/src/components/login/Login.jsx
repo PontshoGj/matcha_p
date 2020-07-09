@@ -2,11 +2,12 @@ import React, {useContext} from 'react'
 import {useForm, ErrorMessage} from 'react-hook-form'
 import {Form, Col, Row, Button} from 'react-bootstrap'
 import {GlobalContext} from '../../context/GlobalState'
+import {Passreset} from '../passreset/Passreset'
 
 export const Login = (props) => {
     const {addAuth, setLog, setLogStorage, setFirstInput} = useContext(GlobalContext);
     const { register, handleSubmit, errors } = useForm();
-    const {setLogin, setRegister, setDisplay, handleExitLoging} = props;
+    const {setLogin, setRegister, setDisplay, handleExitLoging, handleExitReset} = props;
     const [incorrect, setIncorrect] =  React.useState(false);
 
     const onSubmit = async (data) => {
@@ -44,6 +45,10 @@ export const Login = (props) => {
             }
         })
       };
+    const reset = async () =>{
+        handleExitLoging()
+        handleExitReset()
+    }
     const errorMessage = () =>{
         if (incorrect){
             return (<div style={{marginLeft: '10vw'}}>Incorrect Username or Password</div>)
@@ -86,7 +91,7 @@ export const Login = (props) => {
                 <Form.Group>
                     <br />
                 </Form.Group>
-                <Button variant='secondary'  size='lg' style={{width: '50vw', marginLeft: '10vw'}} block>Reset Password</Button>
+                <Button variant='secondary'  size='lg' style={{width: '50vw', marginLeft: '10vw'}} onClick={reset} block>Reset Password</Button>
 
             </Form>
         </div>

@@ -10,7 +10,10 @@ router.post('/', async (req, res) => {
                                 req.body.race, 
                                 req.body.interest, 
                                 req.body.username,
-                                req.body.gender
+                                req.body.gender,
+                                req.body.distance,
+                                req.body.maxage,
+                                req.body.minage
                             );
     //returning the results of the registration process
     // res.json((await updateUser.insertInfo(res)))

@@ -21,6 +21,7 @@ const saveLocation = require('./control/saveLocation')
 const getLocation = require('./control/getLocation')
 const getFriends = require('./control/getFriends')
 const validateAccount = require('./control/validateAccount')
+const passwordreset = require('./control/passwordreset')
 const server = express();
 let port = process.env.PORT || 5001;
 
@@ -49,6 +50,7 @@ server.use('/getFriends', getFriends);
 server.use('/saveLocation', saveLocation);
 server.use('/getLocation', getLocation);
 server.use('/validate', validateAccount);
+server.use('/passwordreset', passwordreset);
 
-
+console.log('vv')
 server.listen(port, () => {console.log(`User Running on Port ${port}`)})

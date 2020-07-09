@@ -8,8 +8,8 @@ class getMatch extends db {
         super();
     }
 
-    async getmatch (interest, longitude, latidute, minage, maxage, gender, res) {
-        await this.getMatch(interest, longitude, latidute, minage, maxage, gender,res)
+    async getmatch (interest, longitude, latidute, minage, maxage, gender, distance,res) {
+        await this.getMatch(interest, longitude, latidute, minage, maxage, gender, distance,res)
     }
 }
 

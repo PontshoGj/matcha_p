@@ -7,14 +7,16 @@ import {Login} from './login/Login'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import {Messages} from './errorsAndmessages/Messages'
+import { Passreset } from './passreset/Passreset'
 
 export const Ui_Register_Login = (props) => {
         const {setLogin} = props
+        let msg = (props.message !== '') ? 'flex' : 'none'
         const [RegisterDisplay, setRegisterDisplay] = useState('none');
-        const [register, setRegister] = useState('')
+        const [register, setRegister] = useState(props.message)
         const [Loging, setLoging] = useState('none');
-        const [display, setDisplay] = useState('none')
-        
+        const [display, setDisplay] = useState(msg)
+        const [reset, setReset] = useState('none')
         const handleRegister = () =>{
             setRegisterDisplay('flex')
         }
@@ -28,18 +30,23 @@ export const Ui_Register_Login = (props) => {
         }
 
         const handleExitLoging = () =>{
+            console.log('aaa')
             setLoging('none')
         }
-        if (props.message !== ''){
-            setRegister(props.message)
-            setDisplay('flex')
+        const handleExitReset = () =>{
+            setReset('flex')
+        }
+        const handleExitReset2 = () =>{
+            setReset('none')
         }
         return (
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-            }}>
+            <div 
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                }}
+            >
                 <Navigation />
                 <div
                     style={{
@@ -110,6 +117,7 @@ export const Ui_Register_Login = (props) => {
                                 setRegister={setRegister}
                                 handleExitLoging={handleExitLoging}
                                 setDisplay={setDisplay}
+                                handleExitReset={handleExitReset}
                             />
                         </div>
                         <div
@@ -117,6 +125,38 @@ export const Ui_Register_Login = (props) => {
                                 marginLeft: '10vw'
                             }}
                             onClick={handleExitLoging}
+                        >
+                            <FontAwesomeIcon icon={faTimes} size='6x' />
+                        </div>
+                    </div>
+                    <div
+                        style={{
+                            display: reset,
+                            justifyContent: 'center',
+                            width: '100%',
+                            height: '100%',
+                            top: '0',
+                            left: '0',
+                            right: '0',
+                            bottom: '0',
+                            position: 'fixed',
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            color: 'white',
+                        }}
+                    >
+                        <div>
+                            <Passreset 
+                                handleExitLoging={handleExitLoging}
+                                setRegister={setRegister}
+                                handleExitReset2={handleExitReset2}
+                                setDisplay={setDisplay}
+                            />
+                        </div>
+                        <div
+                            style={{
+                                marginLeft: '10vw'
+                            }}
+                            onClick={handleExitReset2}
                         >
                             <FontAwesomeIcon icon={faTimes} size='6x' />
                         </div>

@@ -35,7 +35,7 @@ class dbConnection{
     }
 
     //getting mathed user 
-    async getMatch(interest, longitud, latitud, minage, maxage, gender,res){
+    async getMatch(interest, longitud, latitud, minage, maxage, gender, distance, res){
         try {
             await this.connection.getConnection((err) => {
                 if (!this.errors(err)) return
@@ -50,7 +50,7 @@ class dbConnection{
                 // console.log(age)
                 
                 let r_earth = 6371
-                this.connection.query(`SELECT * FROM users WHERE  ${gender} && age BETWEEN ${minage} AND ${maxage} && interest LIKE \'[%${g.substring(1, g.length - 1)}%]\' && latidute BETWEEN latidute AND ${latitude + (5 / r_earth) * (180 / 3.145)} && longitude BETWEEN longitude AND ${longitude + (5 / r_earth) * (180 / 3.145) / Math.cos(latitude * 3.145/180)}`, (err, result) => {
+                this.connection.query(`SELECT * FROM users WHERE  ${gender} && age BETWEEN ${minage} AND ${maxage} && interest LIKE \'[%${g.substring(1, g.length - 1)}%]\' && latidute BETWEEN latidute AND ${latitude + (distance / r_earth) * (180 / 3.145)} && longitude BETWEEN longitude AND ${longitude + (distance / r_earth) * (180 / 3.145) / Math.cos(latitude * 3.145/180)}`, (err, result) => {
                     if (!err){
                         let check = JSON.stringify(result)
                         //  console.log(result);

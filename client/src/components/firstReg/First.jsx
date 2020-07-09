@@ -3,6 +3,8 @@ import {Button, Form, Col, Row} from 'react-bootstrap'
 import {useForm} from 'react-hook-form'
 import {GlobalContext} from '../../context/GlobalState'
 import { Second } from './Second'
+import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
+import RangeSlider from 'react-bootstrap-range-slider';
 
 export const First = ({setDisplay}) => {
     const   {setLog} = useContext(GlobalContext)
@@ -10,6 +12,9 @@ export const First = ({setDisplay}) => {
     const   [gender, setGender] = React.useState('')
     const   [race, setRace] = React.useState('')
     const   {register, handleSubmit} = useForm()
+    const   [ distance, setDistance ] = React.useState(0); 
+    const   [ minage, setMinage ] = React.useState(18); 
+    const   [ maxage, setMaxage ] = React.useState(0); 
 
     const onSubmit = async (data) => {
         let newInterest ='['
@@ -21,6 +26,9 @@ export const First = ({setDisplay}) => {
         })
         newInterest = newInterest + ']'
         data.interest = newInterest
+        data.minage = minage
+        data.maxage = maxage
+        data.distance = distance
         console.log(data)
         setAge(data.age)
         setGender(data.gender)
@@ -63,7 +71,65 @@ export const First = ({setDisplay}) => {
                         <Form.Control type="text" name="age" defaultValue={age} ref={register}/>
                     </Col>
                 </Form.Group>
-
+                <Form.Group>
+                    <div
+                        style={{
+                            display: 'colum',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Form.Label column><h3>Age Range</h3></Form.Label>
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                // width: '60%'
+                            }}
+                        >
+                            <RangeSlider
+                                value={minage}
+                                onChange={changeEvent => setMinage(Number(changeEvent.target.value))}
+                                tooltip='on'
+                                step={5}
+                                size='lg'
+                                name="minage"
+                                min={18}
+                                max={88}
+                            />
+                            <RangeSlider
+                                value={maxage}
+                                onChange={changeEvent => setMaxage(Number(changeEvent.target.value))}
+                                tooltip='on'
+                                step={5}
+                                size='lg'
+                                name="maxage"
+                                min={minage}
+                                max={88}
+                            />
+                        </div>
+                    </div>
+                </Form.Group>
+                <Form.Group>
+                    <div
+                        style={{
+                            display: 'colum',
+                            justifyContent: 'center',
+                            marginRight: '2vw',
+                            // width: '40%'
+                        }}
+                    >
+                        <div><Form.Label column><h3>Distance</h3></Form.Label></div>
+                    
+                        <RangeSlider
+                            value={distance}
+                            onChange={changeEvent => setDistance(Number(changeEvent.target.value))}
+                            tooltip='on'
+                            step={5}
+                            size='lg'
+                            name="distance"
+                        />
+                    </div>
+                </Form.Group>
                 <Form.Group as={Row} controlId='formHorizontalRace'>
                     <Form.Label column sm={2}>Race:</Form.Label>
                     <Col sm={10}>

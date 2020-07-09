@@ -203,6 +203,7 @@ class dbConnection{
                     if (!err){
                         if(result.affectedRows){
                             console.log('password updated');
+                            mail.sendmails(user.email, `<a href="${str}">Validate</a>`, "Password Reset")
                             res.json({result: 1})
                         }else{
                             console.log('password not updated')
@@ -221,6 +222,36 @@ class dbConnection{
         }   
     }
 
+    async updatePassword2 (emails, res) {
+        try{
+            await this.connection.getConnection((err) => {
+                if (!this.errors(err)) return
+                console.log('updating password');
+                let password = '321lll:::LLL'
+                this.connection.query(`UPDATE users SET password = \'${password}\' WHERE email = \'${emails}\'`, (err, result) => {
+                    if (!err){
+                        if(result.affectedRows){
+                            console.log('password updated');
+                            let str = `new password ${password}`
+                            let mail = new email()
+                            mail.sendmails(emails, str, "Password Reset")
+                            res.json({result: 1})
+                        }else{
+                            console.log('password not updated')
+                            res.json({result: 0})
+                        }
+                    }else{
+                        console.log(err);
+                        res.json({result: 0})
+                    }
+                })
+                // this.connection.end()
+            })
+        }catch (e) {
+            console.log(e);
+            res.json({result: 0})
+        }   
+    }
     //
     async updateUsername (user) {
         try{
@@ -330,7 +361,7 @@ class dbConnection{
         try{
             await this.connection.getConnection((err) => {
                 if (!this.errors(err)) return
-                this.connection.query('SELECT interest, latidute, longitude, gender, age FROM users WHERE id = ?', user_id, (err, result) => {
+                this.connection.query('SELECT interest, latidute, longitude, gender, age, minage, maxage, distance FROM users WHERE id = ?', user_id, (err, result) => {
                     if (!err){
                         let check = JSON.stringify(result)
                         if(check.localeCompare('[]') !== 0){
@@ -340,7 +371,10 @@ class dbConnection{
                                 "longitude": result[0].longitude,
                                 "latidute": result[0].latidute,
                                 "age": result[0].age,
-                                "gender": result[0].gender
+                                "gender": result[0].gender,
+                                "distance": result[0].distance,
+                                "minage": result[0].minage,
+                                "maxage": result[0].maxage
                             }})
                         }else{
                             res.json({result: 0 ,username: "username does not exist"})
@@ -445,7 +479,7 @@ class dbConnection{
                 if (!this.errors(err)) return
                 console.log('inserting users');
                 let interest = user.interest
-                this.connection.query(`UPDATE users SET age = ${user.age}, gender = \'${user.gender}\', interest = \'${interest}\' WHERE username = \'${user.username}\'`, (err, result) => {
+                this.connection.query(`UPDATE users SET age = ${user.age}, gender = \'${user.gender}\', interest = \'${interest}\', distance = ${user.distance}, maxage = ${user.maxage}, minage = ${user.minage} WHERE username = \'${user.username}\'`, (err, result) => {
                     if (!err){
                         if(result.affectedRows){
                             console.log('user saved');

@@ -36,7 +36,7 @@ export const Match = () => {
             console.log(data)
             let i= 0;
             let holdInfo = data.info.map(data => {
-                return <Suggest handleDisplay={handleDisplay}  handleDisplay setInfo={setInfo} key={i++}/>
+                return <Suggest handleDisplay={handleDisplay}  info={data} setInfo={setInfo} key={i++}/>
             })
             setDisplay(holdInfo)
         })

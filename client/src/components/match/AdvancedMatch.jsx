@@ -7,8 +7,8 @@ import  {Suggest} from './Suggest'
 
 export const AdvancedMatch = ({setDisplay, handleDisplay, setInfo}) => {
     const   {register, handleSubmit} = useForm()
-    const   [ distance, setDistance ] = React.useState(0); 
-    const   [ minage, setMinage ] = React.useState(0); 
+    const   [ distance, setDistance ] = React.useState(1); 
+    const   [ minage, setMinage ] = React.useState(18); 
     const   [ maxage, setMaxage ] = React.useState(0); 
 
     const onSubmit = async (data) =>{
@@ -81,6 +81,7 @@ export const AdvancedMatch = ({setDisplay, handleDisplay, setInfo}) => {
                             step={5}
                             size='lg'
                             name="distance"
+                            min={1}
                         />
                     </div>
                     <div
@@ -104,6 +105,8 @@ export const AdvancedMatch = ({setDisplay, handleDisplay, setInfo}) => {
                                 step={5}
                                 size='lg'
                                 name="minage"
+                                min={18}
+                                max={88}
                             />
                             <RangeSlider
                                 value={maxage}
@@ -112,6 +115,8 @@ export const AdvancedMatch = ({setDisplay, handleDisplay, setInfo}) => {
                                 step={5}
                                 size='lg'
                                 name="maxage"
+                                min={minage}
+                                max={88}
                             />
                         </div>
                     </div>

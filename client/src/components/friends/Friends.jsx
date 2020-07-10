@@ -2,10 +2,12 @@ import React from 'react'
 import {FriendProfile} from './FriendProfile'
 import {FriendProfileInfo} from "./FriendProfileInfo"
 import {Tabs, Tab} from 'react-bootstrap'
+import {FriendPro} from './FriendPro'
 
 export const Friends = () => {
     const   [display, setDisplay] = React.useState('none')
     const   [comp, setComp] = React.useState()
+    const   [comps, setComps] = React.useState()
     const   [data, setData] = React.useState({})
     
     const handleDisplay = () =>{
@@ -16,6 +18,7 @@ export const Friends = () => {
     }
 
     const onload = async () =>{
+
         await fetch('/user/getFriends', {
             method: 'POST',
             redirect: 'manual',
@@ -29,17 +32,50 @@ export const Friends = () => {
             return data.json()
         })
         .then (data =>{
-            // console.log(data.userinfo)
-            let i= 0;
-            let holdInfo = data.userinfo.map(data => {
-                // console.log(data)
-                return <FriendProfile handleDisplay={handleDisplay}  data={data} setData={setData} key={i++}/>
-            })
-            setComp(holdInfo)
+            console.log(data)
+            // if (data.result){
+                let i= 0;
+                let holdInfo = data.userinfo.map(data => {
+                    // console.log(data)
+                    return <FriendProfile handleDisplay={handleDisplay}  data={data} setData={setData} key={i++}/>
+                })
+                setComp(holdInfo)
+            // }else{
+                // setComp('')
+            // }
+        })
+    }
+    const freq = async () => {
+        await fetch('/user/getfreq', {
+            method: 'POST',
+            redirect: 'manual',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+              'authorization': `bearer ${localStorage.getItem('authorization')}` 
+            },
+        })
+        .then (data => {
+            if(data.status === 403) throw data
+            return data.json()
+        })
+        .then (data =>{
+            console.log(data)
+            if (data.result){
+                let i= 0;
+                let holdInfo = data.userinfo.map(data => {
+                    // console.log(data)
+                    return <FriendPro handleDisplay={handleDisplay}  data={data} setData={setData} key={i++} onload={onload} freq={freq}/>
+                })
+                setComps(holdInfo)
+            }else{
+                setComps("")
+            }
         })
     }
     if (comp === undefined)
         onload()
+    if (comps === undefined)
+        freq()
     return (
         <div
             style={{
@@ -81,7 +117,7 @@ export const Friends = () => {
                             height: '80vh'
                         }}
                     >
-                        {comp}
+                        {comps}
                     </div>
                     <div
                         style={{

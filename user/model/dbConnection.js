@@ -4,7 +4,7 @@ let mysql = require('mysql')
 const {MongoClient} = require('mongodb');
 const email= require('./sendEmail')
 const uuid = require('uuid/v1');
-const { use } = require('../control/like');
+// const { use } = require('../control/likes');
 
 class dbConnection{
  
@@ -530,7 +530,7 @@ class dbConnection{
         try{
             await this.connection.getConnection((err) => {
                 if (!this.errors(err)) return
-                this.connection.query(`INSERT INTO friends SET user_id = ${user}, friend_id = ${frnd}`, (err, result) => {
+                this.connection.query(`INSERT INTO likes SET user_id = ${user}, friend_id = \'${frnd}\', liked = 1`, (err, result) => {
                     if (!err){
                         console.log(result)
                         if(result.affectedRows){
@@ -552,12 +552,89 @@ class dbConnection{
         }   
     }
 
-    Friends (user_id, res) {
+    async insertdisLike (user, frnd,res) {
+        try{
+            await this.connection.getConnection((err) => {
+                if (!this.errors(err)) return
+                this.connection.query(`INSERT INTO likes SET user_id = ${user}, friend_id = \'${frnd}\', liked = 0`, (err, result) => {
+                    if (!err){
+                        console.log(result)
+                        if(result.affectedRows){
+                                console.log('done');
+                                res.json({result: 1}) 
+                        }else{
+                            res.json({result: 0})
+                        }
+                    }else{
+                        console.log(err);
+                        res.json({result: 0})
+                    }
+                })
+                // this.connection.end()
+            })
+        }catch (e) {
+            console.log(e);
+            res.json({result: 0})
+        }   
+    }
+
+    async addFriend (user, frnd,res) {
         try{
             let users = new Promise( async (resolve, reject) =>{
                 await this.connection.getConnection((err) => {
                     if (!this.errors(err)) return
-                    this.connection.query(`SELECT * FROM friends WHERE user_id = \'${user_id}\'`, (err, result) => {
+                    this.connection.query(`INSERT INTO friends SET user_id = ${user}, friend_id = \'${frnd}\'`, (err, result) => {
+                        if (!err){
+                            console.log(result)
+                            if(result.affectedRows){
+                                    console.log('done');
+                                    resolve({result: 1}) 
+                            }else{
+                                reject({result: 0})
+                            }
+                        }else{
+                            console.log(err);
+                            reject({result: 0})
+                        }
+                    })
+                    // this.connection.end()
+                })
+            })
+            users.then(async data =>{
+                await this.connection.getConnection((err) => {
+                    if (!this.errors(err)) return
+                    this.connection.query(`DELETE FROM likes WHERE  user_id = ${frnd} && friend_id = ${user}`, (err, result) => {
+                        if (!err){
+                            let check = JSON.stringify(result)
+                            console.log(result)
+                            if(check.localeCompare('[]') !== 0){
+                                //  console.log(result);
+                                 res.json({result: 1, })
+                            }else{
+                                console.log(err)
+                                res.json({result: 0 ,username: "username does not exist"})
+                            }
+                        }else{
+                            console.log(err);
+                            res.json({result: 0 ,username: "username does not exist"})
+                        }
+                    })
+                    // this.connection.end()
+                })
+            })
+        }catch (e) {
+            console.log(e);
+            res.json({result: 0})
+        }   
+    }
+
+
+    async Friends (user_id, res) {
+        try{
+            let users = new Promise( async (resolve, reject) =>{
+                await this.connection.getConnection((err) => {
+                    if (!this.errors(err)) return
+                    this.connection.query(`SELECT * FROM friends WHERE user_id = \'${user_id}\' || friend_id = \'${user_id}\'`, (err, result) => {
                         if (!err){
                             let check = JSON.stringify(result)
                             if(check.localeCompare('[]') !== 0){
@@ -602,7 +679,58 @@ class dbConnection{
             res.json({result: 0 ,username: "username does not exist"})
         }   
     }
-
+    async Fri (user_id, res) {
+        try{
+            let users = new Promise( async (resolve, reject) =>{
+                await this.connection.getConnection((err) => {
+                    if (!this.errors(err)) return
+                    this.connection.query(`SELECT * FROM likes WHERE friend_id = \'${user_id}\' && liked = 1`, (err, result) => {
+                        if (!err){
+                            let check = JSON.stringify(result)
+                            if(check.localeCompare('[]') !== 0){
+                                //  console.log(result);
+                                 resolve({result: 1, userinfo: result})
+                            }else{
+                                reject({result: 0 ,username: "username does not exist"})
+                            }
+                        }else{
+                            console.log(err);
+                            resolve({result: 0 ,username: "username does not exist"})
+                        }
+                    })
+                    // this.connection.end()
+                })
+            })
+            users.then(async data =>{
+                // console.log(data.userinfo)
+                user_id = data.userinfo.map(friend_id => `id = ${friend_id.user_id}`)
+                user_id = user_id.join(" || ")
+                // console.log(user_id)
+                await this.connection.getConnection((err) => {
+                    if (!this.errors(err)) return
+                    this.connection.query(`SELECT * FROM users WHERE  ${user_id}`, (err, result) => {
+                        if (!err){
+                            let check = JSON.stringify(result)
+                            if(check.localeCompare('[]') !== 0){
+                                //  console.log(result);
+                                 res.json({result: 1, userinfo: result})
+                            }else{
+                                console.log(err)
+                                res.json({result: 0 ,username: "username does not exist"})
+                            }
+                        }else{
+                            console.log(err);
+                            res.json({result: 0 ,username: "username does not exist"})
+                        }
+                    })
+                    // this.connection.end()
+                })
+            })
+        }catch (e) {
+            console.log(e);
+            res.json({result: 0 ,username: "username does not exist"})
+        }   
+    }
     async saveloc (lat, lng, user_id, res) {
         try{
             let uid = uuid()

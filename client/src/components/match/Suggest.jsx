@@ -8,6 +8,49 @@ export const Suggest = (props) => {
         props.handleDisplay();
         props.setInfo(props.info);
     }
+    const like = async() =>{
+        // console.log(props)
+        await fetch('/user/like',{
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+              'authorization': `bearer ${localStorage.getItem('authorization')}` 
+            },
+            body: JSON.stringify({id: props.info.user_id})
+        })
+        .then (data =>{
+            if(data.status === 403) throw data
+            return data.json()
+        })
+        .then (data => {
+            console.log(data)
+        })
+        .catch (err =>{
+            console.log(err)
+        })
+    }
+    const dislike = async() =>{
+        // console.log(props)
+        await fetch('/user/dislike',{
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+              'authorization': `bearer ${localStorage.getItem('authorization')}` 
+            },
+            body: JSON.stringify({id: props.info.user_id})
+        })
+        .then (data =>{
+            if(data.status === 403) throw data
+            return data.json()
+        })
+        .then (data => {
+            console.log(data)
+        })
+        .catch (err =>{
+            console.log(err)
+        })
+
+    }
     return (
         <div
             style={{
@@ -22,8 +65,8 @@ export const Suggest = (props) => {
                     <Card.Body>
                         <Card.Title>{props.info.firstname} {props.info.lastname}</Card.Title>
                         <div>
-                            <FontAwesomeIcon icon={faThumbsDown} size='2x' />
-                            <FontAwesomeIcon icon={faThumbsUp} style={{marginLeft: '2vw'}} size='2x' />
+                            <FontAwesomeIcon icon={faThumbsDown} onClick={dislike} size='2x' />
+                            <FontAwesomeIcon icon={faThumbsUp} onClick={like} style={{marginLeft: '2vw'}} size='2x' />
                             {/* <Button>like</Button> */}
                             {/* <Button>unlke</Button> */}
                         </div>

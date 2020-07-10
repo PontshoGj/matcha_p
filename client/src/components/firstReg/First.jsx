@@ -12,7 +12,7 @@ export const First = ({setDisplay}) => {
     const   [gender, setGender] = React.useState('')
     const   [race, setRace] = React.useState('')
     const   {register, handleSubmit} = useForm()
-    const   [ distance, setDistance ] = React.useState(0); 
+    const   [ distance, setDistance ] = React.useState(1); 
     const   [ minage, setMinage ] = React.useState(18); 
     const   [ maxage, setMaxage ] = React.useState(0); 
 
@@ -127,6 +127,7 @@ export const First = ({setDisplay}) => {
                             step={5}
                             size='lg'
                             name="distance"
+                            min={1}
                         />
                     </div>
                 </Form.Group>

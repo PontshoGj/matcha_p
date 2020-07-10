@@ -16,12 +16,15 @@ const updatebio = require('./control/updatebio')
 const insertFirst = require('./control/insertFirst')
 const updatefirstinput = require('./control/updateFirstInput')
 const getmatch = require('./control/getmatch')
-const like = require('./control/like')
+const like = require('./control/likes')
+const dislike = require('./control/dislikes')
 const saveLocation = require('./control/saveLocation')
 const getLocation = require('./control/getLocation')
 const getFriends = require('./control/getFriends')
+const getfreq = require('./control/freq')
 const validateAccount = require('./control/validateAccount')
 const passwordreset = require('./control/passwordreset')
+const addFriend = require('./control/addFriend')
 const server = express();
 let port = process.env.PORT || 5001;
 
@@ -46,11 +49,14 @@ server.use('/getbio', bio);
 server.use('/updatefirstinput', updatefirstinput);
 server.use('/getmatch', getmatch);
 server.use('/like', like);
+server.use('/dislike', dislike);
 server.use('/getFriends', getFriends);
+server.use('/getfreq', getfreq);
 server.use('/saveLocation', saveLocation);
 server.use('/getLocation', getLocation);
 server.use('/validate', validateAccount);
 server.use('/passwordreset', passwordreset);
+server.use('/addFriend', addFriend);
 
 console.log('vv')
 server.listen(port, () => {console.log(`User Running on Port ${port}`)})

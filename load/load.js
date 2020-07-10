@@ -112,6 +112,7 @@ load.all('/save*', async (req, res, next) =>{
 load.all('/user/*', verify,async (req, res, next) =>{
     req.body.username = req.authData.user.username
     let path = req.url.split('/')
+    console.log(req.body)
     await fetch(`http://usermanagement:5001/${path[2]}`,{
                 method: 'post',
                 body: JSON.stringify(req.body),

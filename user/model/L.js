@@ -2,16 +2,19 @@ const db = require('./dbConnection')
 const classes = require('extends-classes');
 
 
-class getLike extends classes (db) {
+class L extends classes (db) {
 
     constructor (){
         super();
     }
 
-    async like (user, frnd, res) {
+    async likes (user, frnd, res) {
         await this.insertLike(user, frnd, res)
     }
 
+    async dislikes (user, frnd, res) {
+        await this.insertdisLike(user, frnd, res)
+    }
 }
 
-module.exports = getLike;
+module.exports = L;

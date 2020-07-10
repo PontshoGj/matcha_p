@@ -11,7 +11,7 @@ export const GlobalContext = createContext(initialState);
 
 // Provider component
 export const GlobalProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(AppReducer, initialState);
+  const [dispatch] = useReducer(AppReducer, initialState);
 
   // Actions
   function deleteAuth(authorization) {

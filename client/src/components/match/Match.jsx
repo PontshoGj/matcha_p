@@ -18,7 +18,6 @@ export const Match = () => {
         setDisplays('flex');
     }
 
-    console.log("dodod")
     const onload = async () =>{
         await fetch('/match/getMatch', {
             method: 'POST',
@@ -34,11 +33,15 @@ export const Match = () => {
         })
         .then (data =>{
             console.log(data)
-            let i= 0;
-            let holdInfo = data.info.map(data => {
-                return <Suggest handleDisplay={handleDisplay}  info={data} setInfo={setInfo} key={i++}/>
-            })
-            setDisplay(holdInfo)
+            if (data.result){
+                let i= 0;
+                let holdInfo = data.info.map(data => {
+                    return <Suggest handleDisplay={handleDisplay}  info={data} setInfo={setInfo} key={i++}/>
+                })
+                setDisplay(holdInfo)
+            }else{
+                setDisplay("")
+            }
         })
     }
     if (display[0] === undefined)
@@ -46,9 +49,9 @@ export const Match = () => {
     const advancedSearch = () =>{
         setSearch('flex')
     }
-    const liked = (data) => {
-        setDisplay(data)
-    }
+    // const liked = (data) => {
+    //     setDisplay(data)
+    // }
     return (
         <div
             style={{

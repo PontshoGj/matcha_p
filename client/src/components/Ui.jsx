@@ -1,9 +1,9 @@
 import React, {useContext} from 'react'
-import {Ui_Register_Login} from './Ui_Register_Login'
+import {UiRegisterLogin} from './UiRegisterLogin'
 import {UIProfile} from './UIProfile'
 import {GlobalContext} from '../context/GlobalState'
 import {FirstRegUi} from './firstReg/FirstRegUi'
-import {Passreset} from './passreset/Passreset'
+// import {Passreset} from './passreset/Passreset'
 export const Ui = () => {
     const {log} = useContext(GlobalContext)
     const   [message, setMessage] = React.useState('')
@@ -35,7 +35,7 @@ export const Ui = () => {
     const display = (localStorage.getItem('log') === 'true' ||  log === 'true') ? 
     (localStorage.getItem("firstinput") === '1') ? <UIProfile /> : <FirstRegUi /> 
     : 
-    <Ui_Register_Login message={message}/> 
+    <UiRegisterLogin message={message}/> 
     if (url.pathname === '/Valid')
         validate()
     // if (url.pathname === '/Reset')

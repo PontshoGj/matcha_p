@@ -1,7 +1,7 @@
 import React from 'react'
-import {Card, Button} from 'react-bootstrap'
+import {Card} from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faThumbsDown, faThumbsUp, faBars, faEllipsisH } from '@fortawesome/free-solid-svg-icons'
+import { faThumbsDown, faThumbsUp, faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 
 export const Suggest = (props) => {
     const show = () =>{

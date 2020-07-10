@@ -20,7 +20,7 @@ export const First = ({setDisplay}) => {
         let newInterest ='['
         let i = data.interest.length, j = 1
         data.interest.forEach(value => {
-            newInterest = newInterest + '\"' + value + '\"'
+            newInterest = newInterest + '"' + value + '"'
             if (j++ < i)
                 newInterest = newInterest  + ','
         })

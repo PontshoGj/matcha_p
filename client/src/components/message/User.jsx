@@ -1,5 +1,5 @@
 import React from 'react'
-import {Card, Button} from 'react-bootstrap'
+import {Card} from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 
@@ -8,6 +8,7 @@ export const User = ({data, setMessage}) => {
         // console.log(data)
         setMessage(data)
     }
+    setdata()
     return (
         <div
             style={{

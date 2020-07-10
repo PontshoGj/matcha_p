@@ -32,7 +32,7 @@ export const Friends = () => {
             return data.json()
         })
         .then (data =>{
-            console.log(data)
+            // console.log(data)
             // if (data.result){
                 let i= 0;
                 let holdInfo = data.userinfo.map(data => {
@@ -59,17 +59,18 @@ export const Friends = () => {
             return data.json()
         })
         .then (data =>{
-            console.log(data)
-            if (data.result){
+            // console.log(data)
+            console.log("loading")
+            // if (data.result){
                 let i= 0;
                 let holdInfo = data.userinfo.map(data => {
                     // console.log(data)
                     return <FriendPro handleDisplay={handleDisplay}  data={data} setData={setData} key={i++} onload={onload} freq={freq}/>
                 })
                 setComps(holdInfo)
-            }else{
-                setComps("")
-            }
+            // }else{
+                // setComps("")
+            // }
         })
     }
     if (comp === undefined)

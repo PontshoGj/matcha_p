@@ -12,7 +12,7 @@ export const EditProfile = () => {
     // const   [email, setEamil] = React.useState('');
     const   [age, setAge] = React.useState('')
     const   [gender, setGender] = React.useState('')
-    const   [clearF, setClearF] = React.useState('')
+    // const   [clearF, setClearF] = React.useState('')
     const   {register, handleSubmit} = useForm()
 
     const onload = async () => {
@@ -49,7 +49,7 @@ export const EditProfile = () => {
         let newInterest ='['
         let i = data.interest.length, j = 1
         data.interest.forEach(value => {
-            newInterest = newInterest + '\"' + value + '\"'
+            newInterest = newInterest + '"' + value + '"'
             if (j++ < i)
                 newInterest = newInterest  + ','
         })
@@ -79,22 +79,22 @@ export const EditProfile = () => {
         })
     }
 
-    const clearForm = () =>{
-        let interest = clearF
-        interest = interest.substring(1, interest.length - 1)
-        interest = interest.split(',')
-        interest.forEach(id => {
-            id = id.trim()
-            let value = id.substring(1, id.length - 1)
-            document.getElementById(value).checked = false
-        })
-    }
+    // const clearForm = () =>{
+    //     let interest = clearF
+    //     interest = interest.substring(1, interest.length - 1)
+    //     interest = interest.split(',')
+    //     interest.forEach(id => {
+    //         id = id.trim()
+    //         let value = id.substring(1, id.length - 1)
+    //         document.getElementById(value).checked = false
+    //     })
+    // }
     const selectgender = gender => {
         document.getElementById(gender).selected = true
     }
     
     const setCheck = interest => {
-            setClearF(interest)
+            // setClearF(interest)
             interest = interest.substring(1, interest.length - 1)
             interest = interest.split(',')
             interest.forEach(id => {

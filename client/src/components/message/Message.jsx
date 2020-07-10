@@ -5,19 +5,15 @@ import {Messages} from './Messages'
 const ENDPOINT = "http://127.0.0.1:4001";
 
 export const Message = () => {
-    const [response, setResponse] = React.useState();
+    // const [response, setResponse] = React.useState();
     const   [comp, setComp] = React.useState()
     const   [message, setMessage] = React.useState()
-    const   [socket, setSocket] = React.useState(socketIOClient(ENDPOINT))
+    // const   [socket, setSocket] = React.useState(socketIOClient(ENDPOINT))
+    const socket = socketIOClient(ENDPOINT);
     useEffect(() => {
-        // const socket = socketIOClient(ENDPOINT);
 
-        // socket.on("FromAPI", data => {
-        //     setResponse(data.result);
-        //     console.log(data)
-        // })
         socket.on("status", data =>{
-            setResponse(data.result)
+            // setResponse(data.result)
             console.log(data)
         })
         socket.emit("status",{authorization:localStorage.getItem('authorization')})

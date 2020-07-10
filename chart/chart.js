@@ -23,6 +23,7 @@ const gtfrnd = async bearer => {
         })
 
     let friends = await getfriends.json();
+    console.log(friends)
     let ret = friends.userinfo.map(friend =>{
         return friend.id
     })
@@ -52,7 +53,7 @@ client.on('connection', async function(socket){
 
     socket.on('message', data =>{
         console.log(data)
-        socket.to(data.id).emit("message", {friend_id:'1', message:"just checking"})
+        socket.to(data.id).emit("message", {friend_id:data.id, message: data.message})
     })
 });
 

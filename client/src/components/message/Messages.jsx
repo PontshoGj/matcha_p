@@ -1,19 +1,30 @@
 import React, {useEffect} from 'react'
+import socketIOClient from "socket.io-client";
 import {Button, Form, Col, Row} from 'react-bootstrap'
-import {useForm} from 'react-hook-form'
+// import {useForm} from 'react-hook-form'
+const ENDPOINT = "http://127.0.0.1:4001";
+
 // import socketIOClient from "socket.io-client";
 
-export const Messages = ({message, socket}) => {
+export const Messages = ({message}) => {
     const   [messages, setMessage] = React.useState({})
-    const   {register,handleSubmit} = useForm()
+    // const   {register,handleSubmit} = useForm()
+    const socket = socketIOClient(ENDPOINT);
     useEffect(()=>{
         socket.on("message", data =>{
             setMessage({message: data.message})
         })
+        // socket.on("status", data =>{
+        //     // setResponse(data.result)
+        //     console.log(data)
+        // })
+        // socket.emit("status",{authorization:localStorage.getItem('authorization')})
+        
     })
-    const onSubmit = async (data) => {
-        // console.log(data)
-        socket.emit('message', {id: message.id, message: data.message})
+    const onSubmit = async (e) => {
+        e.preventDefault()
+        // console.log(messages.message)
+        socket.emit('message', {id: message.id,message: messages.message})
     }
     console.log(message)
     return (
@@ -21,13 +32,14 @@ export const Messages = ({message, socket}) => {
             <div
                 style={{
                     height: '75vh',
-                    width: '100%',
-                    display: 'column',
+                    // width: '100%',
+                    display: 'flex',
                     flexWrap: 'wrap',
                     overflow: 'auto',
                     border: 'solid'
                 }}
             >
+                <p>{(message.firstname !== undefined)?message.firstname: ''} {(message.lastname !== undefined)?message.lastname:''}</p>
                 {messages.message}
             </div>
             <div
@@ -35,17 +47,17 @@ export const Messages = ({message, socket}) => {
                     // display: 'flex',
                     // justifyContent: 'center',
                     height: '10vh',
-                    width: '100%',
+                    // width: '100%',
                     // border: 'solid'
                 }}
             >
-                <Form onSubmit={handleSubmit(onSubmit)}>
+                <Form onSubmit={onSubmit}>
                     <Form.Group as={Row} controlId='formHorizontalMessage'>
                         <Col sm={10}>
-                            <Form.Control type="text" name="message" ref={register}/>
+                            <Form.Control type="text" name="message" onChange={changeEvent => setMessage({message: changeEvent.target.value})}/>
                         </Col>
                     </Form.Group>
-                    <Button>Send</Button>
+                    <Button variant="dark"  type='submit'   style={{width: '17vw', marginLeft: '2vw' ,marginTop: '3vh'}} block>Send</Button>
                 </Form>
             </div>
         </div>

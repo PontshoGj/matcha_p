@@ -1,10 +1,10 @@
-import React, {useContext} from 'react'
-import {useForm, ErrorMessage} from 'react-hook-form'
+import React from 'react'
+import {useForm} from 'react-hook-form'
 import {Form, Col, Row, Button} from 'react-bootstrap'
 
 export const Passreset = (props) => {
-    const { register, handleSubmit, errors } = useForm();
-    const {setLogin, setRegister, setDisplay, handleExitReset2} = props;
+    const { register, handleSubmit} = useForm();
+    const {setRegister, setDisplay, handleExitReset2} = props;
 
     const onSubmit = async (data) => {
         console.log(data)

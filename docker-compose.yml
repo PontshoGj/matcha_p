@@ -97,6 +97,7 @@ services:
     match:
         image: match
         build: ./match
+        restart: always
         container_name: match
         networks: 
             - backend
@@ -135,19 +136,19 @@ services:
         command: "npm start"
         ports:
             - "4000:4000"
-    client:
-        image: client
-        build: ./client
-        restart: always
-        container_name: client
-        networks: 
-            - backend
-        #     - backenddb
-        expose: 
-            - '3001'
-        command: "npm start"
-        ports:
-            - "3001:3000"
+    # client:
+    #     image: client
+    #     build: ./client
+    #     restart: always
+    #     container_name: client
+    #     networks: 
+    #         - backend
+    #     #     - backenddb
+    #     expose: 
+    #         - '3001'
+    #     command: "npm start"
+    #     ports:
+    #         - "3001:3000"
 networks:
     backend:
         driver: bridge

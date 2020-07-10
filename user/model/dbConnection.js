@@ -4,6 +4,7 @@ let mysql = require('mysql')
 const {MongoClient} = require('mongodb');
 const email= require('./sendEmail')
 const uuid = require('uuid/v1');
+const process = require('process');
 // const { use } = require('../control/likes');
 
 class dbConnection{
@@ -28,6 +29,7 @@ class dbConnection{
             }
             if (err.code === 'ER_CON_COUNT_ERROR') {
                 console.error('Database has too many connections.');
+                process.exit(1)
                 return 0;
             }
             if (err.code === 'ECONNREFUSED') {
@@ -69,8 +71,8 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0, err: {insert: "user insertion failed"}});
                     }
+                    //this.connection.end()()
                 })
-                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -157,8 +159,8 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0})
                     }
+                    //this.connection.end()()
                 })
-                // this.connection.end()
             })
            
         }catch (e) {
@@ -185,8 +187,8 @@ class dbConnection{
                     console.log(err);
                     res.json({result: 1})
                 }
+                //this.connection.end()()
                 })
-                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -213,8 +215,8 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0})
                     }
+                    //this.connection.end()()
                 })
-                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -244,8 +246,8 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0})
                     }
+                    //this.connection.end()()
                 })
-                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -316,8 +318,8 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0 ,username: "username does not exist"})
                     }
+                    //this.connection.end()()
                 })
-                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -347,8 +349,8 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0 ,username: "username does not exist"})
                     }
+                // //this.connection.end()()
                 })
-                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -383,8 +385,8 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0 ,username: "username does not exist"})
                     }
+                    //this.connection.end()()
                 })
-                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -410,8 +412,8 @@ class dbConnection{
                     }else{
                         console.log(err);
                     }
+                    // //this.connection.end()()
                 })
-                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -436,8 +438,8 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0 ,username: "username does not exist"})
                     }
+                    // //this.connection.end()()
                 })
-                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -464,8 +466,8 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0})
                     }
+                    // //this.connection.end()()
                 })
-                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -491,8 +493,8 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0})
                     }
+                    // //this.connection.end()()
                 })
-                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -517,8 +519,8 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0})
                     }
+                    ////this.connection.end()()()
                 })
-                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -532,10 +534,18 @@ class dbConnection{
                 if (!this.errors(err)) return
                 this.connection.query(`INSERT INTO likes SET user_id = ${user}, friend_id = \'${frnd}\', liked = 1`, (err, result) => {
                     if (!err){
-                        console.log(result)
+                        // console.log(result)
                         if(result.affectedRows){
                                 console.log('done');
-                                res.json({result: 1}) 
+                                this.connection.query(`UPDATE users SET tlike = tlike + 1 WHERE id = ${frnd}`, (err, result) => {
+                                    if (!err){
+                                        // console.log(result)
+                                        res.json({result: 1}) 
+                                    }else{
+                                        res.json({result: 0})
+
+                                    }
+                                })
                         }else{
                             res.json({result: 0})
                         }
@@ -543,8 +553,8 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0})
                     }
+                    ////this.connection.end()()()
                 })
-                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -561,7 +571,15 @@ class dbConnection{
                         console.log(result)
                         if(result.affectedRows){
                                 console.log('done');
-                                res.json({result: 1}) 
+                                this.connection.query(`UPDATE users SET tdislike = tdislike + 1 WHERE id = ${frnd}`, (err, result) => {
+                                    if (!err){
+                                        console.log(result)
+                                        res.json({result: 1}) 
+                                    }else{
+                                        res.json({result: 0})
+
+                                    }
+                                })
                         }else{
                             res.json({result: 0})
                         }
@@ -569,8 +587,8 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0})
                     }
+                    ////this.connection.end()()()
                 })
-                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -585,10 +603,18 @@ class dbConnection{
                     if (!this.errors(err)) return
                     this.connection.query(`INSERT INTO friends SET user_id = ${user}, friend_id = \'${frnd}\'`, (err, result) => {
                         if (!err){
-                            console.log(result)
+                            // console.log(result)
                             if(result.affectedRows){
-                                    console.log('done');
-                                    resolve({result: 1}) 
+                                console.log('done');
+                                this.connection.query(`INSERT INTO friends SET user_id = ${frnd}, friend_id = \'${user}\'`, (err, result) => {
+                                    if (!err){
+                                        if (result.affectedRows){
+                                            resolve({result: 1}) 
+                                        }
+                                    }else{
+                                        reject({result: 0})
+                                    }
+                                })
                             }else{
                                 reject({result: 0})
                             }
@@ -597,7 +623,7 @@ class dbConnection{
                             reject({result: 0})
                         }
                     })
-                    // this.connection.end()
+                    // ////this.connection.end()()()
                 })
             })
             users.then(async data =>{
@@ -608,6 +634,7 @@ class dbConnection{
                             let check = JSON.stringify(result)
                             console.log(result)
                             if(check.localeCompare('[]') !== 0){
+                                console.log('user deleted')
                                 //  console.log(result);
                                  res.json({result: 1, })
                             }else{
@@ -618,8 +645,8 @@ class dbConnection{
                             console.log(err);
                             res.json({result: 0 ,username: "username does not exist"})
                         }
+                        ////this.connection.end()()()
                     })
-                    // this.connection.end()
                 })
             })
         }catch (e) {
@@ -634,7 +661,7 @@ class dbConnection{
             let users = new Promise( async (resolve, reject) =>{
                 await this.connection.getConnection((err) => {
                     if (!this.errors(err)) return
-                    this.connection.query(`SELECT * FROM friends WHERE user_id = \'${user_id}\' || friend_id = \'${user_id}\'`, (err, result) => {
+                    this.connection.query(`SELECT * FROM friends WHERE user_id = \'${user_id}\'`, (err, result) => {
                         if (!err){
                             let check = JSON.stringify(result)
                             if(check.localeCompare('[]') !== 0){
@@ -647,8 +674,8 @@ class dbConnection{
                             console.log(err);
                             resolve({result: 0 ,username: "username does not exist"})
                         }
+                        // ////this.connection.end()()()
                     })
-                    // this.connection.end()
                 })
             })
             users.then(async data =>{
@@ -661,6 +688,8 @@ class dbConnection{
                             let check = JSON.stringify(result)
                             if(check.localeCompare('[]') !== 0){
                                 //  console.log(result);
+                                // result.userinfo.user_id = user_id
+                                console.log(result)
                                  res.json({result: 1, userinfo: result})
                             }else{
                                 console.log(err)
@@ -670,8 +699,8 @@ class dbConnection{
                             console.log(err);
                             res.json({result: 0 ,username: "username does not exist"})
                         }
+                        // //this.connection.end()()
                     })
-                    // this.connection.end()
                 })
             })
         }catch (e) {
@@ -698,7 +727,7 @@ class dbConnection{
                             resolve({result: 0 ,username: "username does not exist"})
                         }
                     })
-                    // this.connection.end()
+                    // //this.connection.end()()
                 })
             })
             users.then(async data =>{
@@ -722,8 +751,8 @@ class dbConnection{
                             console.log(err);
                             res.json({result: 0 ,username: "username does not exist"})
                         }
+                        //this.connection.end()()
                     })
-                    // this.connection.end()
                 })
             })
         }catch (e) {
@@ -754,8 +783,8 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0, err: {insert: "location insertion failed"}});
                     }
+                    //this.connection.end()()
                 })
-                // this.connection.end()
             })
         }catch (e) {
             console.log(e);
@@ -779,8 +808,8 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0 ,username: "username does not exist"})
                     }
+                    //this.connection.end()()
                 })
-                // this.connection.end()
             })
         }catch (e){
 
@@ -830,8 +859,8 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0})
                     }
+                    //this.connection.end()()
                 })
-                // this.connection.end()
             })
         }catch (e) {
             console.log(e);

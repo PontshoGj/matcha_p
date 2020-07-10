@@ -1,13 +1,13 @@
 import React, {useContext} from 'react'
-import {useForm, ErrorMessage} from 'react-hook-form'
+import {useForm} from 'react-hook-form'
 import {Form, Col, Row, Button} from 'react-bootstrap'
 import {GlobalContext} from '../../context/GlobalState'
-import {Passreset} from '../passreset/Passreset'
+// import {Passreset} from '../passreset/Passreset'
 
 export const Login = (props) => {
     const {addAuth, setLog, setLogStorage, setFirstInput} = useContext(GlobalContext);
     const { register, handleSubmit, errors } = useForm();
-    const {setLogin, setRegister, setDisplay, handleExitLoging, handleExitReset} = props;
+    const {setRegister, setDisplay, handleExitLoging, handleExitReset} = props;
     const [incorrect, setIncorrect] =  React.useState(false);
 
     const onSubmit = async (data) => {

@@ -1,7 +1,7 @@
 import React from 'react'
-import {Card, Button} from 'react-bootstrap'
+import {Card} from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExclamationTriangle, faThumbsDown, faThumbsUp,faEllipsisH, faEnvelope } from '@fortawesome/free-solid-svg-icons'
+import { faExclamationTriangle, faThumbsDown, faThumbsUp,faEllipsisH} from '@fortawesome/free-solid-svg-icons'
 
 export const FriendPro = ({handleDisplay, setData, data, onload, freq}) => {
     const handleOnClick = () =>{
@@ -12,7 +12,7 @@ export const FriendPro = ({handleDisplay, setData, data, onload, freq}) => {
 
     }
     const like = async () =>{
-        console.log(data)
+        // console.log(data)
         await fetch('/user/addFriend',{
             method: 'post',
             headers: {
@@ -26,10 +26,11 @@ export const FriendPro = ({handleDisplay, setData, data, onload, freq}) => {
             return data.json()
         })
         .then (data => {
-            console.log(data)
+            // console.log(data)
             if (data.result){
-                onload()
                 freq()
+                onload()
+                console.log('reload')
             }
         })
         .catch (err =>{

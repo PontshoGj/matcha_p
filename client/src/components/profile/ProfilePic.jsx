@@ -21,7 +21,7 @@ export const ProfilePic = () => {
         })
         .then (data => {
             if (data.result === 1){
-                console.log(data)
+                // console.log(data)
                 setImages(data.img)
             }
         })

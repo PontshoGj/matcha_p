@@ -9,7 +9,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import {Messages} from './errorsAndmessages/Messages'
 import { Passreset } from './passreset/Passreset'
 
-export const Ui_Register_Login = (props) => {
+export const UiRegisterLogin = (props) => {
         const {setLogin} = props
         let msg = (props.message !== '') ? 'flex' : 'none'
         const [RegisterDisplay, setRegisterDisplay] = useState('none');
@@ -115,7 +115,7 @@ export const Ui_Register_Login = (props) => {
                                 handleExitLoging={handleExitLoging}
                                 setLogin={setLogin}
                                 setRegister={setRegister}
-                                handleExitLoging={handleExitLoging}
+                                // handleExitLoging={handleExitLoging}
                                 setDisplay={setDisplay}
                                 handleExitReset={handleExitReset}
                             />

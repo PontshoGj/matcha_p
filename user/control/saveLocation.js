@@ -8,6 +8,6 @@ router.post('/', async (req, res) => {
     let location = new saveLocation();
 
     // res.json((await new_registration.checkreg(res)))
-    console.log(req.headers.userid)
+    // console.log(req.headers.userid)
     await location.saveLoc(req.body.lat, req.body.lng, req.headers.userid,res)
 }) 

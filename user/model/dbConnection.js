@@ -5,6 +5,8 @@ const {MongoClient} = require('mongodb');
 const email= require('./sendEmail')
 const uuid = require('uuid/v1');
 const process = require('process');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 // const { use } = require('../control/likes');
 
 class dbConnection{
@@ -16,7 +18,7 @@ class dbConnection{
             user     : 'root',
             password : 'root',
             database : 'matcha',
-            connectionLimit: 1000000
+            // connectionLimit: 1000000
         })
     }
 
@@ -27,16 +29,18 @@ class dbConnection{
                 console.error('Database connection was closed.');
                 return 0;
             }
-            if (err.code === 'ER_CON_COUNT_ERROR') {
+            else if (err.code === 'ER_CON_COUNT_ERROR') {
                 console.error('Database has too many connections.');
                 process.exit(1)
                 return 0;
             }
-            if (err.code === 'ECONNREFUSED') {
+            else if (err.code === 'ECONNREFUSED') {
                 console.error('Database connection was refused.');
                 return 0;
+            }else {
+                console.log(err);
+                process.exit(1)
             }
-            throw err;
         }
         return 1;
     }
@@ -45,19 +49,27 @@ class dbConnection{
         try{
             let uid = uuid()
             let uid2 = uuid();
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
             // connecting to the mongodb cloud database
-            await this.connection.getConnection((err) => {
+            await connection.connect((err) => {
                 if (!this.errors(err)) return
                 console.log('inserting users');
-                console.log(user);
-                this.connection.query('INSERT INTO users SET ?', user, (err, result) => {
+                // console.log(user);
+                connection.query('INSERT INTO users SET ?', user, (err, result) => {
                     if (!err){
                         if(result.affectedRows){
                             // console.log('user saved  aaaaaaa');
                             let str = 'http://localhost:3000/Valid?token='+uid +'&selec='+uid2;
                             let mail = new email()
                             mail.sendmails(user.email, `<a href="${str}">Validate</a>`, "Account confirmation mail")
-                            this.connection.query(`INSERT INTO auth SET id = ${result.insertId}, token = \'${uid}\', selec = \'${uid2}\'`, user, (err, result) => {
+                            connection.query(`INSERT INTO auth SET id = ${result.insertId}, token = \'${uid}\', selec = \'${uid2}\'`, user, (err, result) => {
                                 if (err)
                                     console.log(err)
                             })
@@ -82,26 +94,36 @@ class dbConnection{
     //
     async checkemails (email) {
         try{
-            //  await this.connection.getConnection((err) => {
-            //     if (!this.errors(err)) return
-            //     this.connection.query('SELECT email FROM users WHERE email = ?', email, (err, result) => {
-            //         if (!err){
-            //             if(result.length > 0)
-            //                 console.log('done');
-            //         }else{
-            //             console.log(err);
-            //         }
-            //     })
-            // })
-            let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            let users = new Promise( async (resolve, reject) =>{
 
-            let db = await client.connect()
-            
-            const dbdo = db.db("Us").collection("users");
-            
-            let ret = await dbdo.findOne({email: email})
-            db.close()
-            if (ret === null)
+                await connection.connect((err) => {
+                    if (!this.errors(err)) return
+                    connection.query('SELECT email FROM users WHERE email = ?', email, (err, result) => {
+                        if (!err){
+                            if(result.length > 0){
+                                console.log('done');
+                                resolve({result: 1})
+                            }else{
+                                resolve({result: 0})
+                            }
+                        }else{
+                            reject({result: 0})
+                            console.log(err);
+                        }
+                    })
+                })
+            })
+            let info = await users
+
+            if (info.result === 0)
                 return 1
         }catch (e) {
             console.log(e);
@@ -112,27 +134,39 @@ class dbConnection{
     //
     async checkusernames (username) {
         try{
-            // await this.connection.getConnection((err) => {
-            //     if (!this.errors(err)) return
-            //     this.connection.query('SELECT username FROM users WHERE username = ?', username, (err, result) => {
-            //         if (!err){
-            //             if(result.length > 0)
-            //                 console.log("done")
-            //         }else{
-            //             console.log(err);
-            //         }
-            //     })
-            // })
-            let client = new MongoClient('mongodb://mongo:127.0.0.1:27017', {useNewUrlParser: true, useUnifiedTopology: true});
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            let users = new Promise(async(resolve, reject)=>{
+                await connection.connect((err) => {
+                    if (!this.errors(err)) return
+                    connection.query('SELECT username FROM users WHERE username = ?', username, (err, result) => {
+                        if (!err){
+                            if(result.length > 0){
+                                resolve({result: 1})
+                                // console.log("done")
+                            }else{
 
-            let db = await client.connect()
-            
-            const dbdo = db.db("Us").collection("users");
-            
-            let ret = await dbdo.findOne({username: username})
-            db.close()
-            if (ret === null)
+                                resolve({result: 0})
+                            }
+                        }else{
+                            reject({result: 0})
+                            console.log(err);
+                        }
+                    })
+                })
+            })
+            let info = await users
+            // console.log(info.result)
+            if (info.result === 0){
                 return 1
+            }
+          
         }catch (e) {
             console.log(e);
             return 0;
@@ -141,11 +175,19 @@ class dbConnection{
     }
 
     async addmoredetails (user, res) {
+        let connection = mysql.createConnection({
+            host     : 'mysql',
+            database : 'matcha',
+            port     : 3306,
+            user     : 'root',
+            password : 'root',
+            connectionLimit : 1000000,
+        })
         try{
-            await this.connection.getConnection((err) => {
+            await connection.connect((err) => {
                 if (!this.errors(err)) return
                 console.log(user)
-                this.connection.query(`UPDATE users SET age = ${user.age}, firstname= \'${user.firstname}\', lastname = \'${user.lastname}\', gender = \'${user.gender}\', interest = \'${user.interest}\' WHERE username = \'${user.username}\'`, (err, result) => {
+                connection.query(`UPDATE users SET age = ${user.age}, firstname= \'${user.firstname}\', lastname = \'${user.lastname}\', gender = \'${user.gender}\', interest = \'${user.interest}\' WHERE username = \'${user.username}\'`, (err, result) => {
                     if (!err){
                         // console.log(result.affectedRows)
                         if(result.affectedRows){
@@ -171,11 +213,19 @@ class dbConnection{
 
     async UpdateEmail (user, res) {
         try{
-            await this.connection.getConnection((err) => {
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
                 if (!this.errors(err)) return
                 console.log('updating email');
                 // console.log(user);
-                this.connection.query(`UPDATE users SET email = ? WHERE username = \'${user.username}\'`, user.email, (err, result) => {
+                connection.query(`UPDATE users SET email = ? WHERE username = \'${user.username}\'`, user.email, (err, result) => {
                 if (!err){
                     if(result.affectedRows){
                         console.log('email updated');
@@ -198,10 +248,20 @@ class dbConnection{
 
     async updatePassword (user, res) {
         try{
-            await this.connection.getConnection((err) => {
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
                 if (!this.errors(err)) return
                 console.log('updating password');
-                this.connection.query(`UPDATE users SET password = \'${user.password}\' WHERE username = \'${user.username}\'`, (err, result) => {
+                // const salt = bcrypt.genSaltSync(saltRounds)
+
+                connection.query(`UPDATE users SET password = \'${bcrypt.hashSync(user.password, '$2b$10$p.PzXS7RehUETHIinopsl.')}\' WHERE username = \'${user.username}\'`, (err, result) => {
                     if (!err){
                         if(result.affectedRows){
                             console.log('password updated');
@@ -226,15 +286,25 @@ class dbConnection{
 
     async updatePassword2 (emails, res) {
         try{
-            await this.connection.getConnection((err) => {
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 100000000,
+            })
+            await connection.connect((err) => {
                 if (!this.errors(err)) return
                 console.log('updating password');
-                let password = '321lll:::LLL'
-                this.connection.query(`UPDATE users SET password = \'${password}\' WHERE email = \'${emails}\'`, (err, result) => {
+                let password = '321lll;;;LLL'
+                // const salt = bcrypt.genSaltSync(saltRounds)
+                password = bcrypt.hashSync(password, '$2b$10$p.PzXS7RehUETHIinopsl.')
+                connection.query(`UPDATE users SET password = \'${password}\' WHERE email = \'${emails}\'`, (err, result) => {
                     if (!err){
                         if(result.affectedRows){
                             console.log('password updated');
-                            let str = `new password ${password}`
+                            let str = `new password 321lll;;;LLL`
                             let mail = new email()
                             mail.sendmails(emails, str, "Password Reset")
                             res.json({result: 1})
@@ -303,9 +373,17 @@ class dbConnection{
 
     async getemail (username, res) {
         try{
-             await this.connection.getConnection((err) => {
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+             await connection.connect((err) => {
                 if (!this.errors(err)) return
-                this.connection.query(`SELECT email FROM users WHERE username = \'${username}\'`, (err, result) => {
+                connection.query(`SELECT email FROM users WHERE username = \'${username}\'`, (err, result) => {
                     if (!err){
                         let check = JSON.stringify(result)
                         if(check.localeCompare('[]') !== 0){
@@ -329,9 +407,17 @@ class dbConnection{
 
     async getInfo(username, res) {
         try{
-            await this.connection.getConnection((err) => {
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
                 if (!this.errors(err)) return
-                this.connection.query('SELECT firstname, lastname, age, interest, gender FROM users WHERE username = ?', username, (err, result) => {
+                connection.query('SELECT firstname, lastname, age, interest, gender FROM users WHERE username = ?', username, (err, result) => {
                     if (!err){
                         let check = JSON.stringify(result)
                         if(check.localeCompare('[]') !== 0){
@@ -361,9 +447,17 @@ class dbConnection{
 
     async getMatcha(user_id, res) {
         try{
-            await this.connection.getConnection((err) => {
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
                 if (!this.errors(err)) return
-                this.connection.query('SELECT interest, latidute, longitude, gender, age, minage, maxage, distance FROM users WHERE id = ?', user_id, (err, result) => {
+                connection.query('SELECT interest, latidute, longitude, gender, age, minage, maxage, distance FROM users WHERE id = ?', user_id, (err, result) => {
                     if (!err){
                         let check = JSON.stringify(result)
                         if(check.localeCompare('[]') !== 0){
@@ -397,9 +491,20 @@ class dbConnection{
 
     async checkUserLogin(username, password, res) {
         try{
-             await this.connection.getConnection((err) => {
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+             await connection.connect((err) => {
                 if (!this.errors(err)) return
-                this.connection.query(`SELECT id, username, firstinput, vf FROM users WHERE password = \'${password}\' AND username = \'${username}\'`, (err, result) => {
+                const salt = bcrypt.genSaltSync(saltRounds)
+                // ${bcrypt.hashSync(password, salt)}
+                const pass = bcrypt.hashSync(password, '$2b$10$p.PzXS7RehUETHIinopsl.')
+                connection.query(`SELECT id, username, firstinput, vf FROM users WHERE password = \'${pass}\' AND username = \'${username}\'`, (err, result) => {
                     if (!err){
                         // console.log(result)
                         let check = JSON.stringify(result)
@@ -423,9 +528,17 @@ class dbConnection{
 
     async getbio (username, res) {
         try{
-            await this.connection.getConnection((err) => {
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
                 if (!this.errors(err)) return
-                this.connection.query(`SELECT bio FROM users WHERE username = \'${username}\'`, (err, result) => {
+                connection.query(`SELECT bio FROM users WHERE username = \'${username}\'`, (err, result) => {
                     if (!err){
                         let check = JSON.stringify(result)
                         if(check.localeCompare('[]') !== 0){
@@ -450,9 +563,17 @@ class dbConnection{
     async UpdateBio (user, res) {
 
         try{
-            await this.connection.getConnection((err) => {
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
                 if (!this.errors(err)) return
-                this.connection.query(`UPDATE users SET bio = ? WHERE username = \'${user.username}\'`, user.bio, (err, result) => {
+                connection.query(`UPDATE users SET bio = ? WHERE username = \'${user.username}\'`, user.bio, (err, result) => {
                     if (!err){
                         // console.log(result.affectedRows)
                         if(result.affectedRows){
@@ -477,11 +598,19 @@ class dbConnection{
 
     async insertFirst (user, res) {
         try{
-            await this.connection.getConnection((err) => {
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
                 if (!this.errors(err)) return
                 console.log('inserting users');
                 let interest = user.interest
-                this.connection.query(`UPDATE users SET age = ${user.age}, gender = \'${user.gender}\', interest = \'${interest}\', distance = ${user.distance}, maxage = ${user.maxage}, minage = ${user.minage} WHERE username = \'${user.username}\'`, (err, result) => {
+                connection.query(`UPDATE users SET age = ${user.age}, gender = \'${user.gender}\', interest = \'${interest}\', distance = ${user.distance}, maxage = ${user.maxage}, minage = ${user.minage} WHERE username = \'${user.username}\'`, (err, result) => {
                     if (!err){
                         if(result.affectedRows){
                             console.log('user saved');
@@ -504,11 +633,18 @@ class dbConnection{
 
     async UpdateFirstInput (user, res) {
         try{
-            await this.connection.getConnection((err) => {
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
                 if (!this.errors(err)) return
-                this.connection.query(`UPDATE users SET firstinput = 1 WHERE username = \'${user}\'`, (err, result) => {
+                connection.query(`UPDATE users SET firstinput = 1 WHERE username = \'${user}\'`, (err, result) => {
                     if (!err){
-                        console.log(result)
                         if(result.affectedRows){
                                 console.log('done');
                                 res.json({result: 1}) 
@@ -530,14 +666,22 @@ class dbConnection{
 
     async insertLike (user, frnd,res) {
         try{
-            await this.connection.getConnection((err) => {
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
                 if (!this.errors(err)) return
-                this.connection.query(`INSERT INTO likes SET user_id = ${user}, friend_id = \'${frnd}\', liked = 1`, (err, result) => {
+                connection.query(`INSERT INTO likes SET user_id = ${user}, friend_id = \'${frnd}\', liked = 1`, (err, result) => {
                     if (!err){
                         // console.log(result)
                         if(result.affectedRows){
                                 console.log('done');
-                                this.connection.query(`UPDATE users SET tlike = tlike + 1 WHERE id = ${frnd}`, (err, result) => {
+                                connection.query(`UPDATE users SET tlike = tlike + 1 WHERE id = ${frnd}`, (err, result) => {
                                     if (!err){
                                         // console.log(result)
                                         res.json({result: 1}) 
@@ -564,16 +708,25 @@ class dbConnection{
 
     async insertdisLike (user, frnd,res) {
         try{
-            await this.connection.getConnection((err) => {
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
                 if (!this.errors(err)) return
-                this.connection.query(`INSERT INTO likes SET user_id = ${user}, friend_id = \'${frnd}\', liked = 0`, (err, result) => {
+                // connection.query(`INSERT INTO likes SET user_id = ${user}, friend_id = \'${frnd}\', liked = 0`, (err, result) => {
+                    connection.query(`UPDATE likes SET liked = 0 WHERE user_id = ${frnd} AND friend_id = \'${user}\'`, (err, result) => {
                     if (!err){
-                        console.log(result)
+                        // console.log(result)
                         if(result.affectedRows){
                                 console.log('done');
-                                this.connection.query(`UPDATE users SET tdislike = tdislike + 1 WHERE id = ${frnd}`, (err, result) => {
+                                connection.query(`UPDATE users SET tdislike = tdislike + 1 WHERE id = ${frnd}`, (err, result) => {
                                     if (!err){
-                                        console.log(result)
+                                        // console.log(result)
                                         res.json({result: 1}) 
                                     }else{
                                         res.json({result: 0})
@@ -598,24 +751,34 @@ class dbConnection{
 
     async addFriend (user, frnd,res) {
         try{
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
             let users = new Promise( async (resolve, reject) =>{
-                await this.connection.getConnection((err) => {
+                await connection.connect((err) => {
                     if (!this.errors(err)) return
-                    this.connection.query(`INSERT INTO friends SET user_id = ${user}, friend_id = \'${frnd}\'`, (err, result) => {
+                    connection.query(`INSERT INTO friends SET user_id = ${user}, friend_id = \'${frnd}\'`, (err, result) => {
                         if (!err){
                             // console.log(result)
                             if(result.affectedRows){
                                 console.log('done');
-                                this.connection.query(`INSERT INTO friends SET user_id = ${frnd}, friend_id = \'${user}\'`, (err, result) => {
+                                connection.query(`INSERT INTO friends SET user_id = ${frnd}, friend_id = \'${user}\'`, (err, result) => {
                                     if (!err){
                                         if (result.affectedRows){
                                             resolve({result: 1}) 
                                         }
                                     }else{
-                                        reject({result: 0})
+                                        console.log(err)
+                                        resolve({result: 0})
                                     }
                                 })
                             }else{
+                                console.log(err)
                                 reject({result: 0})
                             }
                         }else{
@@ -627,12 +790,20 @@ class dbConnection{
                 })
             })
             users.then(async data =>{
-                await this.connection.getConnection((err) => {
+                let connection = mysql.createConnection({
+                    host     : 'mysql',
+                    database : 'matcha',
+                    port     : 3306,
+                    user     : 'root',
+                    password : 'root',
+                    connectionLimit : 1000000,
+                })
+                await connection.connect((err) => {
                     if (!this.errors(err)) return
-                    this.connection.query(`DELETE FROM likes WHERE  user_id = ${frnd} && friend_id = ${user}`, (err, result) => {
+                    connection.query(`DELETE FROM likes WHERE  user_id = ${frnd} && friend_id = ${user}`, (err, result) => {
                         if (!err){
                             let check = JSON.stringify(result)
-                            console.log(result)
+                            // console.log(result)
                             if(check.localeCompare('[]') !== 0){
                                 console.log('user deleted')
                                 //  console.log(result);
@@ -659,16 +830,24 @@ class dbConnection{
     async Friends (user_id, res) {
         try{
             let users = new Promise( async (resolve, reject) =>{
-                await this.connection.getConnection((err) => {
+                let connection = mysql.createConnection({
+                    host     : 'mysql',
+                    database : 'matcha',
+                    port     : 3306,
+                    user     : 'root',
+                    password : 'root',
+                    connectionLimit : 1000000,
+                })
+                await connection.connect((err) => {
                     if (!this.errors(err)) return
-                    this.connection.query(`SELECT * FROM friends WHERE user_id = \'${user_id}\'`, (err, result) => {
+                    connection.query(`SELECT * FROM friends WHERE user_id = \'${user_id}\'`, (err, result) => {
                         if (!err){
                             let check = JSON.stringify(result)
                             if(check.localeCompare('[]') !== 0){
                                 //  console.log(result);
                                  resolve({result: 1, userinfo: result})
                             }else{
-                                reject({result: 0 ,username: "username does not exist"})
+                                resolve({result: 0 ,username: "username does not exist"})
                             }
                         }else{
                             console.log(err);
@@ -679,48 +858,106 @@ class dbConnection{
                 })
             })
             users.then(async data =>{
-                user_id = data.userinfo.map(friend_id => `id = ${friend_id.friend_id}`)
-                user_id = user_id.join(" || ")
-                await this.connection.getConnection((err) => {
-                    if (!this.errors(err)) return
-                    this.connection.query(`SELECT * FROM users WHERE  ${user_id}`, (err, result) => {
-                        if (!err){
-                            let check = JSON.stringify(result)
-                            if(check.localeCompare('[]') !== 0){
-                                //  console.log(result);
-                                // result.userinfo.user_id = user_id
-                                console.log(result)
-                                 res.json({result: 1, userinfo: result})
+                if (data.result){
+                    let connection = mysql.createConnection({
+                        host     : 'mysql',
+                        database : 'matcha',
+                        port     : 3306,
+                        user     : 'root',
+                        password : 'root',
+                        connectionLimit : 1000000,
+                    })
+                    user_id = data.userinfo.map(friend_id => `id = ${friend_id.friend_id}`)
+                    user_id = user_id.join(" || ")
+                    await connection.connect((err) => {
+                        if (!this.errors(err)) return
+                        connection.query(`SELECT * FROM users WHERE  ${user_id}`, (err, result) => {
+                            if (!err){
+                                let check = JSON.stringify(result)
+                                if(check.localeCompare('[]') !== 0){
+                                    //  console.log(result);
+                                    // result.userinfo.user_id = user_id
+                                    // console.log(result)
+                                    res.json({result: 1, userinfo: result})
+                                }else{
+                                    console.log(err)
+                                    res.json({result: 0 ,username: "username does not exist"})
+                                }
                             }else{
-                                console.log(err)
+                                console.log(err);
                                 res.json({result: 0 ,username: "username does not exist"})
                             }
-                        }else{
-                            console.log(err);
-                            res.json({result: 0 ,username: "username does not exist"})
-                        }
-                        // //this.connection.end()()
+                            // //this.connection.end()()
+                        })
                     })
-                })
+                }else{
+                    res.json({result: 0 ,username: "username does not exist"})
+                }
             })
         }catch (e) {
             console.log(e);
             res.json({result: 0 ,username: "username does not exist"})
         }   
     }
+    async delefri (frnd, user, res) {
+        try{
+            let uid = uuid()
+            // connecting to the mongodb cloud database
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
+                
+                if (!this.errors(err)) return
+                connection.query(`DELETE FROM friends WHERE  user_id = ${frnd} && friend_id = ${user} || user_id = ${user} && friend_id = ${frnd}`, (err, result) => {                    if (!err){
+                        // console.log(result)
+                        if(result.affectedRows){
+                            // console.log(result)
+                            console.log('user saved  aaaaaaa');
+                            res.json({result: 1, err: {}});
+                            // throw '1'
+                        }else{
+                            console.log("loaction insertion failed")
+                            res.json({result: 0, err: {insert: "location insertion failed"}});
+                        }
+                    }else{
+                        console.log(err);
+                        res.json({result: 0, err: {insert: "location insertion failed"}});
+                    }
+                    //this.connection.end()()
+                })
+            })
+        }catch (e) {
+            console.log(e);
+            res.json({result: 0, err: {insert: "location insertion faild"}});
+        }
+    }
     async Fri (user_id, res) {
         try{
             let users = new Promise( async (resolve, reject) =>{
-                await this.connection.getConnection((err) => {
+                let connection = mysql.createConnection({
+                    host     : 'mysql',
+                    database : 'matcha',
+                    port     : 3306,
+                    user     : 'root',
+                    password : 'root',
+                    connectionLimit : 1000000,
+                })
+                await connection.connect((err) => {
                     if (!this.errors(err)) return
-                    this.connection.query(`SELECT * FROM likes WHERE friend_id = \'${user_id}\' && liked = 1`, (err, result) => {
+                    connection.query(`SELECT * FROM likes WHERE friend_id = \'${user_id}\' && liked = 1`, (err, result) => {
                         if (!err){
                             let check = JSON.stringify(result)
                             if(check.localeCompare('[]') !== 0){
                                 //  console.log(result);
                                  resolve({result: 1, userinfo: result})
                             }else{
-                                reject({result: 0 ,username: "username does not exist"})
+                                resolve({result: 0 ,username: "username does not exist"})
                             }
                         }else{
                             console.log(err);
@@ -732,28 +969,40 @@ class dbConnection{
             })
             users.then(async data =>{
                 // console.log(data.userinfo)
-                user_id = data.userinfo.map(friend_id => `id = ${friend_id.user_id}`)
-                user_id = user_id.join(" || ")
-                // console.log(user_id)
-                await this.connection.getConnection((err) => {
-                    if (!this.errors(err)) return
-                    this.connection.query(`SELECT * FROM users WHERE  ${user_id}`, (err, result) => {
-                        if (!err){
-                            let check = JSON.stringify(result)
-                            if(check.localeCompare('[]') !== 0){
-                                //  console.log(result);
-                                 res.json({result: 1, userinfo: result})
+                let connection = mysql.createConnection({
+                    host     : 'mysql',
+                    database : 'matcha',
+                    port     : 3306,
+                    user     : 'root',
+                    password : 'root',
+                    connectionLimit : 1000000,
+                })
+                if (data.result){
+                    user_id = data.userinfo.map(friend_id => `id = ${friend_id.user_id}`)
+                    user_id = user_id.join(" || ")
+                    // console.log(user_id)
+                    await connection.connect((err) => {
+                        if (!this.errors(err)) return
+                        connection.query(`SELECT * FROM users WHERE  ${user_id}`, (err, result) => {
+                            if (!err){
+                                let check = JSON.stringify(result)
+                                if(check.localeCompare('[]') !== 0){
+                                    //  console.log(result);
+                                    res.json({result: 1, userinfo: result})
+                                }else{
+                                    console.log(err)
+                                    res.json({result: 0 ,username: "username does not exist"})
+                                }
                             }else{
-                                console.log(err)
+                                console.log(err);
                                 res.json({result: 0 ,username: "username does not exist"})
                             }
-                        }else{
-                            console.log(err);
-                            res.json({result: 0 ,username: "username does not exist"})
-                        }
-                        //this.connection.end()()
+                            //this.connection.end()()
+                        })
                     })
-                })
+                }else{
+                    res.json({result: 0 ,username: "username does not exist"})
+                }
             })
         }catch (e) {
             console.log(e);
@@ -764,10 +1013,19 @@ class dbConnection{
         try{
             let uid = uuid()
             // connecting to the mongodb cloud database
-            await this.connection.getConnection((err) => {
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
+                
                 if (!this.errors(err)) return
                 console.log('inserting location');
-                this.connection.query(`UPDATE users SET latidute = ${lat}, longitude = ${lng} WHERE id = ${user_id}`, (err, result) => {
+                connection.query(`UPDATE users SET latidute = ${lat}, longitude = ${lng} WHERE id = ${user_id}`, (err, result) => {
                     if (!err){
                         // console.log(result)
                         if(result.affectedRows){
@@ -793,14 +1051,57 @@ class dbConnection{
     }
     async getloc(userid, res){
         try{
-            await this.connection.getConnection((err) => {
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
                 if (!this.errors(err)) return
-                this.connection.query(`SELECT latidute, longitude FROM friends WHERE user_id = \'${userid}\'`, (err, result) => {
+                connection.query(`SELECT latidute, longitude FROM users WHERE id = \'${userid}\'`, (err, result) => {
                     if (!err){
                         let check = JSON.stringify(result)
+                        // console.log(result)
                         if(check.localeCompare('[]') !== 0){
                             //  console.log(result);
-                             res.json({result: 1, lat: result.latidute,lng: result.longitude})
+                             res.json({result: 1, lat: result[0].latidute,lng: result[0].longitude})
+                        }else{
+                            res.json({result: 0 ,username: "username does not exist"})
+                        }
+                    }else{
+                        console.log(err);
+                        res.json({result: 0 ,username: "username does not exist"})
+                    }
+                    //this.connection.end()()
+                })
+            })
+        }catch (e){
+
+        }
+    }
+
+    async updateloc(userid, lat, lng, res){
+        try{
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
+                if (!this.errors(err)) return
+                connection.query(`UPDATE users SET latidute = ${lat}, longitude = ${lng} WHERE id = ${userid}`, (err, result) => {
+                    if (!err){
+                        let check = JSON.stringify(result)
+                        // console.log(result)
+                        if(check.localeCompare('[]') !== 0){
+                            //  console.log(result);
+                             res.json({result: 1})
                         }else{
                             res.json({result: 0 ,username: "username does not exist"})
                         }
@@ -820,19 +1121,27 @@ class dbConnection{
         try{
             let uid = uuid()
             let uid2 = uuid();
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
             // connecting to the mongodb cloud database
-            await this.connection.getConnection((err) => {
+            await connection.connect((err) => {
                 if (!this.errors(err)) return
-                this.connection.query(`SELECT id FROM auth WHERE token = \'${token}\' && selec = \'${selec}\'`, (err, result) => {
+                connection.query(`SELECT id FROM auth WHERE token = \'${token}\' && selec = \'${selec}\'`, (err, result) => {
                     if (!err){
                         let check = JSON.stringify(result)
                         if(check.localeCompare('[]') !== 0){
                             let id = result[0].id
-                            this.connection.query(`UPDATE users SET vf = 1 WHERE id = ${id}`, (err, result) => {
+                            connection.query(`UPDATE users SET vf = 1 WHERE id = ${id}`, (err, result) => {
                                 if (!err){
                                     // console.log(result)
                                     if(result.affectedRows){
-                                        this.connection.query(`DELETE FROM auth  WHERE id = ${id}`, (err, result) => {
+                                        connection.query(`DELETE FROM auth  WHERE id = ${id}`, (err, result) => {
                                             if (!err){
                                                 // console.log(result)
                                                 if(result.affectedRows){

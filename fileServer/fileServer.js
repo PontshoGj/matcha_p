@@ -4,7 +4,10 @@ const port = process.env.PORT || 5004
 const multer = require('multer')
 const fs = require('fs')
 const uploadfile = require('./model/UploadImage')
+const bodyParser = require('body-parser')
 
+fileServer.use(bodyParser.json());
+fileServer.use(bodyParser.urlencoded({extended: false}));
 //----------------upload--------------------------------------//
 const storage = multer.diskStorage({
     destination: (req, file, cb) =>{
@@ -43,13 +46,50 @@ fileServer.post('/uploadImage', upload.single('pic'),async (req, res, next) =>{
     }else{
         res.json({result: true, message: `${req.file.filename}  image uploaded successufly`})
         let user_id =  req.headers['userid']
-        let resul = new uploadfile(user_id, fs.readFileSync(`uploads/${req.file.filename}`))
+        let resul = new uploadfile(user_id, fs.readFileSync(`uploads/${req.file.filename}`), null)
         await resul.Uploadimage(res)
     }
 });
+
 fileServer.post('/getImage', async (req, res, next) =>{
         let user_id =  req.headers['userid']
-        let resul = new uploadfile(user_id,null)
+        let resul = new uploadfile(user_id,null, null)
         await resul.getimage(res)
+});
+fileServer.post('/getImageU', async (req, res, next) =>{
+    let resul = new uploadfile(req.body.user_id,null, null)
+    await resul.getimage(res)
+});
+fileServer.post('/getProfImage', async (req, res, next) =>{
+    let resul = new uploadfile(req.body.user_id,null, null)
+    await resul.getprofimage(res)
+});
+
+fileServer.post('/updateImage', upload.single('pic'),async (req, res, next) =>{
+    if (req.file.length === 0){
+        console.log('invalid image')
+        res.json({result: false, message: 'invalid image'})
+    }else{
+        res.json({result: true, message: `${req.file.filename}  image uploaded successufly`})
+        let user_id =  req.headers['userid']
+        let num = req.headers['num']
+        // console.log(req.headers)
+        let resul = new uploadfile(user_id, fs.readFileSync(`uploads/${req.file.filename}`), num)
+        await resul.updateimage(res)
+    }
+});
+
+fileServer.post('/updateProfImage', upload.single('pic'),async (req, res, next) =>{
+    if (req.file.length === 0){
+        console.log('invalid image')
+        res.json({result: false, message: 'invalid image'})
+    }else{
+        res.json({result: true, message: `${req.file.filename}  image uploaded successufly`})
+        let user_id =  req.headers['userid']
+        let num = req.headers['num']
+        // console.log(req.headers)
+        let resul = new uploadfile(user_id, fs.readFileSync(`uploads/${req.file.filename}`), num)
+        await resul.updateprofimage(res)
+    }
 });
 fileServer.listen(port, () => {console.log(`fileServer Running on Port ${port}`)})

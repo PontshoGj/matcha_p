@@ -1,4 +1,6 @@
 const db = require('./dbConnection')
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 //class that validates the user input during registration
 class Validater extends db {
 
@@ -90,14 +92,15 @@ class Validater extends db {
         if (result && !(result = this.checkpassword())){
             err.push({password: "password incorrect"});
         }
-
-        // console.log(err)
+        const salt = bcrypt.genSaltSync(saltRounds)
+        console.log(result)
         if (result && err == ''){
             let users = {
                 firstname: `${this.firstname}`,
                 lastname: `${this.lastname}`,
                 username: `${this.username}`,
-                password: `${this.password}`,
+                password: `${bcrypt.hashSync(this.password, '$2b$10$p.PzXS7RehUETHIinopsl.')}`,
+                // password: `${bcrypt.hashSync(this.password, salt)}`,
                 email: `${this.email}`,
                 firstinput: 0
             }
@@ -105,8 +108,9 @@ class Validater extends db {
                 // err.push({insert :"user insertion faild"});
             // }
             await this.insertuser(users, res)
+        }else{
+            res.json({result, err});
         }
-        return {result, err};
     }
 }
 

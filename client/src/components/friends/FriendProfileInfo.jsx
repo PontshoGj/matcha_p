@@ -1,9 +1,40 @@
-import React from 'react'
-import { Card } from 'react-bootstrap'
+import React, { useContext } from 'react'
+import {GlobalContext} from '../../context/GlobalState'
+
+import {Card, Carousel} from 'react-bootstrap'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export const FriendProfileInfo = ({data, handleExit}) => {
+export const FriendProfileInfo = ({data, handleExit, image}) => {
+    // console.log(image)
+    const    [images, setImages] = React.useState("")
+    const [index, setIndex] = React.useState(0);
+
+    const onload = async () =>{
+        if (image !== ""){
+            let i = 0
+            let imgs = image.map(im => {
+                return(
+                <Carousel.Item key={i++}>
+                    <img
+                        className="d-block w-100"
+                        src={im}
+                        alt="image"
+                        width='200' 
+                        height='200'
+                    />
+                </Carousel.Item>)
+            })
+            setImages(imgs)
+        }
+    }
+    if (images === "" ){
+        onload()
+    }
+
+    const handleSelect = (selectedIndex, e) => {
+      setIndex(selectedIndex);
+    };
     return (
         <div
             style={{
@@ -23,7 +54,9 @@ export const FriendProfileInfo = ({data, handleExit}) => {
         >
             <div>
                 <Card style={{ width: '40rem', height: '40rem' }}>
-                    <Card.Img  src="" width='200' height='200' />
+                    <Carousel activeIndex={index} onSelect={handleSelect}>
+                        {images}
+                    </Carousel>
                     <Card.Body>
                         <Card.Title><h2>{data.firstname} {data.lastname}</h2></Card.Title>
                         <div>

@@ -2,7 +2,7 @@
 
 INSERT INTO `users` (`id`, `username`, `lastname`, `firstname`, `email`, `password`, `gender`, `bio`, `interest`, `age`, `latidute`, `longitude`, `vf`, `firstinput`) VALUES
 (1, 'rogers63', 'john', 'david', 'test@gamil.com', 'e6a33eee180b07e563d74fee8c2c66b8', 'Female', 'Hey there I am using matcha', '[\"flirty\", \"ambitious\", \"introvert\"]', 25, '-30.559483', '22.937506', 1, 1),
--- (2, 'mike28', 'paul', 'rogers', 'test@gamil.com', '2e7dc6b8a1598f4f75c3eaa47958ee2f', 'Male', 'Hey there I am using matcha', '[\"flirty\", \"ambitious\", \"introvert\"]', 25, '-30.559483', '22.937506', 1, 1),
+(2, 'mike28', 'paul', 'rogers', 'test@gamil.com', '2e7dc6b8a1598f4f75c3eaa47958ee2f', 'Male', 'Hey there I am using matcha', '[\"flirty\", \"ambitious\", \"introvert\"]', 25, '-30.559483', '22.937506', 1, 1),
 (3, 'rivera92', 'john', 'david', 'test@gamil.com', '1c3a8e03f448d211904161a6f5849b68', 'Male', 'Hey there I am using matcha', '[\"flirty\", \"ambitious\", \"introvert\"]', 25, '-30.559483', '22.937506', 1, 1),
 (4, 'ross95', 'sanders', 'maria', 'test@gamil.com', '62f0a68a4179c5cdd997189760cbcf18', 'Male', 'Hey there I am using matcha', '[\"flirty\", \"ambitious\", \"introvert\"]', 25, '-30.559483', '22.937506', 1, 1),
 (5, 'paul85', 'miller', 'morris', 'test@gamil.com', '61bd060b07bddfecccea56a82b850ecf', 'Female', 'Hey there I am using matcha', '[\"flirty\", \"ambitious\", \"introvert\"]', 25, '-30.559483', '22.937506', 1, 1),

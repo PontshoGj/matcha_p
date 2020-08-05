@@ -1,9 +1,39 @@
-import React from 'react'
-import {Card} from 'react-bootstrap'
+import React, { useContext } from 'react'
+import {GlobalContext} from '../../context/GlobalState'
+import {Card, Carousel} from 'react-bootstrap'
 import { faTimes, faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export const MoreInfo = (props) => {
+    const   {setLog} = useContext(GlobalContext)
+    const    [images, setImages] = React.useState("")
+    const [index, setIndex] = React.useState(0);
+
+    const onload = async () =>{
+        if (props.image !== ""){
+            let i = 0
+            let imgs = props.image.map(im => {
+                return(
+                <Carousel.Item key={i++}>
+                    <img
+                    className="d-block w-100"
+                    src={im}
+                    alt="image"
+                    width='200' 
+                    height='200'
+                    />
+                </Carousel.Item>)
+            })
+            setImages(imgs)
+        }
+    }
+    if (images === "" ){
+        onload()
+    }
+
+    const handleSelect = (selectedIndex, e) => {
+      setIndex(selectedIndex);
+    };
     return (
         <div
             style={{
@@ -23,11 +53,13 @@ export const MoreInfo = (props) => {
         >
             <div>
                 <Card style={{ width: '40rem', height: '40rem' }}>
-                    <Card.Img  src="" width='200' height='200' />
+                    {/* <Card.Img  src="" width='200' height='200' /> */}
+                    <Carousel activeIndex={index} onSelect={handleSelect}>
+                        {images}
+                    </Carousel>
                     <Card.Body>
                         <Card.Title><h2>{props.info.firstname} {props.info.lastname}</h2></Card.Title>
                         <div>
-                            <br/>
                             <div>
                                 <h3>Age</h3>
                                 <div>{props.info.age}</div>
@@ -45,9 +77,13 @@ export const MoreInfo = (props) => {
                                 <div>{props.info.interest}</div>
                             </div>
                             <div>
+                                <h3>Fame</h3>
+                                <div>{props.info.like}</div>
+                            </div>
+                            {/* <div>
                                 <FontAwesomeIcon icon={faThumbsDown} size='2x' />
                                 <FontAwesomeIcon icon={faThumbsUp} style={{marginLeft: '2vw'}} size='2x' />
-                            </div>
+                            </div> */}
                         </div>
                         
                     </Card.Body>

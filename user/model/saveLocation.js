@@ -16,6 +16,9 @@ class saveLocation extends classes (db) {
         await this.getloc(userid, res)
     }
 
+    async updateLoc (userid, lat, lng, res){
+        await this.updateloc(userid, lat, lng, res)
+    }
 }
 
 module.exports = saveLocation;

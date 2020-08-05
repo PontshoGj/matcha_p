@@ -5,7 +5,7 @@ import {GlobalContext} from '../../context/GlobalState'
 // import {Passreset} from '../passreset/Passreset'
 
 export const Login = (props) => {
-    const {addAuth, setLog, setLogStorage, setFirstInput} = useContext(GlobalContext);
+    const {addAuth, setLog, setLogStorage, setFirstInput, setId} = useContext(GlobalContext);
     const { register, handleSubmit, errors } = useForm();
     const {setRegister, setDisplay, handleExitLoging, handleExitReset} = props;
     const [incorrect, setIncorrect] =  React.useState(false);
@@ -21,6 +21,7 @@ export const Login = (props) => {
             body: JSON.stringify(data)
         })
         .then (result => {
+            if (result.status !== 200) throw result
             return result.json()
         })
         .then (data =>{
@@ -32,6 +33,7 @@ export const Login = (props) => {
                     // console.log(localStorage.getItem('authorization'))
                     setLog(true)
                     setFirstInput(data.firstinput)
+                    setId(data.id)
                     // console.log(log)
                     // handleExitLoging()
                 }else{

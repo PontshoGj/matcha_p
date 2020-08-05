@@ -17,9 +17,11 @@ const insertFirst = require('./control/insertFirst')
 const updatefirstinput = require('./control/updateFirstInput')
 const getmatch = require('./control/getmatch')
 const like = require('./control/likes')
+const del = require('./control/del')
 const dislike = require('./control/dislikes')
 const saveLocation = require('./control/saveLocation')
 const getLocation = require('./control/getLocation')
+const getUpdate = require('./control/getUpdate')
 const getFriends = require('./control/getFriends')
 const getfreq = require('./control/freq')
 const validateAccount = require('./control/validateAccount')
@@ -49,11 +51,13 @@ server.use('/getbio', bio);
 server.use('/updatefirstinput', updatefirstinput);
 server.use('/getmatch', getmatch);
 server.use('/like', like);
+server.use('/del', del);
 server.use('/dislike', dislike);
 server.use('/getFriends', getFriends);
 server.use('/getfreq', getfreq);
 server.use('/saveLocation', saveLocation);
 server.use('/getLocation', getLocation);
+server.use('/getUpdate', getUpdate);
 server.use('/validate', validateAccount);
 server.use('/passwordreset', passwordreset);
 server.use('/addFriend', addFriend);

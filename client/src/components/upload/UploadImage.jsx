@@ -23,12 +23,12 @@ export const UploadImage = ({counter, id}) => {
             body: file
         })
         .then (data => {
-            if(data.status === 403) throw data
+            if(data.status !== 200) throw data
             return data.json()
         })
         .then (value =>{
             if (value.result){
-                console.log(value)
+                // console.log(value)
                 counter();
                 setBrowse("browse")
                 setVaid(false)
@@ -42,7 +42,7 @@ export const UploadImage = ({counter, id}) => {
             }
         })
         .catch (err => {
-            console.log(err)
+            // console.log(err)
             if (err.status === 403)
                 setLog(true)
         })

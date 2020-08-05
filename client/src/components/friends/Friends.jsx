@@ -1,15 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import {GlobalContext} from '../../context/GlobalState'
 import {FriendProfile} from './FriendProfile'
 import {FriendProfileInfo} from "./FriendProfileInfo"
 import {Tabs, Tab} from 'react-bootstrap'
 import {FriendPro} from './FriendPro'
 
-export const Friends = () => {
+export const Friends = ({socket, changeMessage}) => {
+    const   {setLog} = useContext(GlobalContext)
     const   [display, setDisplay] = React.useState('none')
     const   [comp, setComp] = React.useState()
     const   [comps, setComps] = React.useState()
     const   [data, setData] = React.useState({})
-    
+    const   [dum, setDum] = React.useState()    
+    const   [dums, setDums] = React.useState()    
+    const   [image, setImage] = React.useState("")
     const handleDisplay = () =>{
         setDisplay('flex');
     }
@@ -28,21 +32,25 @@ export const Friends = () => {
             },
         })
         .then (data => {
-            if(data.status === 403) throw data
+            if(data.status !== 200) throw data
             return data.json()
         })
         .then (data =>{
             // console.log(data)
-            // if (data.result){
+            if (data.result === 1){
                 let i= 0;
                 let holdInfo = data.userinfo.map(data => {
                     // console.log(data)
-                    return <FriendProfile handleDisplay={handleDisplay}  data={data} setData={setData} key={i++}/>
+                    return <FriendProfile setImage={setImage} handleDisplay={handleDisplay} socket={socket} onload1={onload} freq={freq} changeMessage={changeMessage} data={data} setData={setData} key={i++}/>
                 })
                 setComp(holdInfo)
-            // }else{
-                // setComp('')
-            // }
+                setDums()
+            }else{
+                setDums('')
+            }
+        })
+        .catch(err=>{
+
         })
     }
     const freq = async () => {
@@ -55,28 +63,32 @@ export const Friends = () => {
             },
         })
         .then (data => {
-            if(data.status === 403) throw data
+            if(data.status !== 200) throw data
             return data.json()
         })
         .then (data =>{
             // console.log(data)
-            console.log("loading")
-            // if (data.result){
+            if (data.result === 1){
                 let i= 0;
                 let holdInfo = data.userinfo.map(data => {
                     // console.log(data)
-                    return <FriendPro handleDisplay={handleDisplay}  data={data} setData={setData} key={i++} onload={onload} freq={freq}/>
+                    return <FriendPro setImage={setImage} handleDisplay={handleDisplay} socket={socket} data={data} setData={setData} key={i++} onload={onload} freq={freq}/>
                 })
                 setComps(holdInfo)
-            // }else{
-                // setComps("")
-            // }
+            }else{
+                setDum("")
+                // console.log(comps)
+            }
+        })
+        .catch(err=>{
+
         })
     }
     if (comp === undefined)
         onload()
     if (comps === undefined)
         freq()
+
     return (
         <div
             style={{
@@ -98,14 +110,15 @@ export const Friends = () => {
                             height: '80vh'
                         }}
                     >
-                        {comp}
+                        {(dums !== undefined)?dums:comp}
+                        
                     </div>
                     <div
                         style={{
                             display: display
                         }}
                     >
-                        <FriendProfileInfo handleExit={handleExit} data={data}/>                
+                        <FriendProfileInfo image={image} handleExit={handleExit} data={data}/>                
                     </div>
                 </Tab>
                 <Tab eventKey="friendRequest" title="friendRequest">
@@ -118,14 +131,14 @@ export const Friends = () => {
                             height: '80vh'
                         }}
                     >
-                        {comps}
+                        {(dum !== undefined)?dum:comps}
                     </div>
                     <div
                         style={{
                             display: display
                         }}
                     >
-                        <FriendProfileInfo handleExit={handleExit} data={data}/>                
+                        <FriendProfileInfo image={image} handleExit={handleExit} data={data}/>                
                     </div>
                 </Tab>
             </Tabs>

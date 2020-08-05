@@ -18,7 +18,7 @@ export const BioProfile = () => {
             },
         })
         .then (data => {
-            if(data.status === 403) throw data
+            if(data.status !== 200) throw data
             return data.json()
         })
         .then (data => {

@@ -25,7 +25,7 @@ export const EditProfile = () => {
             },
         })
         .then (data => {
-            if(data.status === 403) throw data
+            if(data.status !== 200) throw data
             return data.json()
         })
         .then (data => {
@@ -65,7 +65,7 @@ export const EditProfile = () => {
             body: JSON.stringify(data)
         })
         .then (data => {
-            if(data.status === 403) throw data
+            if(data.status !== 200) throw data
             return data.json()
         })
         .then (value =>{

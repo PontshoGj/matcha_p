@@ -23,7 +23,7 @@ const gtfrnd = async bearer => {
         })
 
     let friends = await getfriends.json();
-    console.log(friends)
+    // console.log(friends)
     let ret = friends.userinfo.map(friend =>{
         return friend.id
     })
@@ -34,26 +34,29 @@ const gtfrnd = async bearer => {
 client.on('connection', async function(socket){
     // let chat = db.db("chart").collection('chats');
 
-    console.log('connected')
+    // console.log(socket.id)
     // Create function to send status
     sendStatus = function(s){
         socket.emit('status', s);
     }
 
-    socket.on("status", async (data) =>{
+    socket.on("userconnect", async (data) =>{
         sendStatus({result: 'online'})
         // console.log(data)
         let jon = await gtfrnd(data.authorization)
         jon.map(j =>{
             socket.join(j);
         })
-        socket.join('501')
-        socket.join('1')
+        socket.join(data.id)
     })
 
     socket.on('message', data =>{
-        console.log(data)
-        socket.to(data.id).emit("message", {friend_id:data.id, message: data.message})
+        // console.log(data)
+        client.to(data.id).emit("message", {friend_id:data.id, message: data.message})
+    })
+    socket.on("notif", data =>{
+        socket.join(data.id);
+        client.to(data.id).emit("notif", {message: data.message})
     })
 });
 

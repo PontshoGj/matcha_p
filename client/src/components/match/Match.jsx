@@ -1,15 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import {GlobalContext} from '../../context/GlobalState'
 import {Suggest} from './Suggest'
 import {MoreInfo} from './MoreInfo'
 import {AdvancedMatch} from './AdvancedMatch'
 import {Button} from 'react-bootstrap'
 
-export const Match = () => {
+export const Match = ({socket}) => {
+    const   {setLog} = useContext(GlobalContext)
     const   [display, setDisplay] = React.useState([])
     const   [displays, setDisplays] = React.useState('none')
     const   [info, setInfo] = React.useState({})
     const   [search, setSearch] = React.useState('none')
-
+    const   [image, setImage] = React.useState("")
     const handleExit = () =>{
         setDisplays('none');
     }
@@ -28,20 +30,23 @@ export const Match = () => {
             },
         })
         .then (data => {
-            if(data.status === 403) throw data
+            if(data.status !== 200) throw data
             return data.json()
         })
         .then (data =>{
-            console.log(data)
-            if (data.result){
+            // console.log(data)
+            if (data.result === 1){
                 let i= 0;
                 let holdInfo = data.info.map(data => {
-                    return <Suggest handleDisplay={handleDisplay}  info={data} setInfo={setInfo} key={i++}/>
+                    return <Suggest setImage={setImage} onload={onload} handleDisplay={handleDisplay} socket={socket} info={data} setInfo={setInfo} key={i++}/>
                 })
                 setDisplay(holdInfo)
             }else{
                 setDisplay("")
             }
+        })
+        .catch(errr=>{
+            
         })
     }
     if (display[0] === undefined)
@@ -49,9 +54,13 @@ export const Match = () => {
     const advancedSearch = () =>{
         setSearch('flex')
     }
+    const advancedSearch2 = () =>{
+        setSearch('none')
+    }
     // const liked = (data) => {
     //     setDisplay(data)
     // }
+
     return (
         <div
             style={{
@@ -76,7 +85,7 @@ export const Match = () => {
                     justifyContent: 'center'
                 }}
             >
-                <AdvancedMatch setDisplay={setDisplay} handleDisplay={handleDisplay} setInfo={setInfo}/>
+                <AdvancedMatch onload={onload} advancedSearch2={advancedSearch2} setDisplay={setDisplay} handleDisplay={handleDisplay} setInfo={setInfo}/>
             </div>
             <hr />
             <div
@@ -96,7 +105,7 @@ export const Match = () => {
                         display: displays
                     }}
                 >
-                    <MoreInfo handleExit={handleExit} info={info}/>                
+                    <MoreInfo handleExit={handleExit} image={image} info={info}/>                
                 </div>
             </div>
         </div>

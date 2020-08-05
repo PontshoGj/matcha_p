@@ -1,14 +1,14 @@
 version: '3'
 services:
-    mongo:
-        image: "mongo"
-        restart: always
-        networks: 
-            - backend
-        expose: 
-            - '27017'
-        ports:
-            - "27017:27017"
+#     mongo:
+#         image: "mongo"
+#         restart: always
+#         networks: 
+#             - backend
+#         expose: 
+#             - '27017'
+#         ports:
+#             - "27017:27017"
 
     mysql:
         image: mysql/mysql-server:5.7
@@ -23,7 +23,9 @@ services:
         ports:
             - "3306:3306"
         environment:
+            MYSQL_USER: root
             MYSQL_ROOT_PASSWORD: root
+            MYSQL_ROOT_HOST: "%"
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
@@ -53,11 +55,11 @@ services:
         ports:
             - "5001:5001"
         depends_on:
-            - "mongo"
+            # - "mongo"
             - "mysql"
         links:
             - mysql:mysql
-            - mongo:mongo
+            # - mongo:mongo
                 
     filesever:
         image: fileserver
@@ -72,11 +74,11 @@ services:
         ports:
             - "5004:5004"
         depends_on:
-            - "mongo"
+            # - "mongo"
             - "mysql"
         links:
             - mysql:mysql
-            - mongo:mongo
+            # - mongo:mongo
                 
     setups:
         image: setups
@@ -91,6 +93,7 @@ services:
             - "5006:5006"
         depends_on:
             - "mysql"
+            - "usermanagement"
         links:
             - mysql:mysql
             

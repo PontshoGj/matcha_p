@@ -22,6 +22,7 @@ export const Register = (props) => {
           body: JSON.stringify(data)
       })
       .then(result => {
+        if (result.status !== 200) throw result
         return result.json()
       })
       .then (rt =>{
@@ -32,10 +33,10 @@ export const Register = (props) => {
                 setRegister('Registration successful Please confirm you account from your email')
                 handleExitRegister()
             }
-            if (rt.result === 0){
+            if (rt.data.result === 0){
             let ss 
-            for(const key in rt.err){
-                ss = (rt.err[key])
+            for(const key in rt.data.err){
+                ss = (rt.data.err[key])
                 if  (ss['email']) 
                     setDuplicateMail(true) 
                 if (ss['username']) 
@@ -43,6 +44,7 @@ export const Register = (props) => {
             }
           }
       })
+      .catch(err=>{})
     };
 
     const errorMsgUname = () => {

@@ -11,7 +11,7 @@ class updatefirstInput extends classes (db) {
 
     async updatefirstinput (username, res) {
         let users;
-        if (await this.checkusernames(username)){
+        if (await this.checkusernames(username) === 0){
             if ((users = await this.UpdateFirstInput(username, res))){
                 return 1;
             }

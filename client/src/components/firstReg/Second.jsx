@@ -21,11 +21,11 @@ export const Second = ({setDisplay}) => {
             body: JSON.stringify(data)
         })
         .then (data => {
-            if(data.status === 403) throw data
+            if(data.status !== 200) throw data
             return data.json()
         })
         .then (value =>{
-            console.log(value)
+            // console.log(value)
             if (value.result)
                 setDisplay(<Third setDisplay={setDisplay} />)
 

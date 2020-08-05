@@ -1,63 +1,71 @@
 import React, {useEffect} from 'react'
-import socketIOClient from "socket.io-client";
 import {Button, Form, Col, Row} from 'react-bootstrap'
-// import {useForm} from 'react-hook-form'
-const ENDPOINT = "http://127.0.0.1:4001";
+import {Mes} from './Mes'
 
-// import socketIOClient from "socket.io-client";
-
-export const Messages = ({message}) => {
+export const Messages = ({message, socket, id}) => {
     const   [messages, setMessage] = React.useState({})
-    // const   {register,handleSubmit} = useForm()
-    const socket = socketIOClient(ENDPOINT);
+    const   [replay, setReplay] = React.useState('')
+    
+    let les = [];
     useEffect(()=>{
-        socket.on("message", data =>{
-            setMessage({message: data.message})
-        })
-        // socket.on("status", data =>{
-        //     // setResponse(data.result)
-        //     console.log(data)
-        // })
-        // socket.emit("status",{authorization:localStorage.getItem('authorization')})
-        
+    //     // let les =   message.map(messages =>{
+    //     //     let i = 0
+    //     //     return  <Mes message={messages.message} key={i++}/>})
+    //         // return  messages.message}):'')
+    //         console.log(message)
+    //     let mes = Object.keys(message).map((key) => {
+    //         return (
+    //             <Mes message={key.message}/>
+    //         )
+    //     })
+    // let s = message.map(mes=> mes)
+    setReplay(message)
+    console.log(message)
+            
     })
     const onSubmit = async (e) => {
         e.preventDefault()
-        // console.log(messages.message)
-        socket.emit('message', {id: message.id,message: messages.message})
+        socket.emit('message', {id: localStorage.getItem('id'),friend_id: id, message: messages.message})
     }
-    console.log(message)
+    // let less = les.map(message=>message)
     return (
-        <div>
+        <div
+            style={{
+                    display: 'column',
+                    height: '40vh',
+                    width: '98vw',
+                    marginLeft: '1vw', 
+            }}
+        >
             <div
                 style={{
-                    height: '75vh',
-                    // width: '100%',
+                    height: '30vh',
+                    width: '98vw',
                     display: 'flex',
                     flexWrap: 'wrap',
                     overflow: 'auto',
-                    border: 'solid'
+                    justiflyContent: 'center',
+                    border: '0.1vh solid'
                 }}
             >
-                <p>{(message.firstname !== undefined)?message.firstname: ''} {(message.lastname !== undefined)?message.lastname:''}</p>
-                {messages.message}
+               {/* {replay} */}
+               {message}
             </div>
             <div
                 style={{
-                    // display: 'flex',
-                    // justifyContent: 'center',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
                     height: '10vh',
-                    // width: '100%',
+                    width: '100%',
                     // border: 'solid'
                 }}
             >
                 <Form onSubmit={onSubmit}>
-                    <Form.Group as={Row} controlId='formHorizontalMessage'>
-                        <Col sm={10}>
+                    <Form.Group  controlId='formHorizontalMessage'>
                             <Form.Control type="text" name="message" onChange={changeEvent => setMessage({message: changeEvent.target.value})}/>
-                        </Col>
+                            <Button variant="dark"  type='submit'   style={{width: '98vw'}} block>Send</Button>
                     </Form.Group>
-                    <Button variant="dark"  type='submit'   style={{width: '17vw', marginLeft: '2vw' ,marginTop: '3vh'}} block>Send</Button>
                 </Form>
             </div>
         </div>

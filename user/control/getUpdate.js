@@ -9,5 +9,5 @@ router.post('/', async (req, res) => {
 
     // res.json((await new_registration.checkreg(res)))
     // console.log(req.headers.userid)
-    await location.getLoc(req.headers.userid,res)
+    await location.updateLoc(req.headers.userid,req.body.lat, req.body.lng,res)
 }) 

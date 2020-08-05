@@ -1,12 +1,71 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import {GlobalContext} from '../../context/GlobalState'
 import {Card} from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faThumbsDown, faThumbsUp, faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 
 export const Suggest = (props) => {
+    const   {setLog} = useContext(GlobalContext)
+    const    [images, setImages] = React.useState("")
+
     const show = () =>{
         props.handleDisplay();
         props.setInfo(props.info);
+        userpic()
+    }
+    const onload = async () =>{
+        await fetch('/getProfImage', {
+            method: 'POST',
+            redirect: 'manual',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+              'authorization': `bearer ${localStorage.getItem('authorization')}` 
+            },
+            body: JSON.stringify({user_id: props.info.user_id})
+        })
+        .then (data => {
+            if(data.status !== 200) throw data
+            return data.json()
+        })
+        .then (data => {
+            // console.log(data)
+            if (data.result === 1){
+                // console.log(data.image_id)
+                setImages(data.img)
+            }
+        })
+        .catch(err =>{
+            if (err.status === 403)
+                setLog(false)
+        })
+    }
+    if (images === ""){
+        onload()
+    }
+    const userpic = async () =>{
+        await fetch('/getImageU', {
+            method: 'POST',
+            redirect: 'manual',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+              'authorization': `bearer ${localStorage.getItem('authorization')}` 
+            },
+            body: JSON.stringify({user_id: props.info.user_id})
+        })
+        .then (data => {
+            if(data.status !== 200) throw data
+            return data.json()
+        })
+        .then (data => {
+            if (data.result === 1){
+                props.setImage(data.img)
+                // setNum(data.image_id)
+            }
+        })
+        .catch(err =>{
+            if (err.status === 403)
+                setLog(false)
+        })
     }
     const like = async() =>{
         // console.log(props)
@@ -19,14 +78,19 @@ export const Suggest = (props) => {
             body: JSON.stringify({id: props.info.user_id})
         })
         .then (data =>{
-            if(data.status === 403) throw data
+            if(data.status !== 200) throw data
             return data.json()
         })
         .then (data => {
-            console.log(data)
+            if (data.result === 1){
+                // console.log("it runs")
+                props.socket.emit("notif", {id: localStorage.getItem('id'), message: `${props.info.firstname} liked you`})
+                props.onload()
+            }
+            // console.log(data)
         })
         .catch (err =>{
-            console.log(err)
+            // console.log(err)
         })
     }
     const dislike = async() =>{
@@ -44,13 +108,18 @@ export const Suggest = (props) => {
             return data.json()
         })
         .then (data => {
-            console.log(data)
+            if (data.result === 1){
+                props.socket.emit("notif", {id: localStorage.getItem('id'), message: `${props.info.firstname} disliked you`})
+                props.onload()
+            }
+            // console.log(data)
         })
         .catch (err =>{
             console.log(err)
         })
 
     }
+    // console.log(props.info)
     return (
         <div
             style={{
@@ -61,7 +130,7 @@ export const Suggest = (props) => {
 
             <div>
                 <Card style={{ width: '18rem' }} >
-                    <Card.Img variant="top" src="" width='180' height='180' />
+                    <Card.Img variant="top" src={images} width='180' height='180' />
                     <Card.Body>
                         <Card.Title>{props.info.firstname} {props.info.lastname}</Card.Title>
                         <div>

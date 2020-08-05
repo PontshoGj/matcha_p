@@ -5,7 +5,7 @@ import RangeSlider from 'react-bootstrap-range-slider';
 import {Button, Form, Col, Row} from 'react-bootstrap'
 import  {Suggest} from './Suggest'
 
-export const AdvancedMatch = ({setDisplay, handleDisplay, setInfo}) => {
+export const AdvancedMatch = ({setDisplay, handleDisplay, setInfo, onload, advancedSearch2}) => {
     const   {register, handleSubmit} = useForm()
     const   [ distance, setDistance ] = React.useState(1); 
     const   [ minage, setMinage ] = React.useState(18); 
@@ -34,19 +34,22 @@ export const AdvancedMatch = ({setDisplay, handleDisplay, setInfo}) => {
             body: JSON.stringify(data)
         })
         .then (data =>{
-            if(data.status === 403) throw data
+            if(data.status !== 200) throw data
             return data.json()
         })
         .then (data => {
-            console.log(data)
-            let i= 0;
-            let holdInfo = data.info.map(data => {
-                return <Suggest handleDisplay={handleDisplay}  info={data} setInfo={setInfo} key={i++}/>
-            })
-            setDisplay(holdInfo)
+            // console.log(data)
+            if (data.result === 1){
+                let i= 0;
+                let holdInfo = data.info.map(data => {
+                    return <Suggest handleDisplay={handleDisplay} onload={onload} info={data} setInfo={setInfo} key={i++}/>
+                })
+                setDisplay(holdInfo)
+                advancedSearch2()
+            }
         })
         .catch (err =>{
-            console.log(err)
+            // console.log(err)
         })
     }
     return (

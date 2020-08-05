@@ -11,6 +11,7 @@ router.post('/', async (req, res) => {
     // let firstResult = await firstinput.updatefirstinput(
     //     req.body.username
     // );
+    // console.log(req.body.username)
     await firstinput.updatefirstinput(
         req.body.username,
         res

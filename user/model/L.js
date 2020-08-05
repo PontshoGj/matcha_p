@@ -15,6 +15,10 @@ class L extends classes (db) {
     async dislikes (user, frnd, res) {
         await this.insertdisLike(user, frnd, res)
     }
+
+    async dele (user, frnd, res) {
+        await this.delefri(user, frnd, res)
+    }
 }
 
 module.exports = L;

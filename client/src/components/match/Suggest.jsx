@@ -84,7 +84,7 @@ export const Suggest = (props) => {
         .then (data => {
             if (data.result === 1){
                 // console.log("it runs")
-                props.socket.emit("notif", {id: localStorage.getItem('id'), message: `${props.info.firstname} liked you`})
+                props.socket.emit("notif", {id: localStorage.getItem('id'), userid: props.info.user_id,message: `someone liked you`})
                 props.onload()
             }
             // console.log(data)
@@ -109,10 +109,10 @@ export const Suggest = (props) => {
         })
         .then (data => {
             if (data.result === 1){
-                props.socket.emit("notif", {id: localStorage.getItem('id'), message: `${props.info.firstname} disliked you`})
+                props.socket.emit("notif", {id: localStorage.getItem('id'), userid: props.info.user_id, message: `someone disliked you`})
                 props.onload()
             }
-            // console.log(data)
+            console.log(data)
         })
         .catch (err =>{
             console.log(err)

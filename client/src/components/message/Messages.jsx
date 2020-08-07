@@ -8,17 +8,7 @@ export const Messages = ({message, socket, id}) => {
     
     let les = [];
     useEffect(()=>{
-    //     // let les =   message.map(messages =>{
-    //     //     let i = 0
-    //     //     return  <Mes message={messages.message} key={i++}/>})
-    //         // return  messages.message}):'')
-    //         console.log(message)
-    //     let mes = Object.keys(message).map((key) => {
-    //         return (
-    //             <Mes message={key.message}/>
-    //         )
-    //     })
-    // let s = message.map(mes=> mes)
+
     setReplay(message)
     console.log(message)
             
@@ -26,6 +16,7 @@ export const Messages = ({message, socket, id}) => {
     const onSubmit = async (e) => {
         e.preventDefault()
         socket.emit('message', {id: localStorage.getItem('id'),friend_id: id, message: messages.message})
+        socket.emit("notif", {id: localStorage.getItem('id'), userid: id, message: 'new message'})
     }
     // let less = les.map(message=>message)
     return (

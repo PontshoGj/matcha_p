@@ -19,6 +19,7 @@ const getmatch = require('./control/getmatch')
 const like = require('./control/likes')
 const del = require('./control/del')
 const dislike = require('./control/dislikes')
+const dislike2 = require('./control/dislikes2')
 const saveLocation = require('./control/saveLocation')
 const getLocation = require('./control/getLocation')
 const getUpdate = require('./control/getUpdate')
@@ -53,6 +54,7 @@ server.use('/getmatch', getmatch);
 server.use('/like', like);
 server.use('/del', del);
 server.use('/dislike', dislike);
+server.use('/dislike2', dislike2);
 server.use('/getFriends', getFriends);
 server.use('/getfreq', getfreq);
 server.use('/saveLocation', saveLocation);

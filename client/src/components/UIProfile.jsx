@@ -23,9 +23,10 @@ export const UIProfile = (props) => {
 
         socket.emit("userconnect",{authorization:localStorage.getItem('authorization'), userid: localStorage.getItem('id')})
         socket.on("notif", dat =>{
-            console.log(dat)
-            setMessage(dat)
-            setDisplays('reletive')
+            if (dat.id === parseInt(localStorage.getItem('id'))){
+                setMessage(dat.message)
+                setDisplays('flex')
+            }
         })
     })
 
@@ -37,6 +38,7 @@ export const UIProfile = (props) => {
     const changeMessage = () => {setDisplay(<Message socket={socket}/>)};
     const changeFriends = () => {setDisplay(<Friends socket={socket} changeMessage={changeMessage} />)};
     const changeMatch = () => {setDisplay(<Match socket={socket}/>)};
+    const cli = () => {setDisplays('none')}
     return (
         <div 
             style={{
@@ -61,6 +63,9 @@ export const UIProfile = (props) => {
                     changeMessage={changeMessage}
                 />
             </div>
+            <div onClick={cli}>
+                <Messages message={message} display={displays} />
+            </div>
             <div
                 style={{
                     width: '100%',
@@ -69,7 +74,6 @@ export const UIProfile = (props) => {
             >
 
                 { display }
-                <Messages message={message} display={displays}/>
             </div>
 
             <div

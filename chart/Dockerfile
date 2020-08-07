@@ -6,7 +6,7 @@ WORKDIR /chart
 
 FROM builder As chart
 
-EXPOSE 4000
+EXPOSE 4001
 
 COPY package.json .
 

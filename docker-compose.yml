@@ -83,12 +83,13 @@ services:
     setups:
         image: setups
         build: ./server
+        restart: always
         container_name: setups
         networks: 
             - backend
         expose: 
             - 5006
-        command: "npm start"
+        command: "node server.js"
         ports:
             - "5006:5006"
         depends_on:
@@ -135,10 +136,10 @@ services:
             - backend
         #     - backenddb
         expose: 
-            - '4000'
+            - '4001'
         command: "npm start"
         ports:
-            - "4000:4000"
+            - "4001:4001"
     # client:
     #     image: client
     #     build: ./client

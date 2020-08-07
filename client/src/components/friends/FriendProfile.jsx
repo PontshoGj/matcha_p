@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {GlobalContext} from '../../context/GlobalState'
 import {Card} from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,6 +7,18 @@ import { faExclamationTriangle, faEllipsisH, faEnvelope } from '@fortawesome/fre
 export const FriendProfile = ({handleDisplay, setData,data, setImage, onload1, freq, socket,changeMessage}) => {
     const   {setLog} = useContext(GlobalContext)
     const    [images, setImages] = React.useState("")
+    useEffect(() => {
+
+        socket.emit("userconnect",{authorization:localStorage.getItem('authorization'), userid: localStorage.getItem('id')})
+        socket.on("notif", dat =>{
+            console.log(dat)
+            if (dat.id === parseInt(localStorage.getItem('id'))){
+                if (parseInt(dat.code) === parseInt(1))
+                    onload1()
+            }
+        })
+    })
+
     const onload = async () =>{
         await fetch('/getProfImage', {
             method: 'POST',
@@ -74,12 +86,12 @@ export const FriendProfile = ({handleDisplay, setData,data, setImage, onload1, f
             if(data.status === 403) throw data
             return data.json()
         })
-        .then (data => {
+        .then (dat => {
             // console.log(data)
-            if (data.result){
+            if (dat.result){
                 freq()
                 onload1()
-                socket.emit("notif", {id: localStorage.getItem('id'), message: `${data.firstname} blocked you`})
+                socket.emit("notif", {id: localStorage.getItem('id'), userid: data.id, message: `someone friend disliked you`, code: 1})
             }
         })
         .catch (err =>{

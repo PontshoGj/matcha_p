@@ -718,6 +718,48 @@ class dbConnection{
             })
             await connection.connect((err) => {
                 if (!this.errors(err)) return
+                connection.query(`INSERT INTO likes SET user_id = ${user}, friend_id = \'${frnd}\', liked = 0`, (err, result) => {
+                    // connection.query(`UPDATE likes SET liked = 0 WHERE user_id = ${frnd} AND friend_id = \'${user}\'`, (err, result) => {
+                    if (!err){
+                        // console.log(result)
+                        if(result.affectedRows){
+                                console.log('done');
+                                connection.query(`UPDATE users SET tdislike = tdislike + 1 WHERE id = ${frnd}`, (err, result) => {
+                                    if (!err){
+                                        // console.log(result)
+                                        res.json({result: 1}) 
+                                    }else{
+                                        res.json({result: 0})
+
+                                    }
+                                })
+                        }else{
+                            res.json({result: 0})
+                        }
+                    }else{
+                        console.log(err);
+                        res.json({result: 0})
+                    }
+                    ////this.connection.end()()()
+                })
+            })
+        }catch (e) {
+            console.log(e);
+            res.json({result: 0})
+        }   
+    }
+    async insertdisLike2 (user, frnd,res) {
+        try{
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
+                if (!this.errors(err)) return
                 // connection.query(`INSERT INTO likes SET user_id = ${user}, friend_id = \'${frnd}\', liked = 0`, (err, result) => {
                     connection.query(`UPDATE likes SET liked = 0 WHERE user_id = ${frnd} AND friend_id = \'${user}\'`, (err, result) => {
                     if (!err){
@@ -748,7 +790,6 @@ class dbConnection{
             res.json({result: 0})
         }   
     }
-
     async addFriend (user, frnd,res) {
         try{
             let connection = mysql.createConnection({

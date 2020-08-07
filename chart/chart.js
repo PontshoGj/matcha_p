@@ -56,7 +56,10 @@ client.on('connection', async function(socket){
     })
     socket.on("notif", data =>{
         socket.join(data.id);
-        client.to(data.id).emit("notif", {message: data.message})
+        if (data.code !== undefined)
+            client.emit("notif", {message: data.message, id: data.userid, code: data.code})
+        else
+            client.emit("notif", {message: data.message, id: data.userid})
     })
 });
 

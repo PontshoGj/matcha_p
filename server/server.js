@@ -2,10 +2,10 @@ require('dotenv').config()
 const express = require('express');
 const server = express();
 const bcrypt = require('bcrypt');
+const process = require('process');
 let port = process.env.PORT || 5006;
 const fs = require('fs')
 const saltRounds = 10;
-// const process = require('process');
 
 
 let mysql = require('mysql')
@@ -24,19 +24,20 @@ connection.connect((err) => {
         if (err.code === 'PROTOCOL_CONNECTION_LOST') {
             console.error('Database connection was closed.');
             process.exit(1)
-            return;
+            // return;
         }
         if (err.code === 'ER_CON_COUNT_ERROR') {
             console.error('Database has too many connections.');
             process.exit(1)
-            return;
+            // return;
         }
         if (err.code === 'ECONNREFUSED') {
             console.error('Database connection was refused.');
             process.exit(1)
-            return;
+            // return;
         }
         console.log(err);
+        process.exit(1)
     }
     // console.log(connection);
     connection.query('CREATE DATABASE IF NOT EXISTS matcha');
@@ -106,20 +107,25 @@ connection.connect((err) => {
     //     }else{
     //         try {
     //             const object = JSON.parse(fileData)
-    //             // console.log(object)
-    //             const newobject = object.map(ob => {
-    //                 let x = Math.floor((Math.random() * 1000) + 1)
-    //                 ob.tlike = x
-    //                 let y = Math.floor((Math.random() * 1000) + 1)
-    //                 ob.tdislike = y
-    //                 return ob
-    //             })
-    //             // const gend = ["male", "female", "gay", "lesbian", "Bisexuelle"]
+    //             console.log(object)
     //             // const newobject = object.map(ob => {
-    //             //     let x = Math.floor((Math.random() * 3) + 1)
-    //             //     ob.gender = gend[x]
+    //             //     let x = Math.floor((Math.random() * 1000) + 1)
+    //             //     ob.tlike = x
+    //             //     let y = Math.floor((Math.random() * 1000) + 1)
+    //             //     ob.tdislike = y
     //             //     return ob
     //             // })
+    //             const gend = ["male", "female", "gay", "lesbian", "Bisexuelle"]
+    //             let i = 0
+    //             const newobject = object.map(ob => {
+    //                 // let x = Math.floor((Math.random() * 3) + 1)
+    //                 // console.log(x)
+    //                 ob.gender = gend[i]
+    //                 i++
+    //                 if (i === 5)
+    //                     i = 0
+    //                 return ob
+    //             })
     //             // let r_earth = 6371
     //             // let i = 1
     //             // const newobject = object.map(ob => {
@@ -141,7 +147,7 @@ connection.connect((err) => {
     //             //         console.log('Successfully wrote file')
     //             //     }
     //             // })
-    //             console.log(objects)
+    //             // console.log(objects)
     //         } catch(err) {
     //             console.log(err)
     //         }

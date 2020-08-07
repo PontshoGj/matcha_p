@@ -64,7 +64,7 @@ class dbConnection{
                     connection.query(`SELECT * FROM users WHERE  ${gender} && age BETWEEN ${minage} AND ${maxage} && interest LIKE \'[%${g.substring(1, g.length - 1)}%]\' && latidute BETWEEN latidute AND ${latitude + (distance / r_earth) * (180 / 3.145)} && longitude BETWEEN longitude AND ${longitude + (distance / r_earth) * (180 / 3.145) / Math.cos(latitude * 3.145/180)} ORDER BY tlike DESC`, (err, result) => {
                         if (!err){
                             let check = JSON.stringify(result)
-                             console.log(result);
+                            //  console.log(result);
                             if(check.localeCompare('[]') !== 0){
                                 //  console.log(result);
                                 resolve({result: 1, 

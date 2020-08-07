@@ -44,7 +44,7 @@ export const FriendPro = ({handleDisplay, setData, data, onload, freq, socket, s
         onloads()
     }
     const dislike = async () =>{
-        await fetch('/user/dislike',{
+        await fetch('/user/dislike2',{
             method: 'post',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
@@ -56,12 +56,13 @@ export const FriendPro = ({handleDisplay, setData, data, onload, freq, socket, s
             if(data.status === 403) throw data
             return data.json()
         })
-        .then (data => {
+        .then (dat => {
             // console.log(data)
-            if (data.result){
+            if (dat.result){
                 freq()
                 onload()
-                socket.emit("notif", {id: localStorage.getItem('id'), message: `${data.firstname} disliked you`})
+                socket.emit("notif", {id: localStorage.getItem('id'), userid: data.id, message: `someone disliked you`})
+
             }
         })
         .catch (err =>{
@@ -83,12 +84,12 @@ export const FriendPro = ({handleDisplay, setData, data, onload, freq, socket, s
             if(data.status === 403) throw data
             return data.json()
         })
-        .then (data => {
+        .then (dat => {
             // console.log(data)
-            if (data.result){
+            if (dat.result){
                 freq()
                 onload()
-                socket.emit("notif", {id: localStorage.getItem('id'), message: `${data.firstname} liked you`})
+                socket.emit("notif", {id: localStorage.getItem('id'), userid: data.id, message: `someone liked you. you are now friends`})
             }
         })
         .catch (err =>{
@@ -110,10 +111,10 @@ export const FriendPro = ({handleDisplay, setData, data, onload, freq, socket, s
             if(data.status !== 200) throw data
             return data.json()
         })
-        .then (data => {
+        .then (dat => {
             // console.log(data)
-            if (data.result === 1){
-                setImage(data.img)
+            if (dat.result === 1){
+                setImage(dat.img)
                 // setNum(data.image_id)
             }
         })
@@ -136,7 +137,7 @@ export const FriendPro = ({handleDisplay, setData, data, onload, freq, socket, s
                     <Card.Body>
                         <Card.Title>{data.firstname} {data.lastname}</Card.Title>
                         <div style={{marginTop: '1vh'}}>
-                            <FontAwesomeIcon icon={faExclamationTriangle} onClick={dislike} size={'1x'} />
+                            {/* <FontAwesomeIcon icon={faExclamationTriangle} onClick={dislike} size={'1x'} /> */}
                             <FontAwesomeIcon icon={faThumbsDown} onClick={dislike} style={{marginLeft: '2vw'}} size='1x' />
                             <FontAwesomeIcon icon={faThumbsUp} onClick={like} style={{marginLeft: '2vw'}} size='1x' />
                         </div>

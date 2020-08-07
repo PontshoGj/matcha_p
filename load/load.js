@@ -193,6 +193,29 @@ load.all('/updateImage', verify, upload.single('pic'),async (req, res) =>{
     .catch (err => {res.json({result: 0, message: 'image format not accepted'});})
 })
 
+load.all('/updateProfImage', verify,async (req, res) =>{
+    let path = req.url.split('/')
+    // console.log(path)
+//     // console.log('aaaaa')
+    console.log(req.body)
+    await fetch(`http://fileserver:5004/${path[1]}`,{
+            method: 'post',
+            headers: {
+                'userid': req.authData.user.id,
+                'Content-Type': 'application/json;charset=utf-8',
+            },
+            body: JSON.stringify({num: req.body.num, pro: req.body.pro})
+        }
+    )
+    .then (data => {
+        if (data.status === 500) throw data
+        return data.json()
+    })
+    .then (data => {
+            res.status(200).json(data)
+    })
+    .catch (err => {res.json({result: 0, message: 'image format not accepted'});})
+})
 
 load.all('/get*', verify,async (req, res) =>{
     let path = req.url.split('/')

@@ -183,25 +183,33 @@ class dbConnection{
             // res.json({result: 0, err: {insert: "image insertion failed"}});
         }
     }
-    async updateProfImage (user, res) {
+    async updateProfImage (user, pro,res) {
         try{
             //connecting to the mongodb cloud database
             await this.connection.getConnection((err) => {
                 if (!this.errors(err)) return
                 console.log('inserting users');
-                this.connection.query(`UPDATE profimages SET ? WHERE user_id = ${user.user_id} && image_id = ${user.image_id}`, {img:user.img},(err, result) => {
+                this.connection.query(`SELECT img FROM images WHERE user_id = ${user.user_id} && image_id = ${user.image_id}`, (err, result) => {
                     if (!err){
-                        if(result.affectedRows){
-                            console.log('image saved');
-                            // res.json({result: 1, err: {}});
-                            // throw '1'
-                        }else{
-                            console.log("image insertion failed")
-                            res.json({result: 0, err: {insert: "image insertion failed"}});
-                        }
+                        // console.log(result)
+                        this.connection.query(`UPDATE profimage SET ? WHERE user_id = ${user.user_id} && image_id = ${pro}`, {img:result[0].img},(err, result) => {
+                            if (!err){
+                                // console.log(result)
+                                if(result.affectedRows){
+                                    console.log('image saved');
+                                    // res.json({result: 1, err: {}});
+                                    // throw '1'
+                                }else{
+                                    console.log("image insertion failed")
+                                    // res.json({result: 0, err: {insert: "image insertion failed"}});
+                                }
+                            }else{
+                                console.log(err);
+                                // res.json({result: 0, err: {insert: "image insertion failed"}});
+                            }
+                        })
                     }else{
-                        console.log(err);
-                        res.json({result: 0, err: {insert: "image insertion failed"}});
+                        console.log(err)
                     }
                 })
             })

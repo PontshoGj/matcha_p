@@ -79,17 +79,13 @@ fileServer.post('/updateImage', upload.single('pic'),async (req, res, next) =>{
     }
 });
 
-fileServer.post('/updateProfImage', upload.single('pic'),async (req, res, next) =>{
-    if (req.file.length === 0){
-        console.log('invalid image')
-        res.json({result: false, message: 'invalid image'})
-    }else{
-        res.json({result: true, message: `${req.file.filename}  image uploaded successufly`})
+fileServer.post('/updateProfImage',async (req, res, next) =>{
+        res.json({result: true, message: `profile pic sset`})
         let user_id =  req.headers['userid']
-        let num = req.headers['num']
+        let num = req.body.num
         // console.log(req.headers)
-        let resul = new uploadfile(user_id, fs.readFileSync(`uploads/${req.file.filename}`), num)
-        await resul.updateprofimage(res)
-    }
+        console.log(req.body)
+        let resul = new uploadfile(user_id, null, num)
+        await resul.updateprofimage(res, req.body.pro)
 });
 fileServer.listen(port, () => {console.log(`fileServer Running on Port ${port}`)})

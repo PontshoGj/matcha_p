@@ -25,11 +25,11 @@ class UploadImage extends db {
     async getprofimage (res) {
         await this.getProfImage({user_id: this.userid}, res)
     }
-    async updateprofimage (res) {
+    async updateprofimage (res, pro) {
         // console.log(this.userid)
         // console.log(this.num)
         // console.log(this.image)
-        await this.updateProfImage({img: this.image, user_id: parseInt(this.userid),  image_id: parseInt(this.num)}, res)
+        await this.updateProfImage({user_id: parseInt(this.userid),  image_id: parseInt(this.num)},pro, res)
     }
 }
 module.exports = UploadImage;

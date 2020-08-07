@@ -18,7 +18,7 @@ export const User = ({data, setMessage, setUser, setDisplay, socket}) => {
     let replay = []
     useEffect(()=>{
         socket.on("message", dat =>{
-            // console.log(dat)
+            console.log(dat)
             if (parseInt(dat.friend_id) === parseInt(data.id)){
                 replay.push({message: dat.message})
                 let rp = replay.map(mess =>{

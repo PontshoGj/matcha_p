@@ -14,7 +14,7 @@ const bodyParser = require('body-parser')
 
 
 const gtfrnd = async bearer => {
-    let getfriends = await fetch(`http://localhost:3020/user/getFriends`,{
+    let getfriends = await fetch(`http://load:3020/user/getFriends`,{
             method: 'post',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',

@@ -24,6 +24,7 @@ export default (state, action) => {
             break
         case 'SET_ID':
             localStorage.setItem("id", action.payload)
+            break
         default:
             return state;
     }

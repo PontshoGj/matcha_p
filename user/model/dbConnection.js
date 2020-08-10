@@ -435,7 +435,7 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0 ,username: "username does not exist"})
                     }
-                // //this.connection.end()()
+                    connection.end()
                 })
             })
         }catch (e) {
@@ -479,7 +479,7 @@ class dbConnection{
                         console.log(err);
                         res.json({result: 0 ,username: "username does not exist"})
                     }
-                    //this.connection.end()()
+                    connection.end()
                 })
             })
         }catch (e) {
@@ -895,6 +895,7 @@ class dbConnection{
                             resolve({result: 0 ,username: "username does not exist"})
                         }
                         // ////this.connection.end()()()
+                        connection.end()
                     })
                 })
             })
@@ -928,7 +929,7 @@ class dbConnection{
                                 console.log(err);
                                 res.json({result: 0 ,username: "username does not exist"})
                             }
-                            // //this.connection.end()()
+                            connection.end()
                         })
                     })
                 }else{

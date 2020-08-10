@@ -43,13 +43,13 @@ connection.connect((err) => {
     connection.query('CREATE DATABASE IF NOT EXISTS matcha');
     console.log('Database matcha created');
     connection.query('USE matcha');
-    connection.query('CREATE TABLE IF NOT EXISTS users (id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, username VARCHAR(100) NOT NULL, lastname VARCHAR(100), firstname VARCHAR(100), email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, gender VARCHAR(25) DEFAULT \'Bisexuelle\', bio VARCHAR(1000), interest json DEFAULT NULL, age INT, maxage INT DEFAULT 88, minage INT DEFAULT 18,latidute VARCHAR(255), longitude VARCHAR(255), distance INT DEFAULT 1,vf INT DEFAULT 0, firstinput int, tlike INT DEFAULT 0, tdislike INT DEFAULT 0)');
+    connection.query('CREATE TABLE IF NOT EXISTS users (id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, username VARCHAR(100) NOT NULL, lastname VARCHAR(100), firstname VARCHAR(100), email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, gender VARCHAR(25) DEFAULT \'Bisexuelle\', bio VARCHAR(1000), interest json DEFAULT NULL, age INT, maxage INT DEFAULT 88, minage INT DEFAULT 18,latidute VARCHAR(255), longitude VARCHAR(255), distance INT DEFAULT 1,vf INT DEFAULT 0, firstinput int, tlike INT DEFAULT 0, tdislike INT DEFAULT 0, date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)');
     console.log('Table users created');
     connection.query('CREATE TABLE IF NOT EXISTS likes (user_id INT(9) UNSIGNED  NOT NULL, friend_id VARCHAR(100) NOT NULL, liked INT(9) NOT NULL)');
     console.log('Table likes created');
     connection.query('CREATE TABLE IF NOT EXISTS friends (user_id INT(9) UNSIGNED  NOT NULL, friend_id VARCHAR(100) NOT NULL)');
     console.log('Table freinds created');
-    connection.query('CREATE TABLE IF NOT EXISTS messages (id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, username VARCHAR(100) NOT NULL, sender VARCHAR(100) NOT NULL, message VARCHAR(1000))');
+    connection.query('CREATE TABLE IF NOT EXISTS messages (froms INT(9) UNSIGNED NOT NULL, tos INT(9) UNSIGNED NOT NULL, message VARCHAR(1000), date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)');
     console.log('Table messages created');
     connection.query('CREATE TABLE IF NOT EXISTS auth(id INT(9) UNSIGNED PRIMARY KEY NOT NULL, token VARCHAR(1000), selec VARCHAR(1000))');
     console.log('Table auth created');

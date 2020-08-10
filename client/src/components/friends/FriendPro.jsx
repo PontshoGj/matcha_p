@@ -1,15 +1,23 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {GlobalContext} from '../../context/GlobalState'
 
 import {Card} from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExclamationTriangle, faThumbsDown, faThumbsUp,faEllipsisH} from '@fortawesome/free-solid-svg-icons'
+import {  faThumbsDown, faThumbsUp,faEllipsisH} from '@fortawesome/free-solid-svg-icons'
 
 export const FriendPro = ({handleDisplay, setData, data, onload, freq, socket, setImage}) => {
     const   {setLog} = useContext(GlobalContext)
-
+    const   [online, setOnline] = React.useState(data.date)
     const    [images, setImages] = React.useState("")
 
+    useEffect(() => {
+        socket.on('status', data =>{
+            console.log(data)
+            if (parseInt(data.result) === parseInt(data.id)){
+                setOnline('online')
+            }
+        })
+    })
     const handleOnClick = () =>{
         handleDisplay()
         setData(data);
@@ -146,6 +154,7 @@ export const FriendPro = ({handleDisplay, setData, data, onload, freq, socket, s
                             <FontAwesomeIcon icon={faEllipsisH}  onClick={handleOnClick} size='2x' />
                         </div>
                         {/* <Button variant="primary" onClick={handleOnClick}> Show More</Button> */}
+                        <div>{online}</div>
                     </Card.Body>
                 </Card>
             </div>

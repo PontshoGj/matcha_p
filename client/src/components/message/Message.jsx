@@ -1,12 +1,10 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import { User } from './User'
 
 export const Message = ({socket}) => {
-    const [response, setResponse] = React.useState();
     const   [comp, setComp] = React.useState()
-    const   [message, setMessage] = React.useState()
-    const   [displays, setDisplay] = React.useState('none')
-    const   [user, setUser] = React.useState('')
+    // const   [displays, setDisplay] = React.useState('none')
+    // const   [user, setUser] = React.useState('')
     // useEffect(() => {
 
     //     socket.emit("userconnect",{authorization:localStorage.getItem('authorization'), userid: localStorage.getItem('id')})
@@ -30,8 +28,8 @@ export const Message = ({socket}) => {
             if (data.result){
                 let holdInfo = data.userinfo.map(data => {
                     // console.log(data)
-                    let i = 0
-                    return <User data={data} key={data.id} setResponse={setResponse} setMessage={setMessage} setUser={setUser} setDisplay={setDisplay} socket={socket}/>
+                    // let i = 0
+                    return <User data={data} key={data.id} socket={socket}/>
                 })
                 // console.log(holdInfo)
                 setComp(holdInfo)

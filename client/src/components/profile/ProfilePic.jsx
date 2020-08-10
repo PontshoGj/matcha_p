@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import {GlobalContext} from '../../context/GlobalState'
 import { Picture } from './Picture'
 import {useForm} from 'react-hook-form'
-import {Card, Button, Form, Col, Row} from 'react-bootstrap'
+import { Button, Form, Row} from 'react-bootstrap'
 
 export const ProfilePic = () => {
     const   {setLog} = useContext(GlobalContext)

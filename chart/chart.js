@@ -1,16 +1,19 @@
 require('dotenv').config()
 const express = require('express')
-const mongo = require('mongodb').MongoClient;
 const chat = express()
 // chat.listen(4001)
+const server = require('http').createServer(chat);
 const sockets = require('socket.io')
-const client = sockets(4001);
+const client = sockets(server);
 const fetch = require('node-fetch')
 const bodyParser = require('body-parser')
+const saves = require('./save')
+const getMessage = require('./getMessage')
 
-// chat.use(bodyParser.json());
-// chat.use(bodyParser.urlencoded({extended: false}));
+chat.use(bodyParser.json());
+chat.use(bodyParser.urlencoded({extended: false}));
 
+// chat.use('./gemessage', getMessage)
 
 
 const gtfrnd = async bearer => {
@@ -41,8 +44,8 @@ client.on('connection', async function(socket){
     }
 
     socket.on("userconnect", async (data) =>{
-        sendStatus({result: 'online'})
-        // console.log(data)
+        sendStatus({result: data.userid})
+        console.log(data)
         let jon = await gtfrnd(data.authorization)
         jon.map(j =>{
             socket.join(j);
@@ -53,6 +56,14 @@ client.on('connection', async function(socket){
     socket.on('message', data =>{
         // console.log(data)
         client.to(data.id).emit("message", {friend_id:data.id, message: data.message})
+        save(data.id, data.friend_id, data.message)
+    })
+    socket.on('getmessage', async data =>{
+        // console.log(data)
+        // client.to(data.id).emit("message", {friend_id:data.id, message: data.message})
+        await getmessages( data.friend_id, data.id, client)
+        // if (me.result)
+            // console.log(me)
     })
     socket.on("notif", data =>{
         socket.join(data.id);
@@ -63,3 +74,4 @@ client.on('connection', async function(socket){
     })
 });
 
+server.listen(4001,()=>{console.log('chat running on PORT 4001')})

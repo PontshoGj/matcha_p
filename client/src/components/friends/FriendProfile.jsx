@@ -7,14 +7,20 @@ import { faExclamationTriangle, faEllipsisH, faEnvelope } from '@fortawesome/fre
 export const FriendProfile = ({handleDisplay, setData,data, setImage, onload1, freq, socket,changeMessage}) => {
     const   {setLog} = useContext(GlobalContext)
     const    [images, setImages] = React.useState("")
+    const   [online, setOnline] = React.useState(data.date)
     useEffect(() => {
 
-        socket.emit("userconnect",{authorization:localStorage.getItem('authorization'), userid: localStorage.getItem('id')})
         socket.on("notif", dat =>{
-            console.log(dat)
+            // console.log(dat)
             if (dat.id === parseInt(localStorage.getItem('id'))){
                 if (parseInt(dat.code) === parseInt(1))
                     onload1()
+            }
+        })
+        socket.on("status", dat =>{
+            console.log(dat)
+            if (parseInt(data.result) === parseInt(data.id)){
+                setOnline('online')
             }
         })
     })
@@ -126,6 +132,7 @@ export const FriendProfile = ({handleDisplay, setData,data, setImage, onload1, f
                             <FontAwesomeIcon icon={faEllipsisH}  onClick={handleOnClick} size='2x' />
                         </div>
                         {/* <Button variant="primary" onClick={handleOnClick}> Show More</Button> */}
+                        <div>{online}</div>
                     </Card.Body>
                 </Card>
             </div>

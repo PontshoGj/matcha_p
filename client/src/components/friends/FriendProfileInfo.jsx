@@ -1,5 +1,4 @@
-import React, { useContext } from 'react'
-import {GlobalContext} from '../../context/GlobalState'
+import React from 'react'
 
 import {Card, Carousel} from 'react-bootstrap'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
@@ -19,7 +18,7 @@ export const FriendProfileInfo = ({data, handleExit, image}) => {
                     <img
                         className="d-block w-100"
                         src={im}
-                        alt="image"
+                        alt="your"
                         width='200' 
                         height='200'
                     />

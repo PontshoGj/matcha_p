@@ -1,12 +1,10 @@
-import React, { useContext } from 'react'
-import {GlobalContext} from '../../context/GlobalState'
+import React from 'react'
 import {FriendProfile} from './FriendProfile'
 import {FriendProfileInfo} from "./FriendProfileInfo"
 import {Tabs, Tab} from 'react-bootstrap'
 import {FriendPro} from './FriendPro'
 
 export const Friends = ({socket, changeMessage}) => {
-    const   {setLog} = useContext(GlobalContext)
     const   [display, setDisplay] = React.useState('none')
     const   [comp, setComp] = React.useState()
     const   [comps, setComps] = React.useState()

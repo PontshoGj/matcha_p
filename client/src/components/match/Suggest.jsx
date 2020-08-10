@@ -144,6 +144,7 @@ export const Suggest = (props) => {
                             <FontAwesomeIcon icon={faEllipsisH}  onClick={show} size='2x' />
                             <FontAwesomeIcon icon={faEllipsisH}  onClick={show} size='2x' />
                         </div>
+                        <div>{props.info.date}</div>
                     </Card.Body>
                 </Card>
             </div>

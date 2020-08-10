@@ -217,6 +217,27 @@ load.all('/updateProfImage', verify,async (req, res) =>{
     .catch (err => {res.json({result: 0, message: 'image format not accepted'});})
 })
 
+load.all('/gemessage', verify,async (req, res) =>{
+    let path = req.url.split('/')
+    console.log(req.body)
+    await fetch(`http://chart:4001/${path[1]}`,{
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({friend_id: req.body.friend_id, user_id: req.body.user_id})
+        }
+    )
+    .then (data => {
+        console.log(data)
+        if (data.status === 500) throw data
+        return data.json()
+    })
+    .then (data => {res.status(200).json(data)})
+    .catch (err => {
+        console.log(err)
+        res.json({result: 0, message: 'who'});})
+})
 load.all('/get*', verify,async (req, res) =>{
     let path = req.url.split('/')
     await fetch(`http://fileserver:5004/${path[1]}`,{
@@ -236,7 +257,6 @@ load.all('/get*', verify,async (req, res) =>{
     .then (data => {res.status(200).json(data)})
     .catch (err => {res.json({result: 0, message: 'image format not accepted'});})
 })
-
 load.all('/match/*', verify,async (req, res) =>{
     let path = req.url.split('/')
 

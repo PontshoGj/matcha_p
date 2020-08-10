@@ -77,7 +77,8 @@ class dbConnection{
                                             bio: data.bio,
                                             interest: data.interest,
                                             gender: data.gender,
-                                            like: data.tlike
+                                            like: data.tlike,
+                                            date: data.date
                                         }
                                     })
                                 })

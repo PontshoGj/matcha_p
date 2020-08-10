@@ -1,11 +1,9 @@
-import React, { useContext } from 'react'
-import {GlobalContext} from '../../context/GlobalState'
+import React from 'react'
 import {Card, Carousel} from 'react-bootstrap'
-import { faTimes, faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { faTimes} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export const MoreInfo = (props) => {
-    const   {setLog} = useContext(GlobalContext)
     const    [images, setImages] = React.useState("")
     const [index, setIndex] = React.useState(0);
 
@@ -18,7 +16,7 @@ export const MoreInfo = (props) => {
                     <img
                     className="d-block w-100"
                     src={im}
-                    alt="image"
+                    alt="iyour"
                     width='200' 
                     height='200'
                     />

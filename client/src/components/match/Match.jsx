@@ -1,12 +1,10 @@
-import React, { useContext } from 'react'
-import {GlobalContext} from '../../context/GlobalState'
+import React from 'react'
 import {Suggest} from './Suggest'
 import {MoreInfo} from './MoreInfo'
 import {AdvancedMatch} from './AdvancedMatch'
 import {Button} from 'react-bootstrap'
 
 export const Match = ({socket}) => {
-    const   {setLog} = useContext(GlobalContext)
     const   [display, setDisplay] = React.useState([])
     const   [displays, setDisplays] = React.useState('none')
     const   [info, setInfo] = React.useState({})

@@ -38,7 +38,7 @@ export const FirstRegUi = (props) => {
             >
                 <Card >
                     <Card.Body >
-                        <EditionalInfo />
+                        <EditionalInfo Fourth={Fourth} changeLog={changeLog}/>
                         {/* <Fourth /> */}
                     </Card.Body>
                 </Card>

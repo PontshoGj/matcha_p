@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {FriendProfile} from './FriendProfile'
 import {FriendProfileInfo} from "./FriendProfileInfo"
 import {Tabs, Tab} from 'react-bootstrap'
 import {FriendPro} from './FriendPro'
+import {GlobalContext} from '../../context/GlobalState'
 
 export const Friends = ({socket, changeMessage}) => {
+    const {setLog} = useContext(GlobalContext)
     const   [display, setDisplay] = React.useState('none')
     const   [comp, setComp] = React.useState()
     const   [comps, setComps] = React.useState()
@@ -48,7 +50,8 @@ export const Friends = ({socket, changeMessage}) => {
             }
         })
         .catch(err=>{
-
+            if (err.status === 403)
+                setLog(false)
         })
     }
     const freq = async () => {

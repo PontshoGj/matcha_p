@@ -1,7 +1,9 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { User } from './User'
+import {GlobalContext} from '../../context/GlobalState'
 
 export const Message = ({socket}) => {
+    const {setLog} = useContext(GlobalContext)
     const   [comp, setComp] = React.useState()
     // const   [displays, setDisplay] = React.useState('none')
     // const   [user, setUser] = React.useState('')
@@ -35,8 +37,9 @@ export const Message = ({socket}) => {
                 setComp(holdInfo)
             }
         })
-        .then(err=>{
-            
+        .catch(err=>{
+            if (err.status === 403)
+                setLog(false)
         })
     }
     if (comp === undefined){

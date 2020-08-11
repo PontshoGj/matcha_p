@@ -31,8 +31,11 @@ export const UIProfile = (props) => {
     })
 
     const changeLog = () =>{
-        setLog(false)
-        setLogStorage(false)
+        localStorage.removeItem('authorization')
+        localStorage.removeItem('id')
+        localStorage.removeItem('firstinput')
+        setDisplay(<Message socket={socket}/>)
+        localStorage.removeItem('log')
     }
     const changeProfile = () =>{setDisplay(<Profile socket={socket}/>)};
     const changeMessage = () => {setDisplay(<Message socket={socket}/>)};

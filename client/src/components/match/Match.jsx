@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {Suggest} from './Suggest'
 import {MoreInfo} from './MoreInfo'
 import {AdvancedMatch} from './AdvancedMatch'
 import {Button} from 'react-bootstrap'
+import {GlobalContext} from '../../context/GlobalState'
 
 export const Match = ({socket}) => {
+    const {setLog} = useContext(GlobalContext)
     const   [display, setDisplay] = React.useState([])
     const   [displays, setDisplays] = React.useState('none')
     const   [info, setInfo] = React.useState({})
@@ -43,8 +45,9 @@ export const Match = ({socket}) => {
                 setDisplay("")
             }
         })
-        .catch(errr=>{
-            
+        .catch(err=>{
+            if (err.status === 403)
+                setLog(false)
         })
     }
     if (display[0] === undefined)

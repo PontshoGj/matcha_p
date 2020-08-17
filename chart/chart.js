@@ -15,7 +15,7 @@ chat.use(bodyParser.urlencoded({extended: false}));
 
 // chat.use('./gemessage', getMessage)
 
-
+let online = []
 const gtfrnd = async bearer => {
     let getfriends = await fetch(`http://load:3020/user/getFriends`,{
             method: 'post',
@@ -45,12 +45,13 @@ client.on('connection', async function(socket){
 
     socket.on("userconnect", async (data) =>{
         sendStatus({result: data.userid})
-        console.log(data)
+        online.push({id: data.userid})
+        // console.log(data)
         let jon = await gtfrnd(data.authorization)
         jon.map(j =>{
             socket.join(j);
         })
-        socket.join(data.id)
+        socket.join({userid: data.id})
     })
 
     socket.on('message', data =>{
@@ -64,6 +65,16 @@ client.on('connection', async function(socket){
         await getmessages( data.friend_id, data.id, client)
         // if (me.result)
             // console.log(me)
+    })
+    socket.on('check', data=>{
+        console.log(online)
+        online.map(user=>{
+            if (parseInt(user.id) === parseInt(data.id))
+            {
+                socket.emit("onli", {online: 1, userid: data.id})
+                console.log('online')
+            }
+        })
     })
     socket.on("notif", data =>{
         socket.join(data.id);

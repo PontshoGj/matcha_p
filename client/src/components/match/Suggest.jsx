@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {GlobalContext} from '../../context/GlobalState'
 import {Card} from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,7 +7,20 @@ import { faThumbsDown, faThumbsUp, faEllipsisH } from '@fortawesome/free-solid-s
 export const Suggest = (props) => {
     const   {setLog} = useContext(GlobalContext)
     const    [images, setImages] = React.useState("")
+    const   [online, setOnline] = React.useState(props.info.date)
+    useEffect(() => {
+        props.socket.emit('check', {id: props.info.user_id})
+        props.socket.on("onli", dat =>{
+            // console.log(dat.userid)
+            // console.log(data.id)
+            // console.log(parseInt(dat.userid) === parseInt(data.id))
+            if (parseInt(dat.userid) === parseInt(props.info.user_id)){
+                // console.log(dat)
 
+                setOnline('online')
+            }
+        })
+    })
     const show = () =>{
         props.handleDisplay();
         props.setInfo(props.info);
@@ -144,7 +157,7 @@ export const Suggest = (props) => {
                             <FontAwesomeIcon icon={faEllipsisH}  onClick={show} size='2x' />
                             <FontAwesomeIcon icon={faEllipsisH}  onClick={show} size='2x' />
                         </div>
-                        <div>{props.info.date}</div>
+                        <div>{online}</div>
                     </Card.Body>
                 </Card>
             </div>

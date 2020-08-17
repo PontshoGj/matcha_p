@@ -17,6 +17,16 @@ export const FriendPro = ({handleDisplay, setData, data, onload, freq, socket, s
                 setOnline('online')
             }
         })
+        socket.emit('check', {id: data.id})
+        socket.on("onli", dat =>{
+            // console.log(dat.userid)
+            // console.log(data.id)
+            // console.log(parseInt(dat.userid) === parseInt(data.id))
+            if (parseInt(dat.userid) === parseInt(data.id)){
+                // console.log(dat)
+                setOnline('online')
+            }
+        })
     })
     const handleOnClick = () =>{
         handleDisplay()

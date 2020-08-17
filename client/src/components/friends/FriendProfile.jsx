@@ -17,9 +17,14 @@ export const FriendProfile = ({handleDisplay, setData,data, setImage, onload1, f
                     onload1()
             }
         })
-        socket.on("status", dat =>{
-            console.log(dat)
-            if (parseInt(data.result) === parseInt(data.id)){
+        socket.emit('check', {id: data.id})
+        socket.on("onli", dat =>{
+            // console.log(dat.userid)
+            // console.log(data.id)
+            // console.log(parseInt(dat.userid) === parseInt(data.id))
+            if (parseInt(dat.userid) === parseInt(data.id)){
+                // console.log(dat)
+
                 setOnline('online')
             }
         })

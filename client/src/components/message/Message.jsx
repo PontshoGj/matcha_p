@@ -13,34 +13,39 @@ export const Message = ({socket}) => {
     // })
 
     const onload = async () =>{
-        await fetch('/user/getFriends', {
-            method: 'POST',
-            redirect: 'manual',
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8',
-              'authorization': `bearer ${localStorage.getItem('authorization')}` 
-            },
-        })
-        .then (data => {
-            if(data.status !== 200) throw data
-            return data.json()
-        })
-        .then (data =>{
-            // console.log(data.userinfo)
-            if (data.result){
-                let holdInfo = data.userinfo.map(data => {
-                    // console.log(data)
-                    // let i = 0
-                    return <User data={data} key={data.id} socket={socket}/>
-                })
-                // console.log(holdInfo)
-                setComp(holdInfo)
-            }
-        })
-        .catch(err=>{
-            if (err.status === 403)
-                setLog(false)
-        })
+        try {
+            await fetch('/user/getFriends', {
+                method: 'POST',
+                redirect: 'manual',
+                headers: {
+                  'Content-Type': 'application/json;charset=utf-8',
+                  'authorization': `bearer ${localStorage.getItem('authorization')}` 
+                },
+            })
+            .then (data => {
+                if(data.status !== 200) throw data
+                return data.json()
+            })
+            .then (data =>{
+                // console.log(data.userinfo)
+                if (data.result){
+                    let holdInfo = data.userinfo.map(data => {
+                        // console.log(data)
+                        // let i = 0
+                        return <User data={data} key={data.id} socket={socket}/>
+                    })
+                    // console.log(holdInfo)
+                    setComp(holdInfo)
+                }
+            })
+            .catch(err=>{
+                if (err.status === 403)
+                    setLog(false)
+            })
+        }catch (error){
+            
+        }
+       
     }
     if (comp === undefined){
         onload()

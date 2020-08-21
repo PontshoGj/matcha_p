@@ -8,7 +8,7 @@ import { Location } from './Location'
 import { ProfilePic } from './ProfilePic'
 
 export const Profile = () => {
-    const [display, setDisplay] = React.useState(<EditProfile />);
+    const [display, setDisplay] = React.useState();
 
     const  editProfile = () => {setDisplay(<EditProfile />);}
     const  passwordProfile = () => {setDisplay(<PasswordProfile />);}
@@ -61,7 +61,7 @@ export const Profile = () => {
                     </ButtonGroup>
                 </div>
                 <div>
-                    {display}
+                    {(display === undefined)? <EditProfile />:display}
                 </div>
             </div>
         </div>

@@ -1,11 +1,12 @@
-import React, {useContext, useEffect } from 'react'
+import React, {useEffect } from 'react'
+// import React, {useContext, useEffect } from 'react'
 import NavigationSuccess from './navigation/NavigationSuccess'
 // import FriendsCharts from './friends_charts/FriendsCharts'
 import socketIOClient from "socket.io-client";
 import FooterSuccess from './footer/FooterSuccess'
 // import Chart from './friends_charts/Chart'
 import {Profile} from './profile/Profile'
-import {GlobalContext} from '../context/GlobalState'
+// import {GlobalContext} from '../context/GlobalState'
 import {Message} from './message/Message'
 import {Friends} from './friends/Friends'
 import {Match} from './match/Match'
@@ -14,7 +15,7 @@ const ENDPOINT = "http://127.0.0.1:4001";
 
 
 export const UIProfile = (props) => {
-    const {setLog, setLogStorage} = useContext(GlobalContext)
+    // const {setLog, setLogStorage} = useContext(GlobalContext)
     const [message, setMessage] = React.useState('');
     const socket = socketIOClient(ENDPOINT);
     const   [display, setDisplay] = React.useState(<Profile />)

@@ -21,7 +21,7 @@ export const Passreset = (props) => {
             return result.json()
         })
         .then (data =>{
-            console.log(data)
+            // console.log(data)
             if (data.result === 1){
                     setRegister("Password Reset check you email")
                     setDisplay('flex')

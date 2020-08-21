@@ -1,3 +1,4 @@
+// eslint-disable-next-line 
 import React, { createContext, useReducer } from 'react';
 import AppReducer from './AppReducer';
 // Initial state
@@ -8,6 +9,7 @@ const initialState = {
 export const GlobalContext = createContext(initialState);
 // Provider component
 export const GlobalProvider = ({ children }) => {
+  // eslint-disable-next-line 
   const [state, dispatch] = useReducer(AppReducer, initialState);
   // Actions
   function deleteAuth(authorization) {

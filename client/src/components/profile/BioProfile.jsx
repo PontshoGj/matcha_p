@@ -9,25 +9,30 @@ export const BioProfile = () => {
     const   {register, handleSubmit} = useForm()
 
     const onload = async () => {
-        await fetch('/user/getbio', {
-            method: 'POST',
-            redirect: 'manual',
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8',
-              'authorization': `bearer ${localStorage.getItem('authorization')}` 
-            },
-        })
-        .then (data => {
-            if(data.status !== 200) throw data
-            return data.json()
-        })
-        .then (data => {
-            setBio(data.userinfo)
-        })
-        .catch(err =>{
-            if (err.status === 403)
-                setLog(false)
-        })
+        try{
+            await fetch('/user/getbio', {
+                method: 'POST',
+                redirect: 'manual',
+                headers: {
+                  'Content-Type': 'application/json;charset=utf-8',
+                  'authorization': `bearer ${localStorage.getItem('authorization')}` 
+                },
+            })
+            .then (data => {
+                if(data.status !== 200) throw data
+                return data.json()
+            })
+            .then (data => {
+                setBio(data.userinfo)
+            })
+            .catch(err =>{
+                if (err.status === 403)
+                    setLog(false)
+            })
+        }catch (error){
+            
+        }
+ 
     }
 
     onload()

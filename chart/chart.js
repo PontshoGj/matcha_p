@@ -45,6 +45,7 @@ client.on('connection', async function(socket){
 
     socket.on("userconnect", async (data) =>{
         sendStatus({result: data.userid})
+        
         online.push({id: data.userid})
         // console.log(data)
         let jon = await gtfrnd(data.authorization)
@@ -52,6 +53,7 @@ client.on('connection', async function(socket){
             socket.join(j);
         })
         socket.join({userid: data.id})
+        savelog(data.userid)
     })
 
     socket.on('message', data =>{
@@ -76,6 +78,9 @@ client.on('connection', async function(socket){
             }
         })
     })
+    socket.on('disconnect', ()=>{
+        console.log('disconnect')
+    })
     socket.on("notif", data =>{
         socket.join(data.id);
         if (data.code !== undefined)
@@ -84,5 +89,6 @@ client.on('connection', async function(socket){
             client.emit("notif", {message: data.message, id: data.userid})
     })
 });
+
 
 server.listen(4001,()=>{console.log('chat running on PORT 4001')})

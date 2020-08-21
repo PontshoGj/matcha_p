@@ -86,7 +86,7 @@ export const Match = ({socket}) => {
                     justifyContent: 'center'
                 }}
             >
-                <AdvancedMatch onload={onload} advancedSearch2={advancedSearch2} setDisplay={setDisplay} handleDisplay={handleDisplay} setInfo={setInfo}/>
+                <AdvancedMatch onload={onload} socket={socket} advancedSearch2={advancedSearch2} setDisplay={setDisplay} handleDisplay={handleDisplay} setInfo={setInfo}/>
             </div>
             <hr />
             <div

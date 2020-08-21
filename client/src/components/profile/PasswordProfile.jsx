@@ -22,7 +22,7 @@ export const PasswordProfile = () => {
             return data.json()
         })
         .then (value =>{
-            console.log(value)
+            // console.log(value)
         })
         .catch(err =>{
             if (err.status === 403)
@@ -37,10 +37,10 @@ export const PasswordProfile = () => {
             marginLeft: '3vw',
         }}>
                 <Form onSubmit={handleSubmit(onSubmit)}>
-                    <Form.Group as={Row} controlId='formHorizontalPassword'>
+                    <Form.Group as={Row} controlId='formHorizontalPasswordd'>
                         <Form.Label column sm={2}>Enter new password:</Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="password" name="password" ref={register}/>
+                            <Form.Control type="password" name="password"  autoComplete="current-password" ref={register}/>
                         </Col>
                     </Form.Group>
                     <Button variant="dark"  type='submit' size='lg'  style={{width: '25vw', marginLeft: '19vw', marginTop: '3vh'}} block>Update Password</Button>

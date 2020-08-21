@@ -10,8 +10,8 @@ export const Picture = ({image, num, onload}) => {
    const update = async (e) => {
         const file = new FormData()
         file.append('pic', e.target.files[0])
-        console.log(e.target.files[0])
-        console.log("aaa")
+        // console.log(e.target.files[0])
+        // console.log("aaa")
         await fetch('/updateImage', {
             method: 'POST',
             redirect: 'manual',
@@ -56,7 +56,7 @@ export const Picture = ({image, num, onload}) => {
                         }}
                     >
                         {/* <Button variant="dark" type='submit' style={{marginRight: '1vw'}} >Delete</Button> */}
-                            <Form encType="multipart/form-data">
+                            {/* <Form encType="multipart/form-data"> */}
                             <Button variant="dark" style={{height: '4.5vh'}}>Update
                                 <Form.File 
                                     id={num}
@@ -72,7 +72,7 @@ export const Picture = ({image, num, onload}) => {
                                     </Form.Control.Feedback> */}
                                 </Form.File>
                             </Button>
-                            </Form>
+                            {/* </Form> */}
                     </div>
                 </Card.Body>
             </Card>

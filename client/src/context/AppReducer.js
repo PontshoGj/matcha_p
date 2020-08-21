@@ -1,3 +1,4 @@
+// eslint-disable-next-line 
 export default (state, action) => {
     switch(action.type) {
         case 'DELETE_AUTH':
@@ -9,7 +10,7 @@ export default (state, action) => {
         case 'SET_LOG':
             return{
                 ...state,
-                log: action.payload,
+                log: action.payload
             }
         case 'SET_STORAGE':
             localStorage.setItem("log", action.payload)

@@ -101,6 +101,48 @@ class db{
             
         }
     }
+    async savet(time,id){
+        try {
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            let info = new Promise(async(resolve, reject) =>{
+            await connection.connect((err) => {
+                if (!this.errors(err)) return
+                connection.query(`UPDATE users SET date = TIMESTAMP("${time}") where id = ${id}`, (err, result) => {
+                    if (!err){
+                        console.log(result)
+                        if(result.length > 0){
+                            // resolve({result: 1, user_id: user_id, friend_id: friend_id ,info: result.map(res=>{
+                                // return {message: res.message, to: res.tos, from: res.froms, date: res.date}
+                            // })})/
+                        }else{
+        
+                            // resolve({result: 0})
+                        }
+                    }else{
+                        // reject({result: 0})
+                        console.log(err);
+                    }
+                    connection.end()
+                })
+            })
+            let me = await info
+            if (me.result){
+                // console.log(me.result)
+                client.emit('me', me)
+            }
+
+        })
+        } catch (error) {
+            
+        }
+    }
 }
 
 module.exports = db;

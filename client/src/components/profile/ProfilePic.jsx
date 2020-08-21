@@ -82,7 +82,7 @@ export const ProfilePic = () => {
         >
             <Form onSubmit={handleSubmit(submit)}>
                 <fieldset>
-                    <Form.Group as={Row} controlId='formHorizontalInterests'>
+                    <Form.Group as={Row} controlId='formHorizontalInterests' encType="multipart/form-data">
                         <Picture image={image[0]} num={num[0]} onload={onload}/><input type="radio" ref={register} name="pic" value='0' id="0"/>
                         <Picture image={image[1]} num={num[1]} onload={onload}/><input type="radio" ref={register} name="pic" value='1' id="1"/>
                         <Picture image={image[2]} num={num[2]} onload={onload}/><input type="radio" ref={register} name="pic" value='2' id="2"/>

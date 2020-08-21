@@ -3,6 +3,7 @@ import {Form, Button} from 'react-bootstrap'
 import {useForm} from 'react-hook-form'
 import {GlobalContext} from '../../context/GlobalState'
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import ipLocation  from "iplocation";
 
 export const Loc = ({lat, lng}) => {
     const   {setLog} = useContext(GlobalContext)
@@ -13,23 +14,44 @@ export const Loc = ({lat, lng}) => {
     const onSubmit = async (data) => {
         const getLocation = () =>{
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(getPosition);
+                // console.log(navigator.geolocation)
+                navigator.geolocation.getCurrentPosition(getPosition, getPosition2);
             } else {
                 console.log("Geolocation is not supported by this browser.");
             }
         }
     
         function getPosition(position){
+            // console.log(position)
             setLat(Number.parseFloat(position.coords.latitude).toFixed(5))
             setLng(Number.parseFloat(position.coords.longitude).toFixed(5))
+            // console.log(lats)
+        }
+        async function getPosition2(){
+            await fetch("https://www.cloudflare.com/cdn-cgi/trace")
+            .then(response => {
+                return response.text();
+                console.log(response)
+            })
+            .then(async (res) => {
+                let ip = res.split("\n")[2]
+                let ip2 = ip.split('=')
+                console.log(ip2[1])
+                let d = await ipLocation(ip2[1])
+                setLat(Number.parseFloat(d.latitude).toFixed(5))
+                setLng(Number.parseFloat(d.longitude).toFixed(5))
+                console.log(d)
+            })
+            .catch(err => console.log(err))
+            
         }
         
-        getLocation()
+        await getLocation()
         // data.username = 'Pontsho'
         // console.log(data)
         data.lat = lat
         data.lng = lng
-        // console.log(data)
+        console.log(data)
         await fetch('/user/getUpdate', {
             method: 'POST',
             redirect: 'manual',
@@ -57,13 +79,13 @@ export const Loc = ({lat, lng}) => {
         height: '60vh'
       };
     const position = {
-        lat: +lats, 
-        lng: +lngs
+        lat: +Number.parseFloat(lats).toFixed(5), 
+        lng: +Number.parseFloat(lngs).toFixed(5)
     };
 
     const center = {
-        lng: +lngs,
-        lat: +lats 
+        lat: +Number.parseFloat(lats).toFixed(5), 
+        lng: +Number.parseFloat(lngs).toFixed(5)
     };
 
     return (

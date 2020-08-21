@@ -25,7 +25,7 @@ export const Login = (props) => {
             return result.json()
         })
         .then (data =>{
-            console.log(data)
+            // console.log(data)
             if (data.result === 1){
                 if (data.vf === 1){
                     addAuth(data.token)
@@ -68,7 +68,7 @@ export const Login = (props) => {
                 <h1 style={{marginLeft: '10vw'}}>Login</h1><br />
                     {errorMessage()}
                     {errors.username && <div style={{marginLeft: '10vw'}}> This is required</div>}
-                <Form.Group as={Row} controlId='formHorizontalUsername'>
+                <Form.Group as={Row} controlId='formHorizontalUsernames'>
                     <Form.Label column sm={2}>Username:</Form.Label>
                     <Col >
                         <Form.Control type="text" name="username" placeholder="E-Mail or Username" ref={register({required: true, minLength: 6})}/>
@@ -79,7 +79,7 @@ export const Login = (props) => {
                 </Form.Group>
 
                     {errors.password && errors.password.type === 'required' && <div style={{marginLeft: '10vw'}}> This is required</div>}
-                <Form.Group as={Row} controlId='fomrHorizontalPassword' >
+                <Form.Group as={Row} controlId='fomrHorizontalPasswords' >
                     <Form.Label column sm={2}>Password:</Form.Label>
                     <Col>
                         <Form.Control type="password" name="password" placeholder="Password" autoComplete="" ref={register({required:true, pattern: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/})}/>

@@ -40,6 +40,9 @@ export default class NavigationSuccess extends Component {
                                 <Nav.Link onClick={this.props.changeLog} href="#signout">
                                     <FontAwesomeIcon icon={faSignOutAlt} size='2x' />
                                 </Nav.Link>
+                                {/* <Nav.Link onClick={this.props.changeLog} href="#notif">
+                                    <FontAwesomeIcon icon={faSignOutAlt} size='2x' />
+                                </Nav.Link> */}
                             </Nav>
                         </Navbar.Collapse>
                     </Navbar>

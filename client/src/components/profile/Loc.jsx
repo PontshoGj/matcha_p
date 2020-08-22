@@ -11,11 +11,32 @@ export const Loc = ({lat, lng}) => {
     const   [lats, setLat] = React.useState(lat)
     const   [lngs, setLng] = React.useState(lng)
 
+    const   [la, setLats] = React.useState()
+    const   [ln, setLngs] = React.useState()
+
+    const onload = async () =>{
+        await fetch("https://www.cloudflare.com/cdn-cgi/trace")
+        .then(response => {
+            return response.text();
+        })
+        .then(async (res) => {
+            let ip = res.split("\n")[2]
+            let ip2 = ip.split('=')
+            let d = await ipLocation(ip2[1])
+            setLats(Number.parseFloat(d.latitude).toFixed(5))
+            setLngs(Number.parseFloat(d.longitude).toFixed(5))
+            setLat(Number.parseFloat(d.latitude).toFixed(5))
+            setLng(Number.parseFloat(d.longitude).toFixed(5))
+        })
+        .catch(err => console.log(err))
+    }
+    if (la === undefined)
+        onload()
+
     const onSubmit = async (data) => {
         const getLocation = () =>{
             if (navigator.geolocation) {
-                // console.log(navigator.geolocation)
-                navigator.geolocation.getCurrentPosition(getPosition, getPosition2);
+                navigator.geolocation.getCurrentPosition(getPosition);
             } else {
                 console.log("Geolocation is not supported by this browser.");
             }
@@ -27,31 +48,13 @@ export const Loc = ({lat, lng}) => {
             setLng(Number.parseFloat(position.coords.longitude).toFixed(5))
             // console.log(lats)
         }
-        async function getPosition2(){
-            await fetch("https://www.cloudflare.com/cdn-cgi/trace")
-            .then(response => {
-                return response.text();
-                console.log(response)
-            })
-            .then(async (res) => {
-                let ip = res.split("\n")[2]
-                let ip2 = ip.split('=')
-                console.log(ip2[1])
-                let d = await ipLocation(ip2[1])
-                setLat(Number.parseFloat(d.latitude).toFixed(5))
-                setLng(Number.parseFloat(d.longitude).toFixed(5))
-                console.log(d)
-            })
-            .catch(err => console.log(err))
-            
-        }
         
         await getLocation()
         // data.username = 'Pontsho'
         // console.log(data)
-        data.lat = lat
-        data.lng = lng
-        console.log(data)
+        data.lat = la
+        data.lng = ln
+        // console.log(data)
         await fetch('/user/getUpdate', {
             method: 'POST',
             redirect: 'manual',

@@ -5,11 +5,37 @@ import {Button, Form    } from 'react-bootstrap'
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { Second } from './Second'
 import {Fourth} from './Fourth'
+import ipLocation  from "iplocation";
+
+
 export const Third = ({setDisplay}) => {
     // const   {register, handleSubmit} = useForm()
 
-    const   [lat, setLat] = React.useState()
-    const   [lng, setLng] = React.useState()
+    const   [lat, setLat] = React.useState(1)
+    const   [lng, setLng] = React.useState(1)
+    // const   [la, setLats] = React.useState()
+    // const   [ln, setLngs] = React.useState()
+
+    const onload = async () =>{
+        getLocation()
+
+        await fetch("https://www.cloudflare.com/cdn-cgi/trace")
+        .then(response => {
+            return response.text();
+        })
+        .then(async (res) => {
+            let ip = res.split("\n")[2]
+            let ip2 = ip.split('=')
+            let d = await ipLocation(ip2[1])
+            setLat(Number.parseFloat(d.latitude).toFixed(5))
+            setLng(Number.parseFloat(d.longitude).toFixed(5))
+            // setLat(Number.parseFloat(d.latitude).toFixed(5))
+            // setLng(Number.parseFloat(d.longitude).toFixed(5))
+        })
+        .catch(err => console.log(err))
+    }
+    // if (lat === undefined)
+        onload()
 
     function getLocation () {
         if (navigator.geolocation) {
@@ -24,14 +50,14 @@ export const Third = ({setDisplay}) => {
         setLat(Number.parseFloat(position.coords.latitude).toFixed(5))
         setLng(Number.parseFloat(position.coords.longitude).toFixed(5))
     }
-    const onload = async () => {
+    // const onload = async () => {
         
-        getLocation()
-        console.log(lat)
-        console.log(lng)
-    }
+    //     getLocation()
+    //     console.log(lat)
+    //     console.log(lng)
+    // }
 
-    onload()
+    // onload()
     const containerStyle = {
         width: '48vw',
         height: '60vh'

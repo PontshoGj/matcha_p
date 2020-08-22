@@ -28,6 +28,8 @@ export const Picture = ({image, num, onload}) => {
         })
         .then (data => {
             // console.log(data)
+            if (data.result === -1)
+                setLog(false)
             if (data.result === true)
                 onload()
             // setImages( <img src={data.img[0]} />)

@@ -45,13 +45,15 @@ export const FriendProfile = ({handleDisplay, setData,data, setImage, onload1, f
             return data.json()
         })
         .then (data => {
+            if (data.result === -1)
+                setLog(false)
             if (data.result === 1){
                 setImages(data.img)
             }
             userpic()
         })
         .catch(err =>{
-            if (err.status === 403)
+            if (err === 403)
                 setLog(false)
         })
     }
@@ -74,13 +76,15 @@ export const FriendProfile = ({handleDisplay, setData,data, setImage, onload1, f
         })
         .then (data => {
             // console.log(data)
+            if (data.result === -1)
+                setLog(false)
             if (data.result === 1){
                 setImage(data.img)
                 // setNum(data.image_id)
             }
         })
         .catch(err =>{
-            if (err.status === 403)
+            if (err === 403)
                 setLog(false)
         })
     }
@@ -106,7 +110,7 @@ export const FriendProfile = ({handleDisplay, setData,data, setImage, onload1, f
             }
         })
         .catch (err =>{
-            console.log(err)
+            // console.log(err)
         })
 
     }

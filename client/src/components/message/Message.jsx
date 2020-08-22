@@ -28,6 +28,8 @@ export const Message = ({socket}) => {
             })
             .then (data =>{
                 // console.log(data.userinfo)
+                if (data.result === -1)
+                    setLog(false)
                 if (data.result){
                     let holdInfo = data.userinfo.map(data => {
                         // console.log(data)
@@ -37,9 +39,10 @@ export const Message = ({socket}) => {
                     // console.log(holdInfo)
                     setComp(holdInfo)
                 }
+
             })
             .catch(err=>{
-                if (err.status === 403)
+                if (err === 403)
                     setLog(false)
             })
         }catch (error){

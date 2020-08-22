@@ -48,13 +48,14 @@ export const FriendPro = ({handleDisplay, setData, data, onload, freq, socket, s
             return data.json()
         })
         .then (data => {
-            // console.log(data)
+            if (data.result === -1)
+                setLog(false)
             if (data.result === 1){
                 setImages(data.img)
             }
         })
         .catch(err =>{
-            if (err.status === 403)
+            if (err === 403)
                 setLog(false)
         })
     }
@@ -76,6 +77,8 @@ export const FriendPro = ({handleDisplay, setData, data, onload, freq, socket, s
         })
         .then (dat => {
             // console.log(data)
+            if (dat.result === -1)
+                setLog(false)
             if (dat.result){
                 freq()
                 onload()
@@ -84,7 +87,7 @@ export const FriendPro = ({handleDisplay, setData, data, onload, freq, socket, s
             }
         })
         .catch (err =>{
-            console.log(err)
+            // console.log(err)
         })
 
     }
@@ -131,6 +134,8 @@ export const FriendPro = ({handleDisplay, setData, data, onload, freq, socket, s
         })
         .then (dat => {
             // console.log(data)
+            if (dat.result === -1)
+                setLog(false)
             if (dat.result === 1){
                 setImage(dat.img)
                 // setNum(data.image_id)

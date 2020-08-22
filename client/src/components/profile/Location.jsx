@@ -22,6 +22,8 @@ export const Location = () => {
         })
         .then (data => {
             // console.log(data)
+            if (data.result === -1)
+                setLog(false)
             if (data.result === 1){
                 setDisplay(<Loc lat={data.lat} lng={data.lng} />)
             }

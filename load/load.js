@@ -339,14 +339,17 @@ function verify(req, res, next) {
       let token = bearerToken;
       jwt.verify(token, 'secretkey', (err, authData) => {
         if(err) {
-          res.sendStatus(403);
+        //   res.sendStatus(403);
+      res.status(200).json({result: -1});
+
         } else {
             req.authData = authData
             next();
         }
       });
     } else {
-      res.sendStatus(403);
+      res.status(200).json({result: -1});
+
     }
   }
 

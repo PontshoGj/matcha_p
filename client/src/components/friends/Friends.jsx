@@ -37,6 +37,8 @@ export const Friends = ({socket, changeMessage}) => {
         })
         .then (data =>{
             // console.log(data)
+            if (data.result === -1)
+                setLog(false)
             if (data.result === 1){
                 let i= 0;
                 let holdInfo = data.userinfo.map(data => {
@@ -50,7 +52,7 @@ export const Friends = ({socket, changeMessage}) => {
             }
         })
         .catch(err=>{
-            if (err.status === 403)
+            if (err === 403)
                 setLog(false)
         })
     }

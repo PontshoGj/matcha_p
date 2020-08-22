@@ -30,6 +30,8 @@ export const EditProfile = () => {
         })
         .then (data => {
             // console.log(data.userinfo);
+            if (data.result === -1)
+                setLog(false)
             setFirstName(data.userinfo.firstname)
             setLastName(data.userinfo.lastname)
             // setEamil(data.userinfo.email)
@@ -39,7 +41,7 @@ export const EditProfile = () => {
             selectgender(data.userinfo.gender)
         })
         .catch(err => {
-            if (err.status === 403)
+            if (err === 403)
                 setLog(false)
         })
     }
@@ -71,6 +73,8 @@ export const EditProfile = () => {
         .then (value =>{
             // console.log(value)
             // clearForm()
+            if (value.result === -1)
+                setLog(false)
         })
         .catch (err => {
             if (err.status === 403)

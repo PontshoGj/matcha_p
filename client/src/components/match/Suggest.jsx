@@ -42,13 +42,15 @@ export const Suggest = (props) => {
         })
         .then (data => {
             // console.log(data)
+            if (data.result === -1)
+                setLog(false)
             if (data.result === 1){
                 // console.log(data.image_id)
                 setImages(data.img)
             }
         })
         .catch(err =>{
-            if (err.status === 403)
+            if (err === 403)
                 setLog(false)
         })
     }
@@ -70,13 +72,15 @@ export const Suggest = (props) => {
             return data.json()
         })
         .then (data => {
+            if (data.result === -1)
+                setLog(false)
             if (data.result === 1){
                 props.setImage(data.img)
                 // setNum(data.image_id)
             }
         })
         .catch(err =>{
-            if (err.status === 403)
+            if (err === 403)
                 setLog(false)
         })
     }

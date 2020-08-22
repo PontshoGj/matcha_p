@@ -27,6 +27,8 @@ export const UploadImage = ({counter, id}) => {
             return data.json()
         })
         .then (value =>{
+            if (value.result === -1)
+                setLog(false)
             if (value.result){
                 // console.log(value)
                 counter();

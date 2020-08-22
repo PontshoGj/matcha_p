@@ -23,10 +23,12 @@ export const EmailProfile = () => {
         })
         .then (data => {
             // console.log(data)
+            if (data.result === -1)
+                setLog(false)
             setEmail(data.email)
         })
         .catch(err =>{
-            if (err.status === 403)
+            if (err === 403)
                 setLog(false)
         })
     }
@@ -50,9 +52,11 @@ export const EmailProfile = () => {
         })
         .then (value =>{
             // console.log(value)
+            if (value.result === -1)
+                setLog(false)
         })
         .catch(err =>{
-            if (err.status === 403)
+            if (err === 403)
                 setLog(false)
         })
     }

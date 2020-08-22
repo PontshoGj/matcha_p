@@ -70,9 +70,11 @@ export const Loc = ({lat, lng}) => {
         })
         .then (value =>{
             // console.log(value)
+            if (value.result === -1)
+                setLog(false)
         })
         .catch(err =>{
-            if (err.status === 403)
+            if (err === 403)
                 setLog(false)
         })
     }

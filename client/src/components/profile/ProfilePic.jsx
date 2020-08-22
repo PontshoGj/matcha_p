@@ -25,6 +25,8 @@ export const ProfilePic = () => {
             return data.json()
         })
         .then (data => {
+            if (data.result === -1)
+                setLog(false)
             if (data.result === 1){
                 // console.log(data.image_id)
                 setImages(data.img)

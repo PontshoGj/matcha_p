@@ -46,7 +46,10 @@ load.all('/login*', async (req, res, next) =>{
             res.json({result: data.result})
         }
     })
-    .catch(err => {})
+    .catch(err => {
+        res.json({result: 0})
+
+    })
 })
 
 load.all('/validate', async (req, res, next) =>{
@@ -66,7 +69,10 @@ load.all('/validate', async (req, res, next) =>{
     .then(data =>{
             res.json({result: data.result})
     })
-    .catch(err => {})
+    .catch(err => {
+        res.json({result: 0})
+
+    })
 })
 
 load.all('/passwordreset', async (req, res, next) =>{
@@ -88,7 +94,11 @@ load.all('/passwordreset', async (req, res, next) =>{
         // console.log(data)
             res.json({result: data.result})
     })
-    .catch(err => {console.log(err)})
+    .catch(err => {
+        console.log(err)
+        res.json({result: 0})
+        
+    })
 })
 
 load.all('/save*', async (req, res, next) =>{
@@ -106,7 +116,11 @@ load.all('/save*', async (req, res, next) =>{
         return data.json()
     })
     .then(data =>{res.status(200).json({data});})
-    .catch(data=>{console.log(data)})
+    .catch(data=>{
+        console.log(data)
+        res.json({result: 0})
+    
+    })
 })
 
 load.all('/user/*', verify,async (req, res, next) =>{
@@ -127,7 +141,11 @@ load.all('/user/*', verify,async (req, res, next) =>{
         return data.json()
     })
     .then (data => res.status(200).json(data))
-    .catch (err => console.log(err))
+    .catch (err => {
+        console.log(err)
+        res.json({result: 0})
+    
+    })
 })
 
 const storage = multer.diskStorage({
@@ -306,7 +324,10 @@ load.all('/match/*', verify,async (req, res) =>{
         return data.json()
     })
     .then (data => {res.status(200).json(data)})
-    .catch(err =>{console.log(err)})
+    .catch(err =>{
+        console.log(err)
+        res.json({result: 0})
+    })
 })
 
 

@@ -53,6 +53,12 @@ export const GlobalProvider = ({ children }) => {
       payload: logs
     })
   }
+  function setAdmin(logs){
+    dispatch({
+      type: 'SET_ADMIN',
+      payload: logs
+    })
+  }
 
   return (<GlobalContext.Provider value={{
     // log: state.log,
@@ -62,6 +68,7 @@ export const GlobalProvider = ({ children }) => {
     getLog,
     setLogStorage,
     setFirstInput,
+    setAdmin,
     setId
   }}>
     {children}

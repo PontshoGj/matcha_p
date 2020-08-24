@@ -94,6 +94,33 @@ export const FriendProfile = ({handleDisplay, setData,data, setImage, onload1, f
         })
     }
     const dislike = async () =>{
+        await fetch('/user/dislike3',{
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+              'authorization': `bearer ${localStorage.getItem('authorization')}` 
+            },
+            body: JSON.stringify({id: data.id})
+        })
+        .then (data =>{
+            if(data.status === 403) throw data
+            return data.json()
+        })
+        .then (dat => {
+            // console.log(data)
+            if (dat.result){
+                freq()
+                onload1()
+                del()
+                socket.emit("notif", {id: localStorage.getItem('id'), userid: data.id, message: `${localStorage.getItem('firstname')} ${localStorage.getItem('lastname')} disliked you. You are not friends anymore`, code: 1})
+            }
+        })
+        .catch (err =>{
+            // console.log(err)
+        })
+
+    }
+    const del = async () =>{
         await fetch('/user/del',{
             method: 'post',
             headers: {
@@ -111,7 +138,6 @@ export const FriendProfile = ({handleDisplay, setData,data, setImage, onload1, f
             if (dat.result){
                 freq()
                 onload1()
-                socket.emit("notif", {id: localStorage.getItem('id'), userid: data.id, message: `${localStorage.getItem('firstname')} ${localStorage.getItem('lastname')} disliked you. You are not friends anymore`, code: 1})
             }
         })
         .catch (err =>{
@@ -119,6 +145,7 @@ export const FriendProfile = ({handleDisplay, setData,data, setImage, onload1, f
         })
 
     }
+
     const handleOnClick = () =>{
         setData(data);
         handleDisplay()

@@ -41,7 +41,8 @@ load.all('/login*', async (req, res, next) =>{
                     firstinput: data.firstinput,
                     vf: data.vf,
                     firstname: data.firstname,
-                    lastname: data.lastname
+                    lastname: data.lastname,
+                    admin: data.admin
                 });
             });
         }else{

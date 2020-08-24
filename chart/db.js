@@ -144,7 +144,7 @@ class db{
                 if (!this.errors(err)) return
                 connection.query(`UPDATE users SET date = TIMESTAMP("${time}") where id = ${id}`, (err, result) => {
                     if (!err){
-                        console.log(result)
+                        // console.log(result)
                         if(result.length > 0){
                             // resolve({result: 1, user_id: user_id, friend_id: friend_id ,info: result.map(res=>{
                                 // return {message: res.message, to: res.tos, from: res.froms, date: res.date}

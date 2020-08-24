@@ -19,9 +19,15 @@ class L extends classes (db) {
     async dislikes2 (user, frnd, res) {
         await this.insertdisLike2(user, frnd, res)
     }
-
+    async dislikes3 (user, frnd, res) {
+        await this.insertdisLike3(user, frnd, res)
+    }
     async dele (user, frnd, res) {
         await this.delefri(user, frnd, res)
+    }
+
+    async deles (user, frnd, res) {
+        await this.delete(user, frnd, res)
     }
 
     async getnotif (friend_id, res) {

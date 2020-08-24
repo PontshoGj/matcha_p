@@ -5,7 +5,7 @@ import {GlobalContext} from '../../context/GlobalState'
 // import {Passreset} from '../passreset/Passreset'
 
 export const Login = (props) => {
-    const {addAuth, setLog, setLogStorage, setFirstInput, setId} = useContext(GlobalContext);
+    const {addAuth, setLog, setLogStorage, setFirstInput, setId,setAdmin} = useContext(GlobalContext);
     const { register, handleSubmit, errors } = useForm();
     const {setRegister, setDisplay, handleExitLoging, handleExitReset} = props;
     const [incorrect, setIncorrect] =  React.useState(false);
@@ -25,8 +25,16 @@ export const Login = (props) => {
             return result.json()
         })
         .then (data =>{
-            console.log(data)
-            if (data.result === 1){
+            // console.log(data)
+            if (data.admin === 1){
+                addAuth(data.token)
+                setAdmin(data.admin)
+                setLog(true)
+                setLogStorage(true)
+                setFirstInput(data.firstinput)
+
+            }
+            else if (data.result === 1){
                 if (data.vf === 1){
                     addAuth(data.token)
                     setLogStorage(true)

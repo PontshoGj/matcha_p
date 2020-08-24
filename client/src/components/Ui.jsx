@@ -1,12 +1,14 @@
 import React, {useContext} from 'react'
 import {UiRegisterLogin} from './UiRegisterLogin'
 import {UIProfile} from './UIProfile'
+import {Uiadmin} from './Uiadmin'
 import {GlobalContext} from '../context/GlobalState'
 import {FirstRegUi} from './firstReg/FirstRegUi'
 // import {Passreset} from './passreset/Passreset'
 export const Ui = () => {
     const {log} = useContext(GlobalContext)
     const   [message, setMessage] = React.useState('')
+    const   [display, setDisplay] = React.useState()
     let url_string = window.location.href;
     let url = new URL(url_string);
     // let message = ''
@@ -32,10 +34,14 @@ export const Ui = () => {
         })
     }
     // console.log(window.location)
-    const display = (localStorage.getItem('log') === 'true' ||  log === 'true') ? 
-    (localStorage.getItem("firstinput") === '1') ? <UIProfile /> : <FirstRegUi /> 
-    : 
-    <UiRegisterLogin message={message}/> 
+    setTimeout(()=>{
+
+        // console.log(localStorage.getItem("admin"))
+        let view = (localStorage.getItem("admin") === '1')? <Uiadmin />:<UIProfile />
+        let view2 =  (localStorage.getItem("firstinput") !== '1') ? <FirstRegUi />:view  
+        setDisplay((localStorage.getItem('log') === 'true' ||  log === 'true') ? view2: <UiRegisterLogin message={message}/>)
+    }, 3000)
+
     if (url.pathname === '/Valid')
         validate()
     // if (url.pathname === '/Reset')

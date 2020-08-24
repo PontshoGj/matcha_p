@@ -23,6 +23,9 @@ export default (state, action) => {
         case 'SET_FIRST':
             localStorage.setItem('firstinput', action.payload)
             break
+        case 'SET_ADMIN':
+            localStorage.setItem('admin', action.payload)
+            break
         case 'SET_ID':
             localStorage.setItem("id", action.payload)
             break

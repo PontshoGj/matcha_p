@@ -27,9 +27,12 @@ const gtfrnd = async bearer => {
 
     let friends = await getfriends.json();
     // console.log(friends)
-    let ret = friends.userinfo.map(friend =>{
+    let ret = 0
+    if (friends.result === 1){
+    ret = friends.userinfo.map(friend =>{
         return friend.id
     })
+    }
     // console.log(ret)
     return (ret)
 }
@@ -44,6 +47,7 @@ client.on('connection', async function(socket){
     }
 
     socket.on("userconnect", async (data) =>{
+        try{
         sendStatus({result: data.userid})
         
         online.push({id: data.userid})
@@ -54,6 +58,9 @@ client.on('connection', async function(socket){
         })
         socket.join({userid: data.id})
         savelog(data.userid)
+    }catch(error){
+
+    }
     })
 
     socket.on('message', data =>{

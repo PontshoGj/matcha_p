@@ -504,13 +504,13 @@ class dbConnection{
                 const salt = bcrypt.genSaltSync(saltRounds)
                 // ${bcrypt.hashSync(password, salt)}
                 const pass = bcrypt.hashSync(password, '$2b$10$p.PzXS7RehUETHIinopsl.')
-                connection.query(`SELECT id, username, firstinput, vf, firstname, lastname FROM users WHERE password = \'${pass}\' AND username = \'${username}\'`, (err, result) => {
+                connection.query(`SELECT id, username, firstinput, vf, firstname, lastname, admin FROM users WHERE password = \'${pass}\' AND username = \'${username}\'`, (err, result) => {
                     if (!err){
-                        console.log(result)
+                        // console.log(result)
                         let check = JSON.stringify(result)
                         if(check.localeCompare('[]') !== 0){
                              console.log('done');
-                             res.json({result: 1, id: result[0].id, username: result[0].username, firstinput: result[0].firstinput, firstname: result[0].firstname, lastname: result[0].lastname,  vf: result[0].vf}) 
+                             res.json({result: 1, id: result[0].id, username: result[0].username, firstinput: result[0].firstinput, firstname: result[0].firstname, lastname: result[0].lastname,  vf: result[0].vf, admin: result[0].admin}) 
                         }else{
                             res.json({result: 0})
                         }
@@ -979,6 +979,45 @@ class dbConnection{
             res.json({result: 0, err: {insert: "location insertion faild"}});
         }
     }
+    async delete (user, res) {
+        try{
+            let uid = uuid()
+            // connecting to the mongodb cloud database
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
+                
+                if (!this.errors(err)) return
+                connection.query(`DELETE FROM users WHERE  id = ${user}`, (err, result) => {         
+                    if (!err){
+                        // console.log(result)
+                        if(result.affectedRows){
+                            // console.log(result)
+                            console.log('user saved  aaaaaaa');
+                            res.json({result: 1, err: {}});
+                            // throw '1'
+                        }else{
+                            console.log("loaction insertion failed")
+                            res.json({result: 0, err: {insert: "location insertion failed"}});
+                        }
+                    }else{
+                        console.log(err);
+                        res.json({result: 0, err: {insert: "location insertion failed"}});
+                    }
+                    //this.connection.end()()
+                })
+            })
+        }catch (e) {
+            console.log(e);
+            res.json({result: 0, err: {insert: "location insertion faild"}});
+        }
+    }
     async Fri (user_id, res) {
         try{
             let users = new Promise( async (resolve, reject) =>{
@@ -1051,6 +1090,121 @@ class dbConnection{
             res.json({result: 0 ,username: "username does not exist"})
         }   
     }
+    async insertdisLike3 (user, frnd,res) {
+        try{
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
+                if (!this.errors(err)) return
+                connection.query(`INSERT INTO likes SET user_id = ${user}, friend_id = \'${frnd}\', liked = -1`, (err, result) => {
+                    // connection.query(`UPDATE likes SET liked = 0 WHERE user_id = ${frnd} AND friend_id = \'${user}\'`, (err, result) => {
+                    if (!err){
+                        // console.log(result)
+                        if(result.affectedRows){
+                                console.log('done');
+                                connection.query(`UPDATE users SET tdislike = tdislike + 1 WHERE id = ${frnd}`, (err, result) => {
+                                    if (!err){
+                                        // console.log(result)
+                                        res.json({result: 1}) 
+                                    }else{
+                                        res.json({result: 0})
+
+                                    }
+                                })
+                        }else{
+                            res.json({result: 0})
+                        }
+                    }else{
+                        console.log(err);
+                        res.json({result: 0})
+                    }
+                    ////this.connection.end()()()
+                })
+            })
+        }catch (e) {
+            console.log(e);
+            res.json({result: 0})
+        }   
+    }
+    async Bann (res) {
+        try{
+            let users = new Promise( async (resolve, reject) =>{
+                let connection = mysql.createConnection({
+                    host     : 'mysql',
+                    database : 'matcha',
+                    port     : 3306,
+                    user     : 'root',
+                    password : 'root',
+                    connectionLimit : 1000000,
+                })
+                await connection.connect((err) => {
+                    if (!this.errors(err)) return
+                    connection.query(`SELECT * FROM likes WHERE  liked = -1`, (err, result) => {
+                        if (!err){
+                            let check = JSON.stringify(result)
+                            if(check.localeCompare('[]') !== 0){
+                                //  console.log(result);
+                                 resolve({result: 1, userinfo: result})
+                            }else{
+                                resolve({result: 0 ,username: "username does not exist"})
+                            }
+                        }else{
+                            console.log(err);
+                            resolve({result: 0 ,username: "username does not exist"})
+                        }
+                    })
+                    // //this.connection.end()()
+                })
+            })
+            users.then(async data =>{
+                // console.log(data.userinfo)
+                let connection = mysql.createConnection({
+                    host     : 'mysql',
+                    database : 'matcha',
+                    port     : 3306,
+                    user     : 'root',
+                    password : 'root',
+                    connectionLimit : 1000000,
+                })
+                if (data.result){
+                    let user_id = data.userinfo.map(friend_id => `id = ${friend_id.friend_id}`)
+                    user_id = user_id.join(" || ")
+                    // console.log(user_id)
+                    await connection.connect((err) => {
+                        if (!this.errors(err)) return
+                        connection.query(`SELECT * FROM users WHERE  ${user_id}`, (err, result) => {
+                            if (!err){
+                                let check = JSON.stringify(result)
+                                if(check.localeCompare('[]') !== 0){
+                                    //  console.log(result);
+                                    res.json({result: 1, userinfo: result})
+                                }else{
+                                    console.log(err)
+                                    res.json({result: 0 ,username: "username does not exist"})
+                                }
+                            }else{
+                                console.log(err);
+                                res.json({result: 0 ,username: "username does not exist"})
+                            }
+                            //this.connection.end()()
+                        })
+                    })
+                }else{
+                    res.json({result: 0 ,username: "username does not exist"})
+                }
+            })
+        }catch (e) {
+            console.log(e);
+            res.json({result: 0 ,username: "username does not exist"})
+        }   
+    }
+    
     async saveloc (lat, lng, user_id, res) {
         try{
             let uid = uuid()

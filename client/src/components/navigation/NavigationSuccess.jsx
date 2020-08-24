@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Nav, Navbar } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope, faSignOutAlt, faUserFriends, faHome, faHeart } from '@fortawesome/free-solid-svg-icons'
+import { faEnvelope, faSignOutAlt, faUserFriends, faHome, faHeart , faFlag} from '@fortawesome/free-solid-svg-icons'
 
 export default class NavigationSuccess extends Component {
     render() {
@@ -40,9 +40,9 @@ export default class NavigationSuccess extends Component {
                                 <Nav.Link onClick={this.props.changeLog} href="#signout">
                                     <FontAwesomeIcon icon={faSignOutAlt} size='2x' />
                                 </Nav.Link>
-                                {/* <Nav.Link onClick={this.props.changeLog} href="#notif">
-                                    <FontAwesomeIcon icon={faSignOutAlt} size='2x' />
-                                </Nav.Link> */}
+                                <Nav.Link onClick={this.props.changeNotif} href="#notif">
+                                    <FontAwesomeIcon icon={faFlag} size='2x' />
+                                </Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Navbar>

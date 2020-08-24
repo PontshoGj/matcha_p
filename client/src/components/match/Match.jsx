@@ -108,7 +108,7 @@ export const Match = ({socket}) => {
                         display: displays
                     }}
                 >
-                    <MoreInfo handleExit={handleExit} image={image} info={info}/>                
+                    <MoreInfo handleExit={handleExit} socket={socket} image={image} info={info}/>                
                 </div>
             </div>
         </div>

@@ -59,6 +59,9 @@ connection.connect((err) => {
     console.log("Table images created");
     connection.query('CREATE TABLE IF NOT EXISTS profimage (image_id INT(9) UNSIGNED  NOT NULL,user_id INT(9) NOT NULL, img LONGBLOB NOT NULL)')
     console.log("Table images created");
+    connection.query('CREATE TABLE IF NOT EXISTS notif (user_id INT(9) UNSIGNED  NOT NULL, friend_id VARCHAR(100) NOT NULL, value VARCHAR(100) NOT NULL)');
+    console.log("Table notif created");
+
 
 
     connection.query(`SELECT * FROM images`, (err, result) => {

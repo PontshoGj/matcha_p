@@ -69,24 +69,46 @@ client.on('connection', async function(socket){
             // console.log(me)
     })
     socket.on('check', data=>{
-        console.log(online)
+        // console.log(online)
         online.map(user=>{
             if (parseInt(user.id) === parseInt(data.id))
             {
                 socket.emit("onli", {online: 1, userid: data.id})
-                console.log('online')
+                // console.log('online')
             }
         })
     })
-    socket.on('disconnect', ()=>{
-        console.log('disconnect')
+
+    socket.on('disconnected', data=>{
+        // console.log('disconnect')
+        const finalArr = online.filter(dat =>{
+            let i = 0
+            for(let j = 0; j < online.length; j++){
+                if (parseInt(dat.id) === parseInt(data.userid)){
+                    i = 1
+                }
+            }
+            if (!i)
+                return dat
+        })
+        // console.log(finalArr)
+        finalArr.map(user=>{
+            if (parseInt(user.id) !== parseInt(data.userid))
+            {
+                socket.emit("onli", {online: 0, userid: data.userid})
+                // console.log('disconnect')
+            }
+        })
     })
+
     socket.on("notif", data =>{
         socket.join(data.id);
+        // console.log(data)
         if (data.code !== undefined)
             client.emit("notif", {message: data.message, id: data.userid, code: data.code})
         else
             client.emit("notif", {message: data.message, id: data.userid})
+        savenotif(data.id, data.userid, data.message)
     })
 });
 

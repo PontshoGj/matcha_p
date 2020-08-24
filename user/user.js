@@ -18,6 +18,8 @@ const updatefirstinput = require('./control/updateFirstInput')
 const getmatch = require('./control/getmatch')
 const like = require('./control/likes')
 const del = require('./control/del')
+const getmessage = require('./control/getmessage')
+const getnotif = require('./control/getnotif')
 const dislike = require('./control/dislikes')
 const dislike2 = require('./control/dislikes2')
 const saveLocation = require('./control/saveLocation')
@@ -53,6 +55,8 @@ server.use('/updatefirstinput', updatefirstinput);
 server.use('/getmatch', getmatch);
 server.use('/like', like);
 server.use('/del', del);
+server.use('/getmessage', getmessage);
+server.use('/getnotif', getnotif);
 server.use('/dislike', dislike);
 server.use('/dislike2', dislike2);
 server.use('/getFriends', getFriends);

@@ -60,6 +60,34 @@ class db{
         }
     }
 
+    async notif(friend_id, user_id, message){
+        try{
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
+                if (!this.errors(err)) return
+                connection.query(`INSERT INTO notif SET user_id = ${parseInt(user_id)}, friend_id = ${parseInt(friend_id)}, value = ?`, message,(err, result) => {
+                    if (!err){
+                        // console.log(result)
+                    }else{
+                        console.log(err)   
+                    }
+                    connection.end()
+                })
+            })
+        }catch(e){
+
+        }
+        
+    }
+
+
     async getmes(friend_id, user_id, client){
         try {
             let connection = mysql.createConnection({

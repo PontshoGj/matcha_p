@@ -19,12 +19,15 @@ export const FriendPro = ({handleDisplay, setData, data, onload, freq, socket, s
         })
         socket.emit('check', {id: data.id})
         socket.on("onli", dat =>{
-            // console.log(dat.userid)
+            // console.log(dat)
             // console.log(data.id)
             // console.log(parseInt(dat.userid) === parseInt(data.id))
-            if (parseInt(dat.userid) === parseInt(data.id)){
-                // console.log(dat)
+            if (parseInt(dat.userid) === parseInt(data.id)  && dat.online === 1){
                 setOnline('online')
+            }
+            if (parseInt(dat.userid) === parseInt(data.id)  && dat.online === 0){
+
+                setOnline(data.date)
             }
         })
     })
@@ -82,7 +85,7 @@ export const FriendPro = ({handleDisplay, setData, data, onload, freq, socket, s
             if (dat.result){
                 freq()
                 onload()
-                socket.emit("notif", {id: localStorage.getItem('id'), userid: data.id, message: `someone disliked you`})
+                socket.emit("notif", {id: localStorage.getItem('id'), userid: data.id, message: `${localStorage.getItem('firstname')} ${localStorage.getItem('lastname')} disliked you`})
 
             }
         })
@@ -110,7 +113,7 @@ export const FriendPro = ({handleDisplay, setData, data, onload, freq, socket, s
             if (dat.result){
                 freq()
                 onload()
-                socket.emit("notif", {id: localStorage.getItem('id'), userid: data.id, message: `someone liked you. you are now friends`})
+                socket.emit("notif", {id: localStorage.getItem('id'), userid: data.id, message: `${localStorage.getItem('firstname')} ${localStorage.getItem('lastname')} liked you. you are now friends`})
             }
         })
         .catch (err =>{

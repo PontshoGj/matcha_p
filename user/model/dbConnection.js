@@ -504,13 +504,13 @@ class dbConnection{
                 const salt = bcrypt.genSaltSync(saltRounds)
                 // ${bcrypt.hashSync(password, salt)}
                 const pass = bcrypt.hashSync(password, '$2b$10$p.PzXS7RehUETHIinopsl.')
-                connection.query(`SELECT id, username, firstinput, vf FROM users WHERE password = \'${pass}\' AND username = \'${username}\'`, (err, result) => {
+                connection.query(`SELECT id, username, firstinput, vf, firstname, lastname FROM users WHERE password = \'${pass}\' AND username = \'${username}\'`, (err, result) => {
                     if (!err){
-                        // console.log(result)
+                        console.log(result)
                         let check = JSON.stringify(result)
                         if(check.localeCompare('[]') !== 0){
                              console.log('done');
-                             res.json({result: 1, id: result[0].id, username: result[0].username, firstinput: result[0].firstinput, vf: result[0].vf}) 
+                             res.json({result: 1, id: result[0].id, username: result[0].username, firstinput: result[0].firstinput, firstname: result[0].firstname, lastname: result[0].lastname,  vf: result[0].vf}) 
                         }else{
                             res.json({result: 0})
                         }
@@ -1216,6 +1216,74 @@ class dbConnection{
         }catch (e) {
             console.log(e);
             res.json({result: 0})
+        }
+    }
+    
+    async getnotifi(friend_id, res){
+        try{
+            let connection = mysql.createConnection({
+                host     : 'mysql',
+                database : 'matcha',
+                port     : 3306,
+                user     : 'root',
+                password : 'root',
+                connectionLimit : 1000000,
+            })
+            await connection.connect((err) => {
+                if (!this.errors(err)) return
+                connection.query(`SELECT * FROM notif WHERE friend_id = ${parseInt(friend_id)}`,(err, result) => {
+                    if (!err){
+                        // console.log(result)
+                        if(result.length > 0){
+                            // console.log(result)
+                            res.json({result: 1, info: result.map(res=>{
+                                return {value: res.value, user_id: res.user_id, friend_id: res.friend_id}
+                            })})
+                        }else{
+                            res.json({result: 0})
+                        }
+                    }else{
+                        console.log(err)   
+                    }
+                    connection.end()
+                })
+            })
+        }catch(e){
+
+        }
+    }
+
+    async getmes(friend_id, user_id, res){
+        try {
+                let connection = mysql.createConnection({
+                    host     : 'mysql',
+                    database : 'matcha',
+                    port     : 3306,
+                    user     : 'root',
+                    password : 'root',
+                    connectionLimit : 1000000,
+                })
+                await connection.connect((err) => {
+                    if (!this.errors(err)) return
+                    connection.query(`SELECT * FROM messages WHERE froms = ${parseInt(user_id)} && tos = ${parseInt(friend_id)} || froms = ${parseInt(friend_id)} && tos = ${parseInt(user_id)}`, (err, result) => {
+                        if (!err){
+                            if(result.length > 0){
+                                // console.log(result)
+                                res.json({result: 1, user_id: user_id, friend_id: friend_id ,info: result.map(res=>{
+                                    return {message: res.message, to: res.tos, from: res.froms, date: res.date}
+                                })})
+                            }else{
+                                res.json({result: 0})
+                            }
+                        }else{
+                            res.json({result: 0})
+                            console.log(err);
+                        }
+                        connection.end()
+                    })
+                })
+        } catch (error) {
+            
         }
     }
 }

@@ -25,7 +25,7 @@ export const Login = (props) => {
             return result.json()
         })
         .then (data =>{
-            // console.log(data)
+            console.log(data)
             if (data.result === 1){
                 if (data.vf === 1){
                     addAuth(data.token)
@@ -34,6 +34,8 @@ export const Login = (props) => {
                     setLog(true)
                     setFirstInput(data.firstinput)
                     setId(data.id)
+                    localStorage.setItem("firstname", data.firstname)
+                    localStorage.setItem("lastname", data.lastname)
                     // console.log(log)
                     // handleExitLoging()
                 }else{

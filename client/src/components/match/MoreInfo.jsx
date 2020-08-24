@@ -8,6 +8,7 @@ export const MoreInfo = (props) => {
     const [index, setIndex] = React.useState(0);
 
     const onload = async () =>{
+        // console.log(props.info)
         if (props.image !== ""){
             let i = 0
             let imgs = props.image.map(im => {
@@ -24,6 +25,7 @@ export const MoreInfo = (props) => {
             })
             setImages(imgs)
         }
+        props.socket.emit("notif", {id: localStorage.getItem('id'), userid: props.info.user_id, message: `${localStorage.getItem('firstname')} ${localStorage.getItem('lastname')} viewed your profile`})
     }
     if (images === "" ){
         onload()

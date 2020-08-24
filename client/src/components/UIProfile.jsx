@@ -11,6 +11,8 @@ import {Message} from './message/Message'
 import {Friends} from './friends/Friends'
 import {Match} from './match/Match'
 import {Messages} from './errorsAndmessages/Messages'
+import {Notif} from './notif/Notif'
+
 const ENDPOINT = "http://127.0.0.1:4001";
 
 
@@ -32,6 +34,7 @@ export const UIProfile = (props) => {
     })
 
     const changeLog = () =>{
+        socket.emit("disconnected", {userid: localStorage.getItem('id')})
         localStorage.removeItem('authorization')
         localStorage.removeItem('id')
         localStorage.removeItem('firstinput')
@@ -42,6 +45,7 @@ export const UIProfile = (props) => {
     const changeMessage = () => {setDisplay(<Message socket={socket}/>)};
     const changeFriends = () => {setDisplay(<Friends socket={socket} changeMessage={changeMessage} />)};
     const changeMatch = () => {setDisplay(<Match socket={socket}/>)};
+    const changeNotif = () => {setDisplay(<Notif />)};
     const cli = () => {setDisplays('none')}
     return (
         <div 
@@ -65,6 +69,7 @@ export const UIProfile = (props) => {
                     changeFriends={changeFriends}
                     changeMatch={changeMatch}
                     changeMessage={changeMessage}
+                    changeNotif={changeNotif}
                 />
             </div>
             <div onClick={cli}>

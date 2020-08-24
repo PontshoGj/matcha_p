@@ -19,13 +19,18 @@ export const FriendProfile = ({handleDisplay, setData,data, setImage, onload1, f
         })
         socket.emit('check', {id: data.id})
         socket.on("onli", dat =>{
-            // console.log(dat.userid)
+            // console.log(dat)
             // console.log(data.id)
             // console.log(parseInt(dat.userid) === parseInt(data.id))
-            if (parseInt(dat.userid) === parseInt(data.id)){
+            if (parseInt(dat.userid) === parseInt(data.id)  && dat.online === 1){
                 // console.log(dat)
 
                 setOnline('online')
+            }
+            if (parseInt(dat.userid) === parseInt(data.id)  && dat.online === 0){
+                // console.log(dat)
+
+                setOnline(data.date)
             }
         })
     })
@@ -106,7 +111,7 @@ export const FriendProfile = ({handleDisplay, setData,data, setImage, onload1, f
             if (dat.result){
                 freq()
                 onload1()
-                socket.emit("notif", {id: localStorage.getItem('id'), userid: data.id, message: `someone friend disliked you`, code: 1})
+                socket.emit("notif", {id: localStorage.getItem('id'), userid: data.id, message: `${localStorage.getItem('firstname')} ${localStorage.getItem('lastname')} disliked you. You are not friends anymore`, code: 1})
             }
         })
         .catch (err =>{

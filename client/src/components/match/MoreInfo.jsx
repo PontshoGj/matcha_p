@@ -25,7 +25,8 @@ export const MoreInfo = (props) => {
             })
             setImages(imgs)
         }
-        props.socket.emit("notif", {id: localStorage.getItem('id'), userid: props.info.user_id, message: `${localStorage.getItem('firstname')} ${localStorage.getItem('lastname')} viewed your profile`})
+        if (props.info.user_id !== undefined) 
+            props.socket.emit("notif", {id: localStorage.getItem('id'), userid: props.info.user_id, message: `${localStorage.getItem('firstname')} ${localStorage.getItem('lastname')} viewed your profile`})
     }
     if (images === "" ){
         onload()

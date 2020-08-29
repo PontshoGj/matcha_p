@@ -4,7 +4,7 @@ const chat = express()
 // chat.listen(4001)
 const server = require('http').createServer(chat);
 const sockets = require('socket.io')
-const client = sockets(server);
+const client = sockets(server,{pingTimeout: 60000});
 const fetch = require('node-fetch')
 const bodyParser = require('body-parser')
 const saves = require('./save')

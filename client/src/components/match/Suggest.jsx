@@ -1,3 +1,5 @@
+// eslint-disable-next-line 
+
 import React, { useContext, useEffect } from 'react'
 import {GlobalContext} from '../../context/GlobalState'
 import {Card} from 'react-bootstrap'
@@ -7,9 +9,9 @@ import { faThumbsDown, faThumbsUp, faEllipsisH } from '@fortawesome/free-solid-s
 export const Suggest = (props) => {
     const   {setLog} = useContext(GlobalContext)
     const    [images, setImages] = React.useState("")
+// eslint-disable-next-line 
     const   [online, setOnline] = React.useState(props.info.date)
     useEffect(() => {
-        props.socket.emit('check', {id: props.info.user_id})
         props.socket.on("onli", dat =>{
             // console.log(dat)
             // console.log(data.id)
@@ -19,11 +21,11 @@ export const Suggest = (props) => {
 
                 setOnline('online')
             }
-            if (parseInt(dat.userid) === parseInt(props.info.user_id)  && dat.online === 0){
-                // console.log(dat)
+            // if (parseInt(dat.userid) === parseInt(props.info.user_id)  && dat.online === 0){
+            //     // console.log(dat)
 
-                setOnline(props.info.date)
-            }
+            //     setOnline(props.info.date)
+            // }
         })
     })
     const show = () =>{
@@ -32,6 +34,7 @@ export const Suggest = (props) => {
         userpic()
     }
     const onload = async () =>{
+        props.socket.emit('check', {id: props.info.user_id})
         await fetch('/getProfImage', {
             method: 'POST',
             redirect: 'manual',

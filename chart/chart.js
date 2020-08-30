@@ -82,7 +82,10 @@ client.on('connection', async function(socket){
             {
                 socket.emit("onli", {online: 1, userid: data.id})
                 // console.log('online')
-            }
+            }else{{
+                socket.emit("onli", {online: 0, userid: data.id})
+
+            }}
         })
     })
 

@@ -4,15 +4,16 @@ const chat = express()
 // chat.listen(4001)
 const server = require('http').createServer(chat);
 const sockets = require('socket.io')
-const client = sockets(server,{pingTimeout: 60000});
+// const client = sockets(server)//,{pingTimeout: 600000000});
+const client = sockets(server,{pingTimeout: 900000000});
 const fetch = require('node-fetch')
 const bodyParser = require('body-parser')
 const saves = require('./save')
-const getMessage = require('./getMessage')
+const getMessage = require('./getMessage');
+const { EventEmitter } = require('events');
 
 chat.use(bodyParser.json());
 chat.use(bodyParser.urlencoded({extended: false}));
-
 // chat.use('./gemessage', getMessage)
 
 let online = []
@@ -89,8 +90,8 @@ client.on('connection', async function(socket){
         })
     })
 
-    socket.on('disconnected', data=>{
-        // console.log('disconnect')
+    client.on('disconnected', data=>{
+        console.log('disconnect')
         const finalArr = online.filter(dat =>{
             let i = 0
             for(let j = 0; j < online.length; j++){

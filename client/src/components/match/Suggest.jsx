@@ -12,21 +12,25 @@ export const Suggest = (props) => {
 // eslint-disable-next-line 
     const   [online, setOnline] = React.useState(props.info.date)
     useEffect(() => {
-        props.socket.on("onli", dat =>{
-            // console.log(dat)
-            // console.log(data.id)
-            // console.log(parseInt(dat.userid) === parseInt(data.id))
-            if (parseInt(dat.userid) === parseInt(props.info.user_id)  && dat.online === 1){
+        if (props.socket.connected){
+            props.socket.on("onli", dat =>{
                 // console.log(dat)
+                // console.log(data.id)
+                // console.log(parseInt(dat.userid) === parseInt(data.id))
+                if (parseInt(dat.userid) === parseInt(props.info.user_id)  && dat.online === 1){
+                    // console.log(dat)
 
-                setOnline('online')
-            }
-            // if (parseInt(dat.userid) === parseInt(props.info.user_id)  && dat.online === 0){
-            //     // console.log(dat)
+                    setOnline('online')
+                }
+                // if (parseInt(dat.userid) === parseInt(props.info.user_id)  && dat.online === 0){
+                //     // console.log(dat)
 
-            //     setOnline(props.info.date)
-            // }
-        })
+                //     setOnline(props.info.date)
+                // }
+
+                ///ws://127.0.0.1:4001 need yo use this
+            })
+        }
     })
     const show = () =>{
         props.handleDisplay();
@@ -34,7 +38,9 @@ export const Suggest = (props) => {
         userpic()
     }
     const onload = async () =>{
-        props.socket.emit('check', {id: props.info.user_id})
+        if (props.socket.connected){
+            props.socket.emit('check', {id: props.info.user_id})
+        }
         await fetch('/getProfImage', {
             method: 'POST',
             redirect: 'manual',
@@ -109,7 +115,9 @@ export const Suggest = (props) => {
         .then (data => {
             if (data.result === 1){
                 // console.log("it runs")
-                props.socket.emit("notif", {id: localStorage.getItem('id'), userid: props.info.user_id,message: `${localStorage.getItem('firstname')} ${localStorage.getItem('lastname')} liked you`})
+                if (props.socket.connected){
+                    props.socket.emit("notif", {id: localStorage.getItem('id'), userid: props.info.user_id,message: `${localStorage.getItem('firstname')} ${localStorage.getItem('lastname')} liked you`})
+                }
                 props.onload()
             }
             // console.log(data)
@@ -134,7 +142,9 @@ export const Suggest = (props) => {
         })
         .then (data => {
             if (data.result === 1){
-                props.socket.emit("notif", {id: localStorage.getItem('id'), userid: props.info.user_id, message: `${localStorage.getItem('firstname')} ${localStorage.getItem('lastname')} disliked you`})
+                if (props.socket.connected){
+                    props.socket.emit("notif", {id: localStorage.getItem('id'), userid: props.info.user_id, message: `${localStorage.getItem('firstname')} ${localStorage.getItem('lastname')} disliked you`})
+                }
                 props.onload()
             }
             console.log(data)

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import {GlobalContext} from '../../context/GlobalState'
 
 import {Card} from 'react-bootstrap'
@@ -7,38 +7,39 @@ import {  faThumbsDown, faThumbsUp,faEllipsisH} from '@fortawesome/free-solid-sv
 
 export const FriendPro = ({handleDisplay, setData, data, onload, freq, socket, setImage}) => {
     const   {setLog} = useContext(GlobalContext)
+// eslint-disable-next-line 
     const   [online, setOnline] = React.useState(data.date)
     const    [images, setImages] = React.useState("")
 
-    useEffect(() => {
-        if (socket.connected){
+    // useEffect(() => {
+    //     if (socket.connected){
 
-            socket.on('status', data =>{
-                console.log(data)
-                if (parseInt(data.result) === parseInt(data.id)){
-                    setOnline('online')
-                }
-            })
-        }
-        if (socket.connected){
+    //         socket.on('status', data =>{
+    //             console.log(data)
+    //             if (parseInt(data.result) === parseInt(data.id)){
+    //                 setOnline('online')
+    //             }
+    //         })
+    //     }
+    //     if (socket.connected){
 
-            socket.emit('check', {id: data.id})
-        }
-        if (socket.connected){
-            socket.on("onli", dat =>{
-                // console.log(dat)
-                // console.log(data.id)
-                // console.log(parseInt(dat.userid) === parseInt(data.id))
-                if (parseInt(dat.userid) === parseInt(data.id)  && dat.online === 1){
-                    setOnline('online')
-                }
-                if (parseInt(dat.userid) === parseInt(data.id)  && dat.online === 0){
+    //         socket.emit('check', {id: data.id})
+    //     }
+    //     if (socket.connected){
+    //         socket.on("onli", dat =>{
+    //             // console.log(dat)
+    //             // console.log(data.id)
+    //             // console.log(parseInt(dat.userid) === parseInt(data.id))
+    //             if (parseInt(dat.userid) === parseInt(data.id)  && dat.online === 1){
+    //                 setOnline('online')
+    //             }
+    //             if (parseInt(dat.userid) === parseInt(data.id)  && dat.online === 0){
 
-                    setOnline(data.date)
-                }
-            })
-        }
-    })
+    //                 setOnline(data.date)
+    //             }
+    //         })
+    //     }
+    // })
     const handleOnClick = () =>{
         handleDisplay()
         setData(data);

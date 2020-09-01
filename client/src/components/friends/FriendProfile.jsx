@@ -7,32 +7,35 @@ import { faExclamationTriangle, faEllipsisH, faEnvelope } from '@fortawesome/fre
 export const FriendProfile = ({handleDisplay, setData,data, setImage, onload1, freq, socket,changeMessage}) => {
     const   {setLog} = useContext(GlobalContext)
     const    [images, setImages] = React.useState("")
+    // eslint-disable-next-line 
     const   [online, setOnline] = React.useState(data.date)
     useEffect(() => {
 
-        socket.on("notif", dat =>{
-            // console.log(dat)
-            if (dat.id === parseInt(localStorage.getItem('id'))){
-                if (parseInt(dat.code) === parseInt(1))
-                    onload1()
-            }
-        })
-        socket.emit('check', {id: data.id})
-        socket.on("onli", dat =>{
-            // console.log(dat)
-            // console.log(data.id)
-            // console.log(parseInt(dat.userid) === parseInt(data.id))
-            if (parseInt(dat.userid) === parseInt(data.id)  && dat.online === 1){
+        // if (socket.connected){
+            socket.on("notif", dat =>{
                 // console.log(dat)
+                if (dat.id === parseInt(localStorage.getItem('id'))){
+                    if (parseInt(dat.code) === parseInt(1))
+                        onload1()
+                }
+            })
+        // }
+        // socket.emit('check', {id: data.id})
+        // socket.on("onli", dat =>{
+        //     // console.log(dat)
+        //     // console.log(data.id)
+        //     // console.log(parseInt(dat.userid) === parseInt(data.id))
+        //     if (parseInt(dat.userid) === parseInt(data.id)  && dat.online === 1){
+        //         // console.log(dat)
 
-                setOnline('online')
-            }
-            if (parseInt(dat.userid) === parseInt(data.id)  && dat.online === 0){
-                // console.log(dat)
+        //         setOnline('online')
+        //     }
+        //     if (parseInt(dat.userid) === parseInt(data.id)  && dat.online === 0){
+        //         // console.log(dat)
 
-                setOnline(data.date)
-            }
-        })
+        //         setOnline(data.date)
+        //     }
+        // })
     })
 
     const onload = async () =>{

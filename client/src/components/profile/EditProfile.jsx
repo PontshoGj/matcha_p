@@ -41,8 +41,8 @@ export const EditProfile = () => {
             selectgender(data.userinfo.gender)
         })
         .catch(err => {
-            if (err === 403)
-                setLog(false)
+            // if (err === 403)
+            //     setLog(false)
         })
     }
     if (gender === '')

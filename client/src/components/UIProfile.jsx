@@ -23,14 +23,16 @@ export const UIProfile = (props) => {
     const   [display, setDisplay] = React.useState(<Profile />)
     const   [displays, setDisplays] = React.useState('none')
     useEffect(() => {
-
-        socket.emit("userconnect",{authorization:localStorage.getItem('authorization'), userid: localStorage.getItem('id')})
-        socket.on("notif", dat =>{
-            if (dat.id === parseInt(localStorage.getItem('id'))){
-                setMessage(dat.message)
-                setDisplays('flex')
-            }
-        })
+        // console.log(socket.connected)
+        if (socket.connected){
+            socket.emit("userconnect",{authorization:localStorage.getItem('authorization'), userid: localStorage.getItem('id')})
+        }
+            socket.on("notif", dat =>{
+                if (dat.id === parseInt(localStorage.getItem('id'))){
+                    setMessage(dat.message)
+                    setDisplays('flex')
+                }
+            })
     })
 
     const changeLog = () =>{

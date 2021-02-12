@@ -1,29 +1,22 @@
-# README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Welcome to Matcha !
 
-### What is this repository for? ###
+Web Project - DATING WEB APPLICATION
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
 
-### How do I get set up? ###
+Technos - Node.js, Express.js, Js, Html, Css, Bootstrap, React, Mongo and Mysql.
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+If you want to launch the project locally, you'd need a few rules to reach it.
+1 - Clone the project
 
-### Contribution guidelines ###
+git clone https://github.com/PontshoGj/matcha_p.git matcha
+2 - Innitiate Docker
 
-* Writing tests
-* Code review
-* Other guidelines
+Docker-compose build then Docker-compose up
+3 - Install dependencies
 
-### Who do I talk to? ###
+Go to client and server folders and make npm i inside both of them
 
-* Repo owner or admin
-* Other community or team contact
+4 - Launch the servers
+
+Well.... Now you can having fun matching people I guess, just make npm start inside client and server folders and let's match !

@@ -18,7 +18,7 @@ Docker-compose build then Docker-compose up
 
 3 - Install dependencies
 
-Go to client and server folders and make npm i inside both of them
+Go to client folders and make npm i inside both of them
 
 4 - Launch the servers
 
